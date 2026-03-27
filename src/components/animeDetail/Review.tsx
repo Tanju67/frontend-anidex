@@ -29,7 +29,7 @@ function Review() {
   }
 
   const filteredData = parsedData.slice(0, 3);
-  console.log(filteredData);
+
   return (
     <SectionTitle link="reviews" title="Reviews">
       <ReviewContent data={filteredData} />

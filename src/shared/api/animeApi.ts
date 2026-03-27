@@ -119,14 +119,14 @@ export const animeApi = baseAnimeApi.injectEndpoints({
 
     getAnimeEpisodesById: builder.query<
       EpisodesResponseType,
-      { id: string; page: number }
+      { id: string; page?: number }
     >({
       query: ({ id, page }) => ({
-        url: `/anime/${id}/episodes/${page}`,
+        url: `/anime/${id}/episodes?page=${page}`,
         method: "GET",
       }),
       transformResponse: (response) => {
-        return response.data;
+        return response;
       },
     }),
   }),
