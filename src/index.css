@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300..900&family=Manrope:wght@200..800&display=swap");
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+@theme {
+  --font-primary: "Manrope", sans-serif;
+  --font-secondary: "Outfit", sans-serif --color-bg: #fff;
+  --color-text-main: #fff;
+  --color-bg: #000;
+  --color-main-btn: #c70039;
+  --color-main-btn-hover: #b30033;
+
+  --nav-height: 64px;
+}
+
+:root {
+  --nav-height: 64px; /* desktop */
+}
+
+body {
+  font-family: var(--font-primary);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-secondary);
+  font-weight: 700;
+}
+
+a {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+}
+
+/* global.css */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE */
+  scrollbar-width: none; /* Firefox */
+}
