@@ -259,3 +259,27 @@ export const EpisodesSchema = z.array(EpisodeSchema);
 export type EpisodesType = EpisodeType[];
 export type PaginationType = z.infer<typeof PaginationSchema>;
 export type EpisodesResponseType = z.infer<typeof EpisodesResponseSchema>;
+
+export const RecommendationItemSchema = z
+  .object({
+    entry: z.object({
+      mal_id: z.number(),
+      title: z.string(),
+      year: z.number().nullable().optional(),
+      images: z.object({
+        jpg: z.object({
+          large_image_url: z.string(),
+        }),
+      }),
+    }),
+  })
+  .transform((data) => ({
+    id: data.entry.mal_id,
+    title: data.entry.title,
+    image: data.entry.images.jpg.large_image_url,
+    year: data.entry.year ?? null,
+  }));
+
+export const RecommendationsSchema = z.array(RecommendationItemSchema);
+export type RecommendationItemType = z.infer<typeof RecommendationItemSchema>;
+export type RecommendationsType = z.infer<typeof RecommendationsSchema>;
