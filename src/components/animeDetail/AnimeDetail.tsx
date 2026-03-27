@@ -6,6 +6,7 @@ import { CharactersSchema } from "../../shared/schemas/animeSchema";
 import VoiceActor from "./VoiceActor";
 import Review from "./Review";
 import Episodes from "./Episodes";
+import SmilarAnimes from "./SmilarAnimes";
 
 function AnimeDetail() {
   const { animeId } = useParams();
@@ -35,6 +36,7 @@ function AnimeDetail() {
         <VoiceActor data={filteredData} />
         <Review />
         <Episodes />
+        <SmilarAnimes />
       </div>
     </div>
   );
