@@ -28,7 +28,7 @@ const RowSlider: React.FC<RowSliderProps> = ({ items }) => {
       {/* Left Button - Desktop only */}
       <button
         onClick={() => scroll("left")}
-        className="absolute top-1/2 left-0 z-10 hidden -translate-y-1/2 rounded-full bg-black/80 p-2 md:flex"
+        className="absolute top-1/2 left-0 z-20 hidden -translate-y-1/2 rounded-full bg-black/80 p-2 md:flex"
       >
         ◀
       </button>
