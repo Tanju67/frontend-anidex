@@ -4,6 +4,7 @@ import {
   type BannerSliderType,
   type CharactersType,
   type EpisodesResponseType,
+  type RecommendationsType,
   type ReviewsResponseType,
   type RowSliderType,
   type SliderItemType,
@@ -129,6 +130,16 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         return response;
       },
     }),
+
+    getSimilarAnimesById: builder.query<RecommendationsType, string>({
+      query: (id) => ({
+        url: `/anime/${id}/recommendations`,
+        method: "GET",
+      }),
+      transformResponse: (response: { data: RecommendationsType }) => {
+        return response.data;
+      },
+    }),
   }),
 });
 
@@ -143,4 +154,5 @@ export const {
   useGetAnimePictureByIdQuery,
   useGetAnimeReviewsByIdQuery,
   useGetAnimeEpisodesByIdQuery,
+  useGetSimilarAnimesByIdQuery,
 } = animeApi;
