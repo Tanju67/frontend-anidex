@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { url, z } from "zod";
 
 export const GenreSchema = z.object({
   mal_id: z.number(),
@@ -283,3 +283,42 @@ export const RecommendationItemSchema = z
 export const RecommendationsSchema = z.array(RecommendationItemSchema);
 export type RecommendationItemType = z.infer<typeof RecommendationItemSchema>;
 export type RecommendationsType = z.infer<typeof RecommendationsSchema>;
+
+// Tek bir forum postu için temel şema
+export const NewsSchema = z
+  .object({
+    mal_id: z.number(),
+    title: z.string(),
+    date: z.string(),
+    images: z.object({
+      jpg: z.object({
+        image_url: z.string().nullable().optional(),
+      }),
+    }),
+    comments: z.number().nullable().optional(),
+    excerpt: z.string().nullable().optional(),
+    url: z.string(),
+  })
+  .transform((data) => ({
+    id: data.mal_id,
+    title: data.title,
+    date: data.date,
+    image: data.images.jpg.image_url ?? null,
+    comments: data.comments ?? null,
+    excerpt: data.excerpt ?? null,
+    url: data.url,
+  }));
+
+// Pagination objesi
+
+// Response şeması
+export const NewsResponseSchema = z.object({
+  pagination: PaginationSchema,
+  data: z.array(NewsSchema),
+});
+
+// TypeScript tipleri
+export type NewsType = z.infer<typeof NewsSchema>;
+export const AllNewsSchema = z.array(NewsSchema);
+export type AllNewsType = z.infer<typeof AllNewsSchema>;
+export type NewsResponseType = z.infer<typeof NewsResponseSchema>;
