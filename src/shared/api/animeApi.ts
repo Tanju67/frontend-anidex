@@ -4,6 +4,7 @@ import {
   type BannerSliderType,
   type CharactersType,
   type EpisodesResponseType,
+  type NewsResponseType,
   type RecommendationsType,
   type ReviewsResponseType,
   type RowSliderType,
@@ -140,6 +141,16 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         return response.data;
       },
     }),
+
+    getAnimeNewsById: builder.query<NewsResponseType, string>({
+      query: (id) => ({
+        url: `/anime/${id}/news`,
+        method: "GET",
+      }),
+      transformResponse: (response: { data: NewsResponseType }) => {
+        return response.data;
+      },
+    }),
   }),
 });
 
@@ -155,4 +166,5 @@ export const {
   useGetAnimeReviewsByIdQuery,
   useGetAnimeEpisodesByIdQuery,
   useGetSimilarAnimesByIdQuery,
+  useGetAnimeNewsByIdQuery,
 } = animeApi;
