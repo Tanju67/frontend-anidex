@@ -12,13 +12,12 @@ function Review() {
     id: animeId || "",
     page: 1,
   });
-  if (!data) return null;
 
   if (isLoading)
     return (
       <PageSpinner className="min-h-60 sm:min-h-[80] md:min-h-100 lg:min-h-120" />
     );
-
+  if (!data) return null;
   let parsedData;
 
   try {

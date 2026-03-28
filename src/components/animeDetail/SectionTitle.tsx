@@ -5,7 +5,7 @@ type SectionTitleProps = {
   children: React.ReactNode;
   link?: string;
   title: string;
-  subTitle: string;
+  subTitle?: string;
 };
 function SectionTitle({ children, link, title, subTitle }: SectionTitleProps) {
   return (

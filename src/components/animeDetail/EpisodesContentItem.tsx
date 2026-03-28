@@ -3,7 +3,6 @@ import { formatDate } from "../../shared/utils/helper";
 
 function EpisodesContentItem(props: EpisodeType) {
   const { id, title, aired, score, filler } = props;
-  console.log(props);
   return (
     <li className="flex items-center justify-between gap-4 bg-white/10 px-2 py-1 text-xs capitalize sm:text-sm md:text-base xl:text-lg">
       <div className="flex w-full items-center gap-2">
