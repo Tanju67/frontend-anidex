@@ -7,6 +7,7 @@ import VoiceActor from "./VoiceActor";
 import Review from "./Review";
 import Episodes from "./Episodes";
 import SmilarAnimes from "./SmilarAnimes";
+import News from "./News";
 
 function AnimeDetail() {
   const { animeId } = useParams();
@@ -37,6 +38,7 @@ function AnimeDetail() {
         <Review />
         <Episodes />
         <SmilarAnimes />
+        <News />
       </div>
     </div>
   );
