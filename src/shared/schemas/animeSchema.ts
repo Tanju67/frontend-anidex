@@ -322,3 +322,15 @@ export type NewsType = z.infer<typeof NewsSchema>;
 export const AllNewsSchema = z.array(NewsSchema);
 export type AllNewsType = z.infer<typeof AllNewsSchema>;
 export type NewsResponseType = z.infer<typeof NewsResponseSchema>;
+
+export const singleEpisodeSchema = z
+  .object({
+    mal_id: z.number(),
+    synopsis: z.string(),
+  })
+  .transform((data) => ({
+    id: data.mal_id,
+    synopsis: data.synopsis,
+  }));
+
+export type SingleEpisodeType = z.infer<typeof singleEpisodeSchema>;

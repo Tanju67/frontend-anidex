@@ -2,17 +2,22 @@ import type { ReviewType } from "../../shared/schemas/animeSchema";
 import { SlLike } from "react-icons/sl";
 import { SlDislike } from "react-icons/sl";
 import { formatDate } from "../../shared/utils/helper";
+import { useState } from "react";
+
+type Props = {
+  reviewItem: ReviewType;
+  setSelectedReview: React.Dispatch<React.SetStateAction<ReviewType | null>>;
+  setIsModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 function ReviewContentItem({
-  date,
-  review,
-  image,
-  name,
-  spoiler,
-  score,
-  like,
-  dislike,
-}: ReviewType) {
+  reviewItem,
+  setSelectedReview,
+  setIsModelOpen,
+}: Props) {
+  const { name, date, image, spoiler, review, score, like, dislike } =
+    reviewItem;
+  const [blur, setBlur] = useState(spoiler);
   return (
     <li className="bg-white/10 p-4 text-xs sm:text-sm md:text-base xl:text-lg">
       <div className="mb-2 flex items-center">
@@ -27,10 +32,28 @@ function ReviewContentItem({
         </div>
         <div className="flex-1 text-end">{formatDate(date)}</div>
       </div>
-      <div className="mb-2 line-clamp-4">{review}</div>
+      {blur && (
+        <div className="flex justify-evenly bg-red-500">
+          <button onClick={() => setBlur(false)}>Continue to Read</button>
+        </div>
+      )}
+      <div className="relative mb-2 line-clamp-4">
+        <span>{review}</span>
+        {blur && (
+          <span className="absolute top-0 left-0 flex h-full w-full items-center justify-center backdrop-blur">
+            <span className="bg-red-500/50 p-1">Spoiler Alert</span>
+          </span>
+        )}
+      </div>
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <button className="bg-main-btn rounded-sm px-2 py-1">
+          <button
+            onClick={() => {
+              setSelectedReview(reviewItem);
+              setIsModelOpen(true);
+            }}
+            className="bg-main-btn rounded-sm px-2 py-1"
+          >
             Read More
           </button>
         </div>

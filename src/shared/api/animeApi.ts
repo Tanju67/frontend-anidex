@@ -9,6 +9,7 @@ import {
   type RecommendationsType,
   type ReviewsResponseType,
   type RowSliderType,
+  type SingleEpisodeType,
   type SliderItemType,
 } from "../schemas/animeSchema";
 import { baseAnimeApi } from "./baseAnimeApi";
@@ -144,13 +145,26 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       keepUnusedDataFor: 60,
     }),
 
+    getEpisodeByEpisodeId: builder.query<
+      SingleEpisodeType,
+      { id: string; episode: number }
+    >({
+      query: ({ id, episode }) => ({
+        url: `/anime/${id}/episodes/${episode}`,
+        method: "GET",
+      }),
+      transformResponse: (response) => {
+        return response.data;
+      },
+      keepUnusedDataFor: 60,
+    }),
+
     getSimilarAnimesById: builder.query<RecommendationsType, string>({
       query: (id) => ({
         url: `/anime/${id}/recommendations`,
         method: "GET",
       }),
       transformResponse: (response: { data: RecommendationsType }) => {
-        console.log(response);
         return response.data;
       },
       keepUnusedDataFor: 60,
@@ -180,6 +194,7 @@ export const {
   useGetAnimePictureByIdQuery,
   useGetAnimeReviewsByIdQuery,
   useGetAnimeEpisodesByIdQuery,
+  useLazyGetEpisodeByEpisodeIdQuery,
   useGetSimilarAnimesByIdQuery,
   useGetAnimeNewsByIdQuery,
 } = animeApi;
