@@ -1,4 +1,5 @@
 import {
+  type AllNewsType,
   type AnimeImageType,
   type AnimeType,
   type BannerSliderType,
@@ -25,6 +26,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       transformResponse: (response: { data: RowSliderType }) => {
         return response.data;
       },
+      keepUnusedDataFor: 60,
     }),
 
     getUpcomingAnime: builder.query<
@@ -38,6 +40,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       transformResponse: (response: { data: BannerSliderType }) => {
         return response.data;
       },
+      keepUnusedDataFor: 60,
     }),
 
     getRandomAnime: builder.query<SliderItemType, void>({
@@ -46,8 +49,10 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => {
+        console.log(response);
         return response.data;
       },
+      keepUnusedDataFor: 60,
     }),
 
     getAnimeByGenre: builder.query<
@@ -61,6 +66,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       transformResponse: (response: { data: RowSliderType }) => {
         return response.data;
       },
+      keepUnusedDataFor: 60,
     }),
 
     getCurrentSeason: builder.query<
@@ -74,6 +80,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       transformResponse: (response: { data: BannerSliderType }) => {
         return response.data;
       },
+      keepUnusedDataFor: 60,
     }),
 
     getAnimeById: builder.query<SliderItemType, string>({
@@ -84,6 +91,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       transformResponse: (response) => {
         return response.data;
       },
+      keepUnusedDataFor: 60,
     }),
 
     getCharactersByAnimeId: builder.query<CharactersType, string>({
@@ -94,6 +102,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       transformResponse: (response) => {
         return response.data;
       },
+      keepUnusedDataFor: 60,
     }),
 
     getAnimePictureById: builder.query<AnimeImageType, string>({
@@ -104,6 +113,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       transformResponse: (response) => {
         return response.data;
       },
+      keepUnusedDataFor: 60,
     }),
 
     getAnimeReviewsById: builder.query<
@@ -117,6 +127,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       transformResponse: (response) => {
         return response;
       },
+      keepUnusedDataFor: 60,
     }),
 
     getAnimeEpisodesById: builder.query<
@@ -130,6 +141,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       transformResponse: (response) => {
         return response;
       },
+      keepUnusedDataFor: 60,
     }),
 
     getSimilarAnimesById: builder.query<RecommendationsType, string>({
@@ -138,18 +150,21 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response: { data: RecommendationsType }) => {
+        console.log(response);
         return response.data;
       },
+      keepUnusedDataFor: 60,
     }),
 
-    getAnimeNewsById: builder.query<NewsResponseType, string>({
+    getAnimeNewsById: builder.query<AllNewsType, string>({
       query: (id) => ({
         url: `/anime/${id}/news`,
         method: "GET",
       }),
-      transformResponse: (response: { data: NewsResponseType }) => {
+      transformResponse: (response: { data: AllNewsType }) => {
         return response.data;
       },
+      keepUnusedDataFor: 60,
     }),
   }),
 });

@@ -7,19 +7,19 @@ import BannerSlider from "../../shared/UIElements/sliders/BannerSlider";
 import PageSpinner from "../../shared/UIElements/spinner/PageSpinner";
 
 function Banner() {
-  const { data, isLoading, isError, error } = useGetUpcomingAnimeQuery({
-    page: 1,
-    limit: 10,
-  });
+  const { data, isLoading } = useGetUpcomingAnimeQuery(
+    {
+      page: 1,
+      limit: 10,
+    },
+    { refetchOnMountOrArgChange: false },
+  );
 
   if (isLoading)
     return (
       <PageSpinner className="h-[calc(80vh-var(--nav-height))] md:h-[calc(60vh-var(--nav-height))] lg:h-[calc(100vh-var(--nav-height))]" />
     );
 
-  if (isError) {
-    console.error("API request failed:", error);
-  }
   if (!data) return null;
 
   let parsedData: BannerSliderType = [];

@@ -1,12 +1,25 @@
 import type { AxiosError, AxiosRequestConfig } from "axios";
 import { animeAxiosInstance } from "../utils/animeAxioasInstance";
 import pLimit from "p-limit";
+import type { BaseQueryApi } from "@reduxjs/toolkit/query";
 
 const limit = pLimit(3); // aynı anda 3 request
-
-let requestCount = 0;
-
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+let lastRequestTime = 0;
+
+const RATE_LIMIT_MS = 350; // ~3 req/sec (1000 / 3 ≈ 333)
+
+const scheduleRequest = async () => {
+  const now = Date.now();
+  const diff = now - lastRequestTime;
+
+  if (diff < RATE_LIMIT_MS) {
+    await delay(RATE_LIMIT_MS - diff);
+  }
+
+  lastRequestTime = Date.now();
+};
 
 type JikanError = {
   status: number;
@@ -25,12 +38,14 @@ type AxiosBaseQueryArgs = {
 // store/baseApi.ts
 export const axiosBaseQuery =
   (axiosInst = animeAxiosInstance) =>
-  async ({ url, method, data, params }: AxiosBaseQueryArgs) => {
+  async (
+    { url, method, data, params }: AxiosBaseQueryArgs,
+    api: BaseQueryApi,
+  ) => {
     try {
       const result = await limit(async () => {
-        requestCount++;
-        if (requestCount % 3 === 0) await delay(2000);
-        return axiosInst({ url, method, data, params });
+        await scheduleRequest(); // 🔥 kritik nokta
+        return axiosInst({ url, method, data, params, signal: api.signal });
       });
       const apiStatus = result.data?.status;
       const apiError = result.data?.error || result.data?.messages;

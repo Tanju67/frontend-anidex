@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { CharacterType } from "../../shared/schemas/animeSchema";
+import ImagePlaceholder from "../../shared/UIElements/imagePlaceholder/ImagePlaceholder";
 
 function CharecterContentItem(data: CharacterType & { isCharacter: boolean }) {
   const { image, name, isCharacter, voiceActor, characterId } = data;
@@ -15,10 +16,10 @@ function CharecterContentItem(data: CharacterType & { isCharacter: boolean }) {
       <div
         className={`group relative flex flex-col items-center justify-center overflow-hidden ${isCharacter ? "h-30 w-30 rounded-full max-[400px]:h-20 max-[400px]:w-20 lg:h-40 lg:w-40 xl:h-50 xl:w-50" : "h-40 w-30 rounded-lg max-[400px]:h-30 max-[400px]:w-20 md:h-50 lg:h-70 lg:w-40 xl:w-50"}`}
       >
-        <img
+        <ImagePlaceholder
           src={itemImage || ""}
           alt={name}
-          className="rounded-lg object-cover object-center"
+          className="h-full w-full rounded-lg object-cover object-center"
         />
         <Link
           to={isCharacter ? `characters/${itemId}` : `actors/${itemId}`}

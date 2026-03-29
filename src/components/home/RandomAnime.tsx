@@ -1,35 +1,51 @@
 import { useGetRandomAnimeQuery } from "../../shared/api/animeApi";
-import { SliderItemSchema } from "../../shared/schemas/animeSchema";
+import { useInView } from "../../shared/hooks/useInView";
+import {
+  SliderItemSchema,
+  type SliderItemType,
+} from "../../shared/schemas/animeSchema";
 import PageSpinner from "../../shared/UIElements/spinner/PageSpinner";
 import RandomAnimeItem from "./RandomAnimeItem";
 
 function RandomAnime() {
-  const { data, isLoading, isError, error } = useGetRandomAnimeQuery();
+  const { ref, isVisible } = useInView({ rootMargin: "0px" });
 
-  if (isLoading)
-    return (
-      <PageSpinner className="min-h-60 sm:min-h-[80] md:min-h-100 lg:min-h-120" />
-    );
+  const { data, isLoading, isFetching } = useGetRandomAnimeQuery(undefined, {
+    skip: !isVisible,
+    refetchOnMountOrArgChange: false,
+  });
 
-  if (isError) {
-    console.error("API request failed:", error);
+  let parsedData: SliderItemType | null = null;
+
+  if (data) {
+    try {
+      parsedData = SliderItemSchema.parse(data);
+    } catch (err) {
+      console.error("Zod validation failed:", err);
+      return null;
+    }
   }
-  if (!data) return null;
 
-  const parsedData = SliderItemSchema.parse(data);
-  try {
-    // parsedData = bannerSliderSchema.parse(data);
-  } catch (zodError) {
-    console.error("Zod validation failed:", zodError);
-    return null; // Hata middleware ile error page’e gider
+  let content;
+
+  if (isLoading || isFetching) {
+    content = <PageSpinner className="min-h-60" />;
+  } else if (!parsedData) {
+    content = <p className="text-sm opacity-70">No reviews found</p>;
+  } else {
+    content = <RandomAnimeItem {...parsedData} />;
   }
 
   return (
-    <div className="px-2 py-4 sm:px-4 sm:py-8 md:px-8 md:py-12 lg:px-20 lg:py-16">
+    <div
+      ref={ref}
+      className="min-h-100 px-2 py-4 sm:px-4 sm:py-8 md:px-8 md:py-12 lg:px-20 lg:py-16"
+    >
       <h2 className="mb-4 text-base font-bold text-white sm:text-lg md:text-center md:text-2xl lg:mb-10">
         Discover Something New
       </h2>
-      <RandomAnimeItem {...parsedData} />
+
+      {content}
     </div>
   );
 }

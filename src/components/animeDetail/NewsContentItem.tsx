@@ -5,7 +5,7 @@ import { formatDate } from "../../shared/utils/helper";
 function NewsContentItem(props: NewsType) {
   const { title, date, image, excerpt, url } = props;
   return (
-    <li className="flex flex-col gap-2 bg-white/10 p-2 text-xs sm:text-sm md:text-base xl:text-lg">
+    <li className="flex flex-col gap-2 bg-white/10 p-2 text-xs sm:text-sm md:p-4 md:text-base xl:text-lg">
       <div className="flex gap-2">
         <div className="h-40 flex-1 sm:h-60">
           <ImagePlaceholder

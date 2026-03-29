@@ -1,4 +1,5 @@
 import { useGetCurrentSeasonQuery } from "../../shared/api/animeApi";
+import { useInView } from "../../shared/hooks/useInView";
 import {
   RowSliderSchema,
   type RowSliderType,
@@ -7,20 +8,17 @@ import SectionSlider from "../../shared/UIElements/sectionSlider/SectionSlider";
 import PageSpinner from "../../shared/UIElements/spinner/PageSpinner";
 
 function TrendAnime() {
-  const { data, isLoading, isError, error } = useGetCurrentSeasonQuery({
-    page: 1,
-    limit: 10,
-  });
-  if (isLoading)
-    return (
-      <PageSpinner className="min-h-60 sm:min-h-[80] md:min-h-100 lg:min-h-120" />
-    );
-
-  if (isError) {
-    console.error("API request failed:", error);
-  }
+  const { ref, isVisible } = useInView({ rootMargin: "0px" });
+  const { data, isLoading, isFetching } = useGetCurrentSeasonQuery(
+    {
+      page: 1,
+      limit: 10,
+    },
+    { skip: !isVisible, refetchOnMountOrArgChange: false },
+  );
 
   let parsedData: RowSliderType = [];
+
   try {
     if (data) {
       parsedData = RowSliderSchema.parse(data);
@@ -29,7 +27,23 @@ function TrendAnime() {
     console.error("Zod validation failed:", zodError);
     return null; // Hata middleware ile error page’e gider
   }
-  return <SectionSlider title="Currently Trending Series" data={parsedData} />;
+
+  let content;
+
+  if (isLoading || isFetching) {
+    content = <PageSpinner className="min-h-60" />;
+  } else if (!parsedData || parsedData.length === 0) {
+    content = <p className="text-sm opacity-70">No reviews found</p>;
+  } else {
+    content = (
+      <SectionSlider title="Currently Trending Series" data={parsedData} />
+    );
+  }
+  return (
+    <div className="min-h-100" ref={ref}>
+      {content}
+    </div>
+  );
 }
 
 export default TrendAnime;

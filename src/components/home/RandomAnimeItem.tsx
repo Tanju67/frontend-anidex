@@ -1,10 +1,7 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { SlCalender } from "react-icons/sl";
-import { PiTelevisionSimpleDuotone } from "react-icons/pi";
-import { GiDuration } from "react-icons/gi";
-import { MdMovieEdit } from "react-icons/md";
 import { PiTelevision } from "react-icons/pi";
+import { SlCalender } from "react-icons/sl";
+import { Link } from "react-router-dom";
 import type { SliderItemType } from "../../shared/schemas/animeSchema";
 
 function RandomAnimeItem({

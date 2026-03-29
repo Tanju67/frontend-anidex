@@ -20,6 +20,7 @@ import {
   WatchTrailerPage,
   WatchlistPage,
 } from "./pages";
+import AnimeDetailWrapper from "./pages/AnimeDetailWrapper";
 
 const router = createBrowserRouter([
   {
@@ -49,7 +50,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <AnimeDetailPage />,
+            element: <AnimeDetailWrapper />,
           },
           {
             path: "reviews",

@@ -6,7 +6,6 @@ type NewsConentProps = {
 };
 
 function NewsContent({ data }: NewsConentProps) {
-  console.log(data);
   return (
     <ul className="grid grid-cols-1 gap-2 lg:grid-cols-2">
       {data.map((item) => (

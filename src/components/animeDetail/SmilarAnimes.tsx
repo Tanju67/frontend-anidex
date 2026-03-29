@@ -1,38 +1,55 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useGetSimilarAnimesByIdQuery } from "../../shared/api/animeApi";
-import PageSpinner from "../../shared/UIElements/spinner/PageSpinner";
+import { useInView } from "../../shared/hooks/useInView";
 import {
   RecommendationsSchema,
   type RecommendationsType,
 } from "../../shared/schemas/animeSchema";
 import SectionSlider from "../../shared/UIElements/sectionSlider/SectionSlider";
+import PageSpinner from "../../shared/UIElements/spinner/PageSpinner";
 import SectionTitle from "./SectionTitle";
 
 function SmilarAnimes() {
   const { animeId } = useParams();
-  const { data, isLoading } = useGetSimilarAnimesByIdQuery(animeId!);
+  const { ref, isVisible } = useInView({ rootMargin: "300px" });
 
-  if (isLoading)
-    return (
-      <PageSpinner className="min-h-60 sm:min-h-[80] md:min-h-100 lg:min-h-120" />
-    );
+  // skip ile görünür değilken fetch yapılmaz
+  const { data, isLoading, isFetching } = useGetSimilarAnimesByIdQuery(
+    animeId!,
+    { skip: !isVisible || !animeId, refetchOnMountOrArgChange: false },
+  );
 
   let parsedData: RecommendationsType = [];
-  try {
-    if (data) {
+  if (data) {
+    try {
       parsedData = RecommendationsSchema.parse(data);
+    } catch (err) {
+      console.error("Zod error:", err);
     }
-  } catch (zodError) {
-    console.error("Zod validation failed:", zodError);
-    return null; // Hata middleware ile error page’e gider
   }
+
+  const filteredData = parsedData.slice(0, 10);
+
+  let content;
+
+  if (isLoading || isFetching) {
+    content = <PageSpinner className="min-h-60" />;
+  } else if (!filteredData || filteredData.length === 0) {
+    content = <p className="text-sm opacity-70">No smilar animes found</p>;
+  } else {
+    content = <SectionSlider data={filteredData} />;
+  }
+
   return (
-    <SectionTitle
-      title="Smilar Animes"
-      subTitle="You can also like these animes"
-    >
-      <SectionSlider data={parsedData} />
-    </SectionTitle>
+    <div ref={ref}>
+      <SectionTitle
+        title="Smilar Animes"
+        subTitle="You can also like these animes"
+      >
+        {content}
+      </SectionTitle>
+    </div>
   );
 }
 
