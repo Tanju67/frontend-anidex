@@ -1,10 +1,7 @@
 import { useGetUpcomingAnimeQuery } from "../../shared/api/animeApi";
-import {
-  bannerSliderSchema,
-  type BannerSliderType,
-} from "../../shared/schemas/animeSchema";
+import { bannerSliderSchema } from "../../shared/schemas/animeSchema";
+import BannerSkeleton from "../../shared/UIElements/skeleton/bannerSkeleton";
 import BannerSlider from "../../shared/UIElements/sliders/BannerSlider";
-import PageSpinner from "../../shared/UIElements/spinner/PageSpinner";
 
 function Banner() {
   const { data, isLoading } = useGetUpcomingAnimeQuery(
@@ -15,26 +12,21 @@ function Banner() {
     { refetchOnMountOrArgChange: false },
   );
 
-  if (isLoading)
-    return (
-      <PageSpinner className="h-[calc(80vh-var(--nav-height))] md:h-[calc(60vh-var(--nav-height))] lg:h-[calc(100vh-var(--nav-height))]" />
-    );
+  if (isLoading) return <BannerSkeleton />;
+  if (!data) return <div className="text-center opacity-60">No data found</div>;
 
-  if (!data) return null;
+  const result = bannerSliderSchema.safeParse(data);
 
-  let parsedData: BannerSliderType = [];
-  try {
-    parsedData = bannerSliderSchema.parse(data);
-  } catch (zodError) {
-    console.error("Zod validation failed:", zodError);
-    return null; // Hata middleware ile error page’e gider
+  if (!result.success) {
+    console.error(result.error);
+    return null;
   }
 
-  return (
-    <div>
-      <BannerSlider items={parsedData} />
-    </div>
-  );
+  if (result.data.length === 0) {
+    return <div className="text-center opacity-60">No data found</div>;
+  }
+
+  return <BannerSlider items={result.data} />;
 }
 
 export default Banner;
