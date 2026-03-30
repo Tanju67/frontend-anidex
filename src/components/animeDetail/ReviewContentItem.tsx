@@ -3,6 +3,7 @@ import { SlLike } from "react-icons/sl";
 import { SlDislike } from "react-icons/sl";
 import { formatDate } from "../../shared/utils/helper";
 import { useState } from "react";
+import Button from "../../shared/UIElements/button/Button";
 
 type Props = {
   reviewItem: ReviewType;
@@ -47,15 +48,15 @@ function ReviewContentItem({
       </div>
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <button
+          <Button
             onClick={() => {
               setSelectedReview(reviewItem);
               setIsModelOpen(true);
             }}
-            className="bg-main-btn rounded-sm px-2 py-1"
+            className="bg-main-btn hover:bg-main-btn-hover px-2 py-1"
           >
             Read More
-          </button>
+          </Button>
         </div>
         <div className="flex gap-4">
           <span className="flex items-center justify-center gap-1">

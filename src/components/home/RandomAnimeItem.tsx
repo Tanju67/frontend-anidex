@@ -3,6 +3,8 @@ import { PiTelevision } from "react-icons/pi";
 import { SlCalender } from "react-icons/sl";
 import { Link } from "react-router-dom";
 import type { SliderItemType } from "../../shared/schemas/animeSchema";
+import Button from "../../shared/UIElements/button/Button";
+import { IoInformationCircleOutline } from "react-icons/io5";
 
 function RandomAnimeItem({
   id,
@@ -78,11 +80,16 @@ function RandomAnimeItem({
 
           {/* Buttons */}
           <div className="mt-4 flex w-full gap-4 text-sm md:text-base lg:text-lg">
-            <Link to={`/anime/${id}`} className="w-full md:text-start">
-              <button className="bg-main-btn hover:bg-main-btn-hover w-full rounded px-6 py-2 transition md:w-auto">
-                ▶ More Info
-              </button>
-            </Link>
+            <Button
+              isLink={true}
+              link={`/anime/${id}`}
+              className="bg-main-btn hover:bg-main-btn-hover border-main-btn flex items-center justify-center gap-2 border-2 px-4 py-2"
+            >
+              <span>
+                <IoInformationCircleOutline />
+              </span>
+              <span>More Details</span>
+            </Button>
           </div>
         </div>
       </motion.div>

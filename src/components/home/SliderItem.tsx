@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import type { SliderItemType } from "../../shared/schemas/animeSchema";
+import { BsBookmarkPlusFill } from "react-icons/bs";
+import { IoInformationCircleOutline } from "react-icons/io5";
+import Button from "../../shared/UIElements/button/Button";
 
 function SliderItem({
   title,
@@ -49,10 +52,25 @@ function SliderItem({
         </p>
 
         <p className="mb-8 hidden lg:line-clamp-4">{synopsis}</p>
-
-        <button className="bg-main-btn hover:bg-main-btn-hover rounded px-4 py-2 transition-all duration-300">
-          Watch Trailer
-        </button>
+        <div className="text-xs sm:text-sm md:text-base lg:text-lg">
+          <div className="flex justify-center gap-2 text-center md:justify-start">
+            <Button
+              isLink={true}
+              link={`/anime/${id}`}
+              className="bg-main-btn hover:bg-main-btn-hover border-main-btn flex items-center justify-center gap-2 border-2 px-4 py-2"
+            >
+              <span>
+                <IoInformationCircleOutline />
+              </span>
+              <span>More Details</span>
+            </Button>
+            <Button className="border-main-btn text-main-btn hover:bg-main-btn-hover flex items-center justify-center gap-2 border-2 px-2 hover:text-white">
+              <span>
+                <BsBookmarkPlusFill />
+              </span>
+            </Button>
+          </div>
+        </div>
       </div>
 
       <div className="hidden flex-1 md:block" />
