@@ -1,32 +1,28 @@
 import { useGetUpcomingAnimeQuery } from "../../shared/api/animeApi";
+import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { bannerSliderSchema } from "../../shared/schemas/animeSchema";
 import BannerSkeleton from "../../shared/UIElements/skeleton/bannerSkeleton";
 import BannerSlider from "../../shared/UIElements/sliders/BannerSlider";
 
 function Banner() {
-  const { data, isLoading } = useGetUpcomingAnimeQuery(
+  const query = useGetUpcomingAnimeQuery(
     {
       page: 1,
       limit: 10,
     },
     { refetchOnMountOrArgChange: false },
   );
+  const { data, isLoading, isError } = useSafeQuery({
+    data: query.data,
+    isLoading: query.isLoading,
+    schema: bannerSliderSchema,
+  });
 
   if (isLoading) return <BannerSkeleton />;
-  if (!data) return <div className="text-center opacity-60">No data found</div>;
-
-  const result = bannerSliderSchema.safeParse(data);
-
-  if (!result.success) {
-    console.error(result.error);
-    return null;
-  }
-
-  if (result.data.length === 0) {
+  if (isError || !data?.length)
     return <div className="text-center opacity-60">No data found</div>;
-  }
 
-  return <BannerSlider items={result.data} />;
+  return <BannerSlider items={data} />;
 }
 
 export default Banner;

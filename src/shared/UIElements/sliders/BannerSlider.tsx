@@ -17,7 +17,6 @@ const BannerSlider: React.FC<BannerSliderProps> = ({
 
   const currentItem = items[index];
 
-  // ⏱ auto slide
   useEffect(() => {
     if (!items || items.length === 0) return;
 
@@ -28,10 +27,8 @@ const BannerSlider: React.FC<BannerSliderProps> = ({
     return () => clearInterval(timer);
   }, [items.length, interval, items]);
 
-  // ⛔ boş data guard
   if (!items || items.length === 0) return null;
 
-  // ▶ next / prev (pause tetikler)
   const next = () => {
     // setIsPaused(true);
     setIndex((prev) => (prev + 1) % items.length);
@@ -80,10 +77,11 @@ const BannerSlider: React.FC<BannerSliderProps> = ({
       </button>
 
       {/* 🔘 Dots */}
-      <div className="absolute bottom-[2vh] left-1/2 flex -translate-x-1/2 gap-2 md:bottom-[18vh] md:left-[10vw] md:translate-x-0 lg:bottom-[30vh]">
+      <div className="absolute bottom-[2vh] left-1/2 z-50 flex -translate-x-1/2 gap-2 md:bottom-[18vh] md:left-[10vw] md:translate-x-0 lg:bottom-[30vh]">
         {items.map((_, i) => (
           <div
             key={i}
+            onClick={() => setIndex(i)}
             className={`h-2 overflow-hidden rounded bg-white/30 transition-all duration-200 ease-in-out ${
               i === index ? "w-8" : "w-4"
             }`}
