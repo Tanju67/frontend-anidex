@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import type { SliderItemType } from "../../shared/schemas/animeSchema";
 import { BsBookmarkPlusFill } from "react-icons/bs";
 import { IoInformationCircleOutline } from "react-icons/io5";
+import { Link } from "react-router-dom";
+import type { SliderItemType } from "../../shared/schemas/animeSchema";
 import Button from "../../shared/UIElements/button/Button";
 
 function SliderItem({
@@ -25,46 +25,34 @@ function SliderItem({
       transition={{ duration: 0.3 }}
     >
       {/* Gradient overlay */}
-      <div className="/* mobile */ /* tablet */ /* desktop */ absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,1),rgba(0,0,0,.6),rgba(0,0,0,.3),rgba(0,0,0,.4),rgba(0,0,0,.9),rgba(0,0,0,1))] md:bg-[linear-gradient(to_left,rgba(0,0,0,0),rgba(0,0,0,0),rgba(0,0,0,.7),rgba(0,0,0,.8),rgba(0,0,0,.9),rgba(0,0,0,1))] lg:bg-[radial-gradient(circle_at_right,rgba(0,0,0,0),rgba(0,0,0,.6),rgba(0,0,0,1),rgba(0,0,0,1),rgba(0,0,0,1))]" />
+      <div className="overlay-header" />
 
       {/* Content */}
-      <div className="relative z-10 mb-10 w-full p-4 text-center md:mb-0 md:flex-1 md:p-[10vw] md:text-left">
+      <div className="relative z-10 mb-6 w-full p-4 text-center md:mb-0 md:flex-1 md:p-[10vw] md:text-left">
         <Link to={`anime/${id}`}>
-          <h2 className="mb-2 line-clamp-1 cursor-pointer bg-linear-to-r from-orange-400 to-pink-500 bg-clip-text text-xl font-extrabold tracking-wide text-transparent drop-shadow-lg sm:text-2xl md:text-3xl lg:mb-4 lg:text-5xl">
-            {title}
-          </h2>
+          <h2 className="animeTitle">{title}</h2>
         </Link>
 
-        <p className="mb-8 flex justify-center gap-4 md:mb-4 md:justify-start">
-          {score && (
-            <span className="text-sm md:text-base lg:text-lg">
-              ⭐ {score} / 10
-            </span>
-          )}
-          {year && (
-            <span className="text-sm md:text-base lg:text-lg">📅 {year}</span>
-          )}
-          {genres && (
-            <span className="text-sm md:text-base lg:text-lg">
-              🎉 {genres.join(" | ")}
-            </span>
-          )}
+        <p className="mb-4 flex justify-center gap-4 md:justify-start">
+          {score && <span>⭐ {score} / 10</span>}
+          {year && <span>📅 {year}</span>}
+          {genres && <span>🎉 {genres.join(" | ")}</span>}
         </p>
 
         <p className="mb-8 hidden lg:line-clamp-4">{synopsis}</p>
-        <div className="text-xs sm:text-sm md:text-base lg:text-lg">
+        <div>
           <div className="flex justify-center gap-2 text-center md:justify-start">
             <Button
               isLink={true}
               link={`/anime/${id}`}
-              className="bg-main-btn hover:bg-main-btn-hover border-main-btn flex items-center justify-center gap-2 border-2 px-4 py-2"
+              className="bg-main-btn hover:bg-main-btn-hover border-main-btn main-btn-lg content-center-x gap-2 border-2"
             >
               <span>
                 <IoInformationCircleOutline />
               </span>
               <span>More Details</span>
             </Button>
-            <Button className="border-main-btn text-main-btn hover:bg-main-btn-hover flex items-center justify-center gap-2 border-2 px-2 hover:text-white">
+            <Button className="border-main-btn text-main-btn hover:bg-main-btn-hover main-btn-sm main-text-size gap-2 border-2 hover:text-white">
               <span>
                 <BsBookmarkPlusFill />
               </span>

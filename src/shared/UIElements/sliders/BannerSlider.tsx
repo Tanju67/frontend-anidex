@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import SliderItem from "../../../components/home/SliderItem";
 import type { BannerSliderType } from "../../schemas/animeSchema";
+import Button from "../button/Button";
 
 interface BannerSliderProps {
   items: BannerSliderType;
@@ -41,7 +42,7 @@ const BannerSlider: React.FC<BannerSliderProps> = ({
 
   return (
     <div
-      className="relative h-[calc(80vh-var(--nav-height))] w-full overflow-hidden md:h-[calc(60vh-var(--nav-height))] lg:h-[calc(100vh-var(--nav-height))]"
+      className="main-text-size relative h-[calc(80vh-var(--nav-height))] w-full overflow-hidden md:h-[calc(60vh-var(--nav-height))] lg:h-[calc(100vh-var(--nav-height))]"
       // onMouseEnter={() => setIsPaused(true)}
       // onMouseLeave={() => setIsPaused(false)}
     >
@@ -60,29 +61,29 @@ const BannerSlider: React.FC<BannerSliderProps> = ({
       </AnimatePresence>
 
       {/* ⬅️➡️ Buttons */}
-      <button
+      <Button
         onClick={prev}
         aria-label="Previous slide"
         className="absolute top-1/2 left-4 z-10 hidden -translate-y-1/2 rounded-full bg-black/50 p-2 lg:block"
       >
         ◀
-      </button>
+      </Button>
 
-      <button
+      <Button
         onClick={next}
         aria-label="Next slide"
         className="absolute top-1/2 right-4 z-10 hidden -translate-y-1/2 rounded-full bg-black/50 p-2 lg:block"
       >
         ▶
-      </button>
+      </Button>
 
       {/* 🔘 Dots */}
       <div className="absolute bottom-[2vh] left-1/2 z-50 flex -translate-x-1/2 gap-2 md:bottom-[18vh] md:left-[10vw] md:translate-x-0 lg:bottom-[30vh]">
         {items.map((_, i) => (
-          <div
+          <Button
             key={i}
             onClick={() => setIndex(i)}
-            className={`h-2 overflow-hidden rounded bg-white/30 transition-all duration-200 ease-in-out ${
+            className={`h-2 overflow-hidden rounded bg-white/30 ${
               i === index ? "w-8" : "w-4"
             }`}
           >
@@ -94,7 +95,7 @@ const BannerSlider: React.FC<BannerSliderProps> = ({
                 transition={{ duration: interval / 1000, ease: "linear" }}
               />
             )}
-          </div>
+          </Button>
         ))}
       </div>
     </div>
