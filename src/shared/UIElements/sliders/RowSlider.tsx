@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import type { RowSliderType } from "../../schemas/animeSchema";
 import RowSliderItem from "./RowSliderItem";
+import Button from "../button/Button";
 
 interface RowSliderProps {
   items: RowSliderType;
@@ -26,12 +27,12 @@ const RowSlider: React.FC<RowSliderProps> = ({ items }) => {
   return (
     <div className="relative">
       {/* Left Button - Desktop only */}
-      <button
+      <Button
         onClick={() => scroll("left")}
         className="absolute top-1/2 left-0 z-20 hidden -translate-y-1/2 rounded-full bg-black/80 p-2 md:flex"
       >
         ◀
-      </button>
+      </Button>
 
       {/* Slider Row */}
       <ul
@@ -50,12 +51,12 @@ const RowSlider: React.FC<RowSliderProps> = ({ items }) => {
       </ul>
 
       {/* Right Button - Desktop only */}
-      <button
+      <Button
         onClick={() => scroll("right")}
         className="absolute top-1/2 right-0 z-10 hidden -translate-y-1/2 rounded-full bg-black/80 p-2 md:flex"
       >
         ▶
-      </button>
+      </Button>
     </div>
   );
 };

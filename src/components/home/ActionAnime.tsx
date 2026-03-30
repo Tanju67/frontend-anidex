@@ -1,15 +1,13 @@
 import { useGetAnimeByGenreQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
-import {
-  RowSliderSchema,
-  type RowSliderType,
-} from "../../shared/schemas/animeSchema";
+import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
+import { RowSliderSchema } from "../../shared/schemas/animeSchema";
 import SectionSlider from "../../shared/UIElements/sectionSlider/SectionSlider";
-import PageSpinner from "../../shared/UIElements/spinner/PageSpinner";
+import CardSkeleton from "../../shared/UIElements/skeleton/CardSkeleton";
 
 function ActionAnime() {
   const { ref, isVisible } = useInView({ rootMargin: "50px" });
-  const { data, isLoading, isFetching } = useGetAnimeByGenreQuery(
+  const query = useGetAnimeByGenreQuery(
     {
       page: 1,
       limit: 10,
@@ -18,30 +16,22 @@ function ActionAnime() {
     { skip: !isVisible, refetchOnMountOrArgChange: false },
   );
 
-  let parsedData: RowSliderType = [];
+  const { data, isLoading, isError } = useSafeQuery({
+    data: query.data,
+    isLoading: query.isLoading,
+    schema: RowSliderSchema,
+  });
 
-  try {
-    if (data) {
-      parsedData = RowSliderSchema.parse(data);
-    }
-  } catch (zodError) {
-    console.error("Zod validation failed:", zodError);
-    return null; // Hata middleware ile error page’e gider
+  if (!isVisible) {
+    return <div ref={ref} className="min-h-100" />;
   }
 
-  let content;
-
-  if (isLoading || isFetching) {
-    content = <PageSpinner className="min-h-60" />;
-  } else if (!parsedData || parsedData.length === 0) {
-    content = <p className="text-sm opacity-70">No reviews found</p>;
-  } else {
-    content = <SectionSlider title="Explore Action Series" data={parsedData} />;
-  }
-
+  if (isLoading) return <CardSkeleton />;
+  if (isError || !data?.length)
+    return <div className="text-center opacity-60">No data found</div>;
   return (
-    <div className="min-h-100" ref={ref}>
-      {content}
+    <div ref={ref}>
+      <SectionSlider title="Explore Action Series" data={data} />
     </div>
   );
 }

@@ -1,51 +1,64 @@
 import { useGetRandomAnimeQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
+import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import {
   SliderItemSchema,
   type SliderItemType,
 } from "../../shared/schemas/animeSchema";
+import CardSkeleton from "../../shared/UIElements/skeleton/CardSkeleton";
 import PageSpinner from "../../shared/UIElements/spinner/PageSpinner";
 import RandomAnimeItem from "./RandomAnimeItem";
 
 function RandomAnime() {
-  const { ref, isVisible } = useInView({ rootMargin: "0px" });
+  const { ref, isVisible } = useInView({ rootMargin: "50px" });
 
-  const { data, isLoading, isFetching } = useGetRandomAnimeQuery(undefined, {
+  const query = useGetRandomAnimeQuery(undefined, {
     skip: !isVisible,
     refetchOnMountOrArgChange: false,
   });
 
-  let parsedData: SliderItemType | null = null;
+  // let parsedData: SliderItemType | null = null;
 
-  if (data) {
-    try {
-      parsedData = SliderItemSchema.parse(data);
-    } catch (err) {
-      console.error("Zod validation failed:", err);
-      return null;
-    }
+  // if (data) {
+  //   try {
+  //     parsedData = SliderItemSchema.parse(data);
+  //   } catch (err) {
+  //     console.error("Zod validation failed:", err);
+  //     return null;
+  //   }
+  // }
+
+  // let content;
+
+  // if (isLoading || isFetching) {
+  //   content = <PageSpinner className="min-h-60" />;
+  // } else if (!parsedData) {
+  //   content = <p className="text-sm opacity-70">No reviews found</p>;
+  // } else {
+  //   content = <RandomAnimeItem {...parsedData} />;
+  // }
+
+  const { data, isLoading, isError } = useSafeQuery({
+    data: query.data,
+    isLoading: query.isLoading,
+    schema: SliderItemSchema,
+  });
+
+  if (!isVisible) {
+    return <div ref={ref} className="min-h-100" />;
   }
 
-  let content;
-
-  if (isLoading || isFetching) {
-    content = <PageSpinner className="min-h-60" />;
-  } else if (!parsedData) {
-    content = <p className="text-sm opacity-70">No reviews found</p>;
-  } else {
-    content = <RandomAnimeItem {...parsedData} />;
-  }
+  if (isLoading) return <CardSkeleton />;
+  if (isError || !data)
+    return <div className="text-center opacity-60">No data found</div>;
 
   return (
-    <div
-      ref={ref}
-      className="min-h-100 px-2 py-4 sm:px-4 sm:py-8 md:px-8 md:py-12 lg:px-20 lg:py-16"
-    >
-      <h2 className="mb-4 text-base font-bold text-white sm:text-lg md:text-center md:text-2xl lg:mb-10">
+    <div ref={ref} className="section-padding main-text-size">
+      <h2 className="section-title-size mb-2 md:mb-4 md:text-center">
         Discover Something New
       </h2>
 
-      {content}
+      <RandomAnimeItem {...data} />
     </div>
   );
 }

@@ -10,12 +10,10 @@ function SectionSlider({
 }) {
   if (!title) return <RowSlider items={data} />;
   return (
-    <div className="bg-black px-2 py-4 sm:p-4 md:p-8 lg:p-16">
-      <h2 className="mb-4 text-base font-bold text-white sm:text-lg md:text-2xl">
-        {title}
-      </h2>
+    <section className="section-padding main-text-size">
+      <h2 className="section-title-size mb-2 font-bold md:mb-4">{title}</h2>
       <RowSlider items={data} />
-    </div>
+    </section>
   );
 }
 

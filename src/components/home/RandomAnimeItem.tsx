@@ -27,7 +27,7 @@ function RandomAnimeItem({
 
       {/* 🎯 Content */}
       <motion.div
-        className="relative z-10 mx-auto flex h-full items-start justify-center gap-4 p-2 text-center md:p-12 lg:w-4/5 lg:gap-16 lg:p-4"
+        className="content-center-x relative z-10 mx-auto h-full gap-4 p-2 text-center md:p-12 lg:w-4/5 lg:gap-16 lg:p-4"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -41,9 +41,7 @@ function RandomAnimeItem({
         <div className="flex w-full flex-1 flex-col items-start justify-start gap-1">
           {/* Title */}
           <Link to={`/anime/${id}`} className="text-start">
-            <h2 className="mb-2 line-clamp-1 cursor-pointer bg-linear-to-r from-orange-400 to-pink-500 bg-clip-text text-base font-extrabold tracking-wide text-transparent drop-shadow-lg sm:text-xl md:text-3xl lg:mb-4 lg:text-5xl">
-              {title}
-            </h2>
+            <h2 className="animeTitle">{title}</h2>
           </Link>
 
           {/* Info */}
@@ -55,7 +53,7 @@ function RandomAnimeItem({
               <span>{year}</span>
             </div>
           )}
-          <div className="flex flex-col flex-wrap items-start gap-1 text-sm text-gray-300 md:flex-row md:text-base lg:text-lg">
+          <div className="flex flex-col flex-wrap items-start gap-1 text-sm text-gray-300 md:flex-row md:gap-4 md:text-base lg:text-lg">
             {score && <span>⭐ {score}</span>}
             {episodes && <span>🎞️ {episodes} episodes</span>}
             {duration && <span>⌛ {duration}</span>}
@@ -63,7 +61,7 @@ function RandomAnimeItem({
 
           {/* Synopsis */}
           {synopsis && (
-            <p className="my-2 line-clamp-3 hidden text-start text-sm text-gray-300 italic md:block md:text-base lg:text-lg">
+            <p className="my-2 hidden text-start text-sm text-gray-300 italic md:line-clamp-3 md:text-base lg:line-clamp-6 lg:text-lg">
               {synopsis}
             </p>
           )}

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import type { RowSliderItemType } from "../../schemas/animeSchema";
-import { Link } from "react-router-dom";
+import Button from "../button/Button";
 
 function RowSliderItem({ image, title, year, id }: RowSliderItemType) {
   return (
@@ -11,17 +11,20 @@ function RowSliderItem({ image, title, year, id }: RowSliderItemType) {
       />
 
       {/* Overlay */}
-      <Link
-        to={`/anime/${id}`}
-        className="hover:border-main-btn absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-black/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:border-2"
+      <Button
+        isLink={true}
+        link={`/anime/${id}`}
+        className="hover:border-main-btn absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-black/70 opacity-0 group-hover:opacity-100 hover:border-2"
       >
         <span className="bg-main-btn/50 hover:bg-main-btn h-10 w-10 rounded-full transition-colors duration-300"></span>
-      </Link>
+      </Button>
 
       {/* Bottom Info */}
-      <div className="absolute bottom-0 flex w-full items-center justify-between bg-black/80 p-2 text-sm text-white">
+      <div className="bg-main-btn/80 absolute bottom-0 flex w-full items-center justify-between p-2 text-xs text-white md:text-sm">
         {title && <span className="line-clamp-1 flex-2">{title}</span>}
-        {year && <span className="flex-1 text-right">{year}</span>}
+        {year && (
+          <span className="hidden flex-1 text-right md:block">{year}</span>
+        )}
       </div>
     </motion.div>
   );
