@@ -2,13 +2,14 @@ import { useParams } from "react-router-dom";
 import { useGetCharactersByAnimeIdQuery } from "../../shared/api/animeApi";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { CharactersSchema } from "../../shared/schemas/animeSchema";
-import CardSkeleton from "../../shared/UIElements/skeleton/CardSkeleton";
+import CardSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
 import Episodes from "./Episodes";
 import MainCharacter from "./MainCharacter";
 import News from "./News";
 import Review from "./Review";
 import SmilarAnimes from "./SmilarAnimes";
 import VoiceActor from "./VoiceActor";
+import CharacterContentSkeleton from "../../shared/UIElements/skeleton/CharacterContentSkeleton";
 
 function AnimeDetail() {
   const { animeId } = useParams();
@@ -20,7 +21,7 @@ function AnimeDetail() {
     schema: CharactersSchema,
   });
 
-  if (isLoading) return <CardSkeleton />;
+  if (isLoading) return <CharacterContentSkeleton />;
   if (isError || !data?.length)
     return <div className="text-center opacity-60">No data found</div>;
 

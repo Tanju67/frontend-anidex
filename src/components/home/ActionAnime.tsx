@@ -3,7 +3,7 @@ import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { RowSliderSchema } from "../../shared/schemas/animeSchema";
 import SectionSlider from "../../shared/UIElements/sectionSlider/SectionSlider";
-import CardSkeleton from "../../shared/UIElements/skeleton/CardSkeleton";
+import RowSliderSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
 
 function ActionAnime() {
   const { ref, isVisible } = useInView({ rootMargin: "50px" });
@@ -26,7 +26,7 @@ function ActionAnime() {
     return <div ref={ref} className="min-h-100" />;
   }
 
-  if (isLoading) return <CardSkeleton />;
+  if (isLoading) return <RowSliderSkeleton title="Action Series" />;
   if (isError || !data?.length)
     return <div className="text-center opacity-60">No data found</div>;
   return (

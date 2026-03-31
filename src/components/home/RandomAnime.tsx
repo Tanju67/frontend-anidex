@@ -1,12 +1,9 @@
 import { useGetRandomAnimeQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
-import {
-  SliderItemSchema,
-  type SliderItemType,
-} from "../../shared/schemas/animeSchema";
-import CardSkeleton from "../../shared/UIElements/skeleton/CardSkeleton";
-import PageSpinner from "../../shared/UIElements/spinner/PageSpinner";
+import { SliderItemSchema } from "../../shared/schemas/animeSchema";
+import RandomAnimeItemSkeleton from "../../shared/UIElements/skeleton/RandomAnimeItemSkeleton";
+import CardSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
 import RandomAnimeItem from "./RandomAnimeItem";
 
 function RandomAnime() {
@@ -16,27 +13,6 @@ function RandomAnime() {
     skip: !isVisible,
     refetchOnMountOrArgChange: false,
   });
-
-  // let parsedData: SliderItemType | null = null;
-
-  // if (data) {
-  //   try {
-  //     parsedData = SliderItemSchema.parse(data);
-  //   } catch (err) {
-  //     console.error("Zod validation failed:", err);
-  //     return null;
-  //   }
-  // }
-
-  // let content;
-
-  // if (isLoading || isFetching) {
-  //   content = <PageSpinner className="min-h-60" />;
-  // } else if (!parsedData) {
-  //   content = <p className="text-sm opacity-70">No reviews found</p>;
-  // } else {
-  //   content = <RandomAnimeItem {...parsedData} />;
-  // }
 
   const { data, isLoading, isError } = useSafeQuery({
     data: query.data,
@@ -48,7 +24,7 @@ function RandomAnime() {
     return <div ref={ref} className="min-h-100" />;
   }
 
-  if (isLoading) return <CardSkeleton />;
+  if (isLoading) return <RandomAnimeItemSkeleton />;
   if (isError || !data)
     return <div className="text-center opacity-60">No data found</div>;
 

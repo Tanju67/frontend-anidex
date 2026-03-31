@@ -1,5 +1,7 @@
+import AllCharacters from "../components/allCharacters/AllCharacters";
+
 function AllCharactersPage() {
-  return <div>AllCharactersPage</div>;
+  return <AllCharacters />;
 }
 
 export default AllCharactersPage;

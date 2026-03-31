@@ -3,9 +3,10 @@ import { useGetAnimeEpisodesByIdQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { EpisodesSchema } from "../../shared/schemas/animeSchema";
-import CardSkeleton from "../../shared/UIElements/skeleton/CardSkeleton";
+import CardSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
 import EpisodesContent from "./EpisodesContent";
 import SectionTitle from "./SectionTitle";
+import EpisodesContentSkeleton from "../../shared/UIElements/skeleton/EpisodesContentSkeleton";
 
 function Episodes() {
   const { animeId } = useParams();
@@ -26,7 +27,12 @@ function Episodes() {
     return <div ref={ref} className="min-h-60" />;
   }
 
-  if (isLoading) return <CardSkeleton />;
+  if (isLoading)
+    return (
+      <SectionTitle title="Episodes" skeleton={true}>
+        <EpisodesContentSkeleton />
+      </SectionTitle>
+    );
   if (isError || !data?.length)
     return <div className="text-center opacity-60">No data found</div>;
 

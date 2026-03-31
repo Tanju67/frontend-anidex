@@ -6,14 +6,21 @@ type SectionTitleProps = {
   link?: string;
   title: string;
   subTitle?: string;
+  skeleton?: boolean;
 };
-function SectionTitle({ children, link, title, subTitle }: SectionTitleProps) {
+function SectionTitle({
+  children,
+  link,
+  title,
+  subTitle,
+  skeleton = false,
+}: SectionTitleProps) {
   return (
     <section className="section-padding main-text-size relative">
       <h2 className="section-title-size mb-1 font-bold capitalize sm:mb-2">
         {title}
       </h2>
-      {link && (
+      {link && !skeleton && (
         <Link
           to={link}
           className="hover:text-main-btn section-subtitle-size capitalize transition-colors duration-300"
@@ -26,7 +33,9 @@ function SectionTitle({ children, link, title, subTitle }: SectionTitleProps) {
           </div>
         </Link>
       )}
-      {subTitle && <p className="section-subtitle-size mb-2">{subTitle}</p>}
+      {subTitle && !skeleton && (
+        <p className="section-subtitle-size mb-2">{subTitle}</p>
+      )}
       {children}
     </section>
   );

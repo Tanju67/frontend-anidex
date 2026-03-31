@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import type { RowSliderItemType } from "../../schemas/animeSchema";
 import Button from "../button/Button";
+import { Link } from "react-router-dom";
 
 function RowSliderItem({ image, title, year, id }: RowSliderItemType) {
   return (
@@ -11,13 +12,12 @@ function RowSliderItem({ image, title, year, id }: RowSliderItemType) {
       />
 
       {/* Overlay */}
-      <Button
-        isLink={true}
-        link={`/anime/${id}`}
-        className="hover:border-main-btn absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-black/70 opacity-0 group-hover:opacity-100 hover:border-2"
+      <Link
+        to={`/anime/${id}`}
+        className="hover:border-main-btn absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-black/70 opacity-0 transition-all duration-300 group-hover:opacity-100 hover:border-2"
       >
         <span className="bg-main-btn/50 hover:bg-main-btn h-10 w-10 rounded-full transition-colors duration-300"></span>
-      </Button>
+      </Link>
 
       {/* Bottom Info */}
       <div className="bg-main-btn/80 absolute bottom-0 flex w-full items-center justify-between p-2 text-xs text-white md:text-sm">

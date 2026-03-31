@@ -3,9 +3,10 @@ import { useGetAnimeReviewsByIdQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { ReviewsSchema } from "../../shared/schemas/animeSchema";
-import CardSkeleton from "../../shared/UIElements/skeleton/CardSkeleton";
+import CardSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
 import ReviewContent from "./ReviewContent";
 import SectionTitle from "./SectionTitle";
+import ReviewContentSkeleton from "../../shared/UIElements/skeleton/ReviewContentSkeleton";
 
 function Review() {
   const { animeId } = useParams();
@@ -26,7 +27,12 @@ function Review() {
     return <div ref={ref} className="min-h-60" />;
   }
 
-  if (isLoading) return <CardSkeleton />;
+  if (isLoading)
+    return (
+      <SectionTitle title="Reviews" skeleton={true}>
+        <ReviewContentSkeleton count={3} />
+      </SectionTitle>
+    );
   if (isError || !data?.length)
     return <div className="text-center opacity-60">No data found</div>;
 

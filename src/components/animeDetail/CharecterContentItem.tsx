@@ -1,5 +1,5 @@
+import { Link } from "react-router-dom";
 import type { CharacterType } from "../../shared/schemas/animeSchema";
-import Button from "../../shared/UIElements/button/Button";
 import ImagePlaceholder from "../../shared/UIElements/imagePlaceholder/ImagePlaceholder";
 
 function CharecterContentItem(data: CharacterType & { isCharacter: boolean }) {
@@ -21,13 +21,12 @@ function CharecterContentItem(data: CharacterType & { isCharacter: boolean }) {
           alt={name}
           className="h-full w-full rounded-lg object-cover object-center"
         />
-        <Button
-          isLink={true}
-          link={isCharacter ? `characters/${itemId}` : `actors/${itemId}`}
+        <Link
+          to={isCharacter ? `characters/${itemId}` : `actors/${itemId}`}
           className={`hover:border-main-btn absolute inset-0 z-10 flex items-center justify-center bg-black/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:border-2 ${isCharacter ? "rounded-full" : "rounded-lg"}`}
         >
           <span className="bg-main-btn/50 hover:bg-main-btn h-10 w-10 rounded-full transition-colors duration-300"></span>
-        </Button>
+        </Link>
       </div>
       <span className="line-clamp-1 flex flex-col items-center">
         <span className="line-clamp-1">{itemName}</span>

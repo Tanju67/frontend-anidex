@@ -3,9 +3,10 @@ import { useGetAnimeNewsByIdQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { AllNewsSchema } from "../../shared/schemas/animeSchema";
-import CardSkeleton from "../../shared/UIElements/skeleton/CardSkeleton";
+import CardSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
 import NewsContent from "./NewsContent";
 import SectionTitle from "./SectionTitle";
+import NewsContentSkeleton from "../../shared/UIElements/skeleton/NewsContentSkeleton";
 
 function News() {
   const { animeId } = useParams();
@@ -26,7 +27,12 @@ function News() {
     return <div ref={ref} className="min-h-60" />;
   }
 
-  if (isLoading) return <CardSkeleton />;
+  if (isLoading)
+    return (
+      <SectionTitle title="Anime News">
+        <NewsContentSkeleton count={4} />
+      </SectionTitle>
+    );
   if (isError || !data?.length)
     return <div className="text-center opacity-60">No data found</div>;
 
