@@ -1,11 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useGetAnimeReviewsByIdQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
-import {
-  ReviewsSchema,
-  type ReviewsType,
-} from "../../shared/schemas/animeSchema";
-import PageSpinner from "../../shared/UIElements/spinner/PageSpinner";
+import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
+import { ReviewsSchema } from "../../shared/schemas/animeSchema";
+import CardSkeleton from "../../shared/UIElements/skeleton/CardSkeleton";
 import ReviewContent from "./ReviewContent";
 import SectionTitle from "./SectionTitle";
 
@@ -13,37 +11,31 @@ function Review() {
   const { animeId } = useParams();
   const { ref, isVisible } = useInView({ rootMargin: "300px" });
 
-  // skip ile görünür değilken fetch yapılmaz
-  const { data, isLoading, isFetching } = useGetAnimeReviewsByIdQuery(
+  const query = useGetAnimeReviewsByIdQuery(
     { id: animeId!, page: 1 },
     { skip: !isVisible || !animeId, refetchOnMountOrArgChange: false },
   );
 
-  let parsedData: ReviewsType = [];
-  if (data?.data) {
-    try {
-      parsedData = ReviewsSchema.parse(data.data);
-    } catch (err) {
-      console.error("Zod error:", err);
-    }
+  const { data, isLoading, isError } = useSafeQuery({
+    data: query.data?.data,
+    isLoading: query.isLoading,
+    schema: ReviewsSchema,
+  });
+
+  if (!isVisible) {
+    return <div ref={ref} className="min-h-60" />;
   }
 
-  const filteredData = parsedData.slice(0, 3);
+  if (isLoading) return <CardSkeleton />;
+  if (isError || !data?.length)
+    return <div className="text-center opacity-60">No data found</div>;
 
-  let content;
-
-  if (isLoading || isFetching) {
-    content = <PageSpinner className="min-h-60" />;
-  } else if (!filteredData || filteredData.length === 0) {
-    content = <p className="text-sm opacity-70">No reviews found</p>;
-  } else {
-    content = <ReviewContent data={filteredData} />;
-  }
+  const filteredData = data.slice(0, 3);
 
   return (
     <div ref={ref}>
       <SectionTitle link="reviews" title="Reviews">
-        {content}
+        <ReviewContent data={filteredData} />
       </SectionTitle>
     </div>
   );

@@ -9,7 +9,7 @@ interface ReviewModalItemProps {
 function ReviewModalItem({ reviewItem }: ReviewModalItemProps) {
   const { name, date, image, review, score, like, dislike } = reviewItem!;
   return (
-    <li className="bg-white/10 p-4 text-xs sm:text-sm md:text-base xl:text-lg">
+    <li className="bg-white/10 p-4">
       <div className="mb-2 flex items-center">
         <div className="flex items-center gap-2">
           <img
@@ -28,11 +28,11 @@ function ReviewModalItem({ reviewItem }: ReviewModalItemProps) {
       </div>
       <div className="flex items-center justify-between">
         <div className="flex gap-4">
-          <span className="flex items-center justify-center gap-1">
+          <span className="content-center-x gap-1">
             <SlLike />
             {like}
           </span>
-          <span className="flex items-center justify-center gap-1">
+          <span className="content-center-x gap-1">
             <SlDislike />
             {dislike}
           </span>

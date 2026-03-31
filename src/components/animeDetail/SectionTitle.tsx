@@ -9,24 +9,24 @@ type SectionTitleProps = {
 };
 function SectionTitle({ children, link, title, subTitle }: SectionTitleProps) {
   return (
-    <section className="relative p-4 md:px-10">
-      <h2 className="mb-2 text-base capitalize sm:text-lg md:text-xl lg:text-2xl">
+    <section className="section-padding main-text-size relative">
+      <h2 className="section-title-size mb-1 font-bold capitalize sm:mb-2">
         {title}
       </h2>
       {link && (
         <Link
           to={link}
-          className="hover:text-main-btn mb-4 flex items-center gap-2 text-xs capitalize transition-colors duration-300 sm:text-sm md:text-base"
+          className="hover:text-main-btn section-subtitle-size capitalize transition-colors duration-300"
         >
-          <span>
-            <FaEye />
-          </span>
-          <span>View All {link} &rarr;</span>
+          <div className="mb-2 flex items-center gap-2 lg:mb-4">
+            <span>
+              <FaEye />
+            </span>
+            <span>View All {link} &rarr;</span>
+          </div>
         </Link>
       )}
-      {subTitle && (
-        <p className="mb-2 text-xs sm:text-sm md:text-base">{subTitle}</p>
-      )}
+      {subTitle && <p className="section-subtitle-size mb-2">{subTitle}</p>}
       {children}
     </section>
   );

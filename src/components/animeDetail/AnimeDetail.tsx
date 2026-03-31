@@ -1,35 +1,30 @@
 import { useParams } from "react-router-dom";
-import MainCharacter from "./MainCharacter";
 import { useGetCharactersByAnimeIdQuery } from "../../shared/api/animeApi";
-import PageSpinner from "../../shared/UIElements/spinner/PageSpinner";
+import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { CharactersSchema } from "../../shared/schemas/animeSchema";
-import VoiceActor from "./VoiceActor";
-import Review from "./Review";
+import CardSkeleton from "../../shared/UIElements/skeleton/CardSkeleton";
 import Episodes from "./Episodes";
-import SmilarAnimes from "./SmilarAnimes";
+import MainCharacter from "./MainCharacter";
 import News from "./News";
+import Review from "./Review";
+import SmilarAnimes from "./SmilarAnimes";
+import VoiceActor from "./VoiceActor";
 
 function AnimeDetail() {
   const { animeId } = useParams();
-  const { data, isLoading } = useGetCharactersByAnimeIdQuery(animeId!);
+  const query = useGetCharactersByAnimeIdQuery(animeId!);
 
-  if (isLoading)
-    return (
-      <PageSpinner className="min-h-60 sm:min-h-[80] md:min-h-100 lg:min-h-120" />
-    );
+  const { data, isLoading, isError } = useSafeQuery({
+    data: query.data,
+    isLoading: query.isLoading,
+    schema: CharactersSchema,
+  });
 
-  if (!data) return null;
+  if (isLoading) return <CardSkeleton />;
+  if (isError || !data?.length)
+    return <div className="text-center opacity-60">No data found</div>;
 
-  let parsedData;
-
-  try {
-    parsedData = CharactersSchema.parse(data);
-  } catch (err) {
-    console.error("Zod error:", err);
-    return null;
-  }
-
-  const filteredData = parsedData.slice(0, 6);
+  const filteredData = data.slice(0, 6);
   return (
     <div>
       <div className="mx-auto max-w-400">

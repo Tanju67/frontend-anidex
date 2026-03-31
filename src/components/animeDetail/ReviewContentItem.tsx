@@ -20,7 +20,7 @@ function ReviewContentItem({
     reviewItem;
   const [blur, setBlur] = useState(spoiler);
   return (
-    <li className="bg-white/10 p-4 text-xs sm:text-sm md:text-base xl:text-lg">
+    <li className="bg-white/10 p-4">
       <div className="mb-2 flex items-center">
         <div className="flex items-center gap-2">
           <img
@@ -41,7 +41,7 @@ function ReviewContentItem({
       <div className="relative mb-2 line-clamp-4">
         <span>{review}</span>
         {blur && (
-          <span className="absolute top-0 left-0 flex h-full w-full items-center justify-center backdrop-blur">
+          <span className="content-center-x absolute top-0 left-0 h-full w-full backdrop-blur">
             <span className="bg-red-500/50 p-1">Spoiler Alert</span>
           </span>
         )}
@@ -59,11 +59,11 @@ function ReviewContentItem({
           </Button>
         </div>
         <div className="flex gap-4">
-          <span className="flex items-center justify-center gap-1">
+          <span className="content-center-x gap-1">
             <SlLike />
             {like}
           </span>
-          <span className="flex items-center justify-center gap-1">
+          <span className="content-center-x gap-1">
             <SlDislike />
             {dislike}
           </span>

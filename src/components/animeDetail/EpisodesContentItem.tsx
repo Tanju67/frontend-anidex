@@ -18,8 +18,10 @@ function EpisodesContentItem(props: EpisodeType) {
     useLazyGetEpisodeByEpisodeIdQuery();
 
   const getSynopsisHandler = () => {
-    if (!expanded) getEpisode({ id: animeId!, episode: id! });
-    setExpanded(!expanded);
+    setExpanded((prev) => !prev);
+    if (!expanded && !data) {
+      getEpisode({ id: animeId!, episode: id! });
+    }
   };
 
   let parsedData: SingleEpisodeType | null = null;
@@ -30,14 +32,13 @@ function EpisodesContentItem(props: EpisodeType) {
       console.log(error);
     }
   }
-  console.log(parsedData);
+
   return (
-    <li className="flex flex-col gap-2 bg-white/10 px-2 py-1 text-xs capitalize sm:text-sm md:text-base xl:text-lg">
+    <li className="flex flex-col gap-2 bg-white/10 px-2 py-1 capitalize">
       <div className="flex items-center justify-between">
         <div className="flex w-full items-center gap-2">
           <span onClick={getSynopsisHandler} className="cursor-pointer">
-            {expanded && <span>&uarr;</span>}
-            {!expanded && <span>&darr;</span>}
+            <span>{expanded ? "↑" : "↓"}</span>
           </span>
           <span className="w-8 lg:w-10">Ep:{id}</span>
           <span
@@ -68,7 +69,7 @@ function EpisodesContentItem(props: EpisodeType) {
                 <Spinner />
               </p>
             ) : (
-              <p>{data?.synopsis}</p>
+              <p>{parsedData?.synopsis}</p>
             )}
           </motion.div>
         )}
