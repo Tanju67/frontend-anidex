@@ -1,12 +1,17 @@
-import type { CharactersType } from "../../shared/schemas/animeSchema";
+import type { CharactersType } from "../../schemas/animeSchema";
 import CharecterContentItem from "./CharecterContentItem";
 
 type CharactersContentProps = {
   data: CharactersType;
   isCharacter: boolean;
+  isRounded?: boolean;
 };
 
-function CharacterContent({ data, isCharacter }: CharactersContentProps) {
+function CharacterContent({
+  data,
+  isCharacter,
+  isRounded,
+}: CharactersContentProps) {
   return (
     <ul className="grid grid-cols-3 justify-items-center gap-2 gap-y-6 sm:justify-items-start sm:gap-y-8 md:grid-cols-4 lg:grid-cols-6">
       {data.map((item) => (
@@ -14,6 +19,7 @@ function CharacterContent({ data, isCharacter }: CharactersContentProps) {
           key={item.characterId}
           {...item}
           isCharacter={isCharacter}
+          isRounded={isRounded}
         />
       ))}
     </ul>
