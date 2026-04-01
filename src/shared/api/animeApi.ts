@@ -126,7 +126,6 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => {
-        console.log(response);
         return response;
       },
       keepUnusedDataFor: 60,
@@ -196,6 +195,7 @@ export const {
   useGetAnimeReviewsByIdQuery,
   useLazyGetAnimeReviewsByIdQuery,
   useGetAnimeEpisodesByIdQuery,
+  useLazyGetAnimeEpisodesByIdQuery,
   useLazyGetEpisodeByEpisodeIdQuery,
   useGetSimilarAnimesByIdQuery,
   useGetAnimeNewsByIdQuery,

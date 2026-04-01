@@ -1,5 +1,7 @@
+import AllEpisodes from "../components/allEpisodes/AllEpisodes";
+
 function AllEpisodesPage() {
-  return <div>AllEpisodesPage</div>;
+  return <AllEpisodes />;
 }
 
 export default AllEpisodesPage;
