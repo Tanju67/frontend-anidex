@@ -1,5 +1,7 @@
+import AllVoiceActor from "../components/allVoiceActor/AllVoiceActor";
+
 function AllActorsPage() {
-  return <div>AllActorsPage</div>;
+  return <AllVoiceActor />;
 }
 
 export default AllActorsPage;
