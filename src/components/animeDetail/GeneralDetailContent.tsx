@@ -77,8 +77,21 @@ function GeneralDetailContent(props: SliderItemType) {
                 </Button>
               )}
 
-              <Button className="border-main-btn text-main-btn hover:bg-main-btn-hover content-center-x gap-2 border-2 px-2 hover:text-white">
-                <span>
+              <Button
+                className={
+                  trailer
+                    ? `border-main-btn text-main-btn hover:bg-main-btn-hover content-center-x gap-2 border-2 px-2 hover:text-white`
+                    : "bg-main-btn hover:bg-main-btn-hover w-full px-4 py-2"
+                }
+              >
+                <span
+                  className={
+                    !trailer
+                      ? "flex w-50 items-center justify-center gap-2"
+                      : ""
+                  }
+                >
+                  {!trailer && <span>Add to Watchlist</span>}
                   <BsBookmarkPlusFill />
                 </span>
               </Button>

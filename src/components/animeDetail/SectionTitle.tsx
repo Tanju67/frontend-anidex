@@ -7,6 +7,7 @@ type SectionTitleProps = {
   title: string;
   subTitle?: string;
   skeleton?: boolean;
+  isBack?: boolean;
 };
 function SectionTitle({
   children,
@@ -14,6 +15,7 @@ function SectionTitle({
   title,
   subTitle,
   skeleton = false,
+  isBack = false,
 }: SectionTitleProps) {
   return (
     <section className="section-padding main-text-size relative">
@@ -21,17 +23,27 @@ function SectionTitle({
         {title}
       </h2>
       {link && !skeleton && (
-        <Link
-          to={link}
-          className="hover:text-main-btn section-subtitle-size capitalize transition-colors duration-300"
-        >
-          <div className="mb-2 flex items-center gap-2 lg:mb-4">
-            <span>
-              <FaEye />
-            </span>
+        <div className="mb-2 flex items-center gap-2 lg:mb-4">
+          <span>
+            <FaEye />
+          </span>
+          <Link
+            to={link}
+            className="hover:text-main-btn section-subtitle-size capitalize transition-colors duration-300"
+          >
             <span>View All {link} &rarr;</span>
-          </div>
-        </Link>
+          </Link>
+        </div>
+      )}
+      {isBack && !skeleton && (
+        <div className="mb-2 flex items-center gap-2 lg:mb-4">
+          <Link
+            to={".."}
+            className="hover:text-main-btn section-subtitle-size capitalize transition-colors duration-300"
+          >
+            <span> &larr; Back</span>
+          </Link>
+        </div>
       )}
       {subTitle && !skeleton && (
         <p className="section-subtitle-size mb-2">{subTitle}</p>

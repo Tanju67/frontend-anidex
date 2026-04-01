@@ -2,14 +2,12 @@ import { useParams } from "react-router-dom";
 import { useGetCharactersByAnimeIdQuery } from "../../shared/api/animeApi";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { CharactersSchema } from "../../shared/schemas/animeSchema";
-import CardSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
+import Character from "../../shared/UIElements/character/Character";
+import CharacterContentSkeleton from "../../shared/UIElements/skeleton/CharacterContentSkeleton";
 import Episodes from "./Episodes";
-import MainCharacter from "./MainCharacter";
 import News from "./News";
 import Review from "./Review";
 import SmilarAnimes from "./SmilarAnimes";
-import VoiceActor from "./VoiceActor";
-import CharacterContentSkeleton from "../../shared/UIElements/skeleton/CharacterContentSkeleton";
 
 function AnimeDetail() {
   const { animeId } = useParams();
@@ -29,8 +27,19 @@ function AnimeDetail() {
   return (
     <div>
       <div className="mx-auto max-w-400">
-        <MainCharacter data={filteredData} />
-        <VoiceActor data={filteredData} />
+        <Character
+          data={filteredData}
+          isCharacter={true}
+          isRounded={true}
+          title="Main Characters"
+          link="characters"
+        />
+        <Character
+          isCharacter={false}
+          data={filteredData}
+          title="Voice Actors"
+          link="actors"
+        />
         <Review />
         <Episodes />
         <SmilarAnimes />

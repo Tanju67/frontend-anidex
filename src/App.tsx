@@ -39,9 +39,6 @@ const router = createBrowserRouter([
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
 
-      // Trailer
-      { path: "trailer/:animeId", element: <WatchTrailerPage /> },
-
       // Anime detayları
 
       {
@@ -69,7 +66,7 @@ const router = createBrowserRouter([
             element: <CharacterPage />,
           },
           {
-            path: "anime/:animeId/actors",
+            path: "actors",
             element: <AllActorsPage />,
           },
           {

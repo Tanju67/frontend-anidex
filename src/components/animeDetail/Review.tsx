@@ -3,10 +3,9 @@ import { useGetAnimeReviewsByIdQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { ReviewsSchema } from "../../shared/schemas/animeSchema";
-import CardSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
+import ReviewContentSkeleton from "../../shared/UIElements/skeleton/ReviewContentSkeleton";
 import ReviewContent from "./ReviewContent";
 import SectionTitle from "./SectionTitle";
-import ReviewContentSkeleton from "../../shared/UIElements/skeleton/ReviewContentSkeleton";
 
 function Review() {
   const { animeId } = useParams();
