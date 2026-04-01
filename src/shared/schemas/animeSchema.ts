@@ -153,6 +153,13 @@ export const CharacterSchema = z
     voice_actors: z.array(VoiceActorSchema).optional(),
   })
   .transform((data) => {
+    const allVoiceActors =
+      data.voice_actors?.map((va) => ({
+        id: va.person.mal_id,
+        name: va.person.name,
+        image: va.person.images.jpg.image_url ?? null,
+        language: va.language,
+      })) ?? [];
     // 🎯 Japanese voice actor bul (en yaygın kullanım)
     const japaneseVA = data.voice_actors?.find(
       (va) => va.language === "Japanese",
@@ -164,7 +171,9 @@ export const CharacterSchema = z
       image: data.character.images.jpg.image_url,
       role: data.role,
 
-      voiceActor: japaneseVA
+      voiceActor: allVoiceActors,
+
+      defaultVoiceActors: japaneseVA
         ? {
             name: japaneseVA.person.name,
             image: japaneseVA.person.images.jpg.image_url ?? null,
