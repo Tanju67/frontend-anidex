@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useLazyGetAnimeReviewsByIdQuery } from "../../shared/api/animeApi";
+import { useInView } from "../../shared/hooks/useInView";
 import {
   ReviewsSchema,
   type ReviewsType,
 } from "../../shared/schemas/animeSchema";
-import { useLazyGetAnimeReviewsByIdQuery } from "../../shared/api/animeApi";
-import { useParams } from "react-router-dom";
-import { useInView } from "../../shared/hooks/useInView";
-import ReviewContent from "../animeDetail/ReviewContent";
 import Spinner from "../../shared/UIElements/spinner/Spinner";
+import ReviewContent from "../animeDetail/ReviewContent";
 import SectionTitle from "../animeDetail/SectionTitle";
+import ReviewContentSkeleton from "../../shared/UIElements/skeleton/ReviewContentSkeleton";
 
 function Reviews() {
   const { animeId } = useParams();
@@ -32,23 +33,21 @@ function Reviews() {
       });
   }, [animeId, getReviews]);
 
-  const loadMore = () => {
+  const loadMore = async () => {
     if (!animeId) return;
 
-    setPage((prevPage) => {
-      const nextPage = prevPage + 1;
+    const nextPage = page + 1;
 
-      getReviews({ id: animeId, page: nextPage })
-        .unwrap()
-        .then((res) => {
-          const parsed = ReviewsSchema.parse(res.data);
+    try {
+      const res = await getReviews({ id: animeId, page: nextPage }).unwrap();
+      const parsed = ReviewsSchema.parse(res.data);
 
-          setAllReviews((prev) => [...prev, ...parsed]);
-          setHasNextPage(res.pagination.has_next_page);
-        });
-
-      return nextPage;
-    });
+      setAllReviews((prev) => [...prev, ...parsed]);
+      setHasNextPage(res.pagination.has_next_page);
+      setPage(nextPage);
+    } catch (err) {
+      console.error("Error loading more episodes:", err);
+    }
   };
 
   const { ref } = useInView({
@@ -62,9 +61,9 @@ function Reviews() {
 
   if (isLoading && page === 1) {
     return (
-      <div className="flex justify-center py-10">
-        <Spinner />
-      </div>
+      <SectionTitle title="All Episodes" isBack={true}>
+        <ReviewContentSkeleton />
+      </SectionTitle>
     );
   }
 

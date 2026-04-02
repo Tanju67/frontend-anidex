@@ -9,6 +9,7 @@ import {
 import Spinner from "../../shared/UIElements/spinner/Spinner";
 import EpisodesContent from "../animeDetail/EpisodesContent";
 import SectionTitle from "../animeDetail/SectionTitle";
+import EpisodesContentSkeleton from "../../shared/UIElements/skeleton/EpisodesContentSkeleton";
 
 function AllEpisodes() {
   const { animeId } = useParams();
@@ -32,23 +33,21 @@ function AllEpisodes() {
       });
   }, [animeId, getEpisodes]);
 
-  const loadMore = () => {
+  const loadMore = async () => {
     if (!animeId) return;
 
-    setPage((prevPage) => {
-      const nextPage = prevPage + 1;
+    const nextPage = page + 1;
 
-      getEpisodes({ id: animeId, page: nextPage })
-        .unwrap()
-        .then((res) => {
-          const parsed = EpisodesSchema.parse(res.data);
+    try {
+      const res = await getEpisodes({ id: animeId, page: nextPage }).unwrap();
+      const parsed = EpisodesSchema.parse(res.data);
 
-          setAllEpisodes((prev) => [...prev, ...parsed]);
-          setHasNextPage(res.pagination.has_next_page);
-        });
-
-      return nextPage;
-    });
+      setAllEpisodes((prev) => [...prev, ...parsed]);
+      setHasNextPage(res.pagination.has_next_page);
+      setPage(nextPage);
+    } catch (err) {
+      console.error("Error loading more episodes:", err);
+    }
   };
 
   const { ref } = useInView({
@@ -62,9 +61,9 @@ function AllEpisodes() {
 
   if (isLoading && page === 1) {
     return (
-      <div className="flex justify-center py-10">
-        <Spinner />
-      </div>
+      <SectionTitle title="All Episodes" isBack={true}>
+        <EpisodesContentSkeleton />
+      </SectionTitle>
     );
   }
 
