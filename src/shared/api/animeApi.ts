@@ -12,6 +12,7 @@ import {
   type RowSliderType,
   type SingleEpisodeType,
   type SliderItemType,
+  type VoiceActorDetailType,
 } from "../schemas/animeSchema";
 import { baseAnimeApi } from "./baseAnimeApi";
 
@@ -192,6 +193,18 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       },
       keepUnusedDataFor: 60,
     }),
+
+    getPeopleFullById: builder.query<VoiceActorDetailType, string>({
+      query: (id) => ({
+        url: `/people/${id}/full`,
+        method: "GET",
+      }),
+      transformResponse: (response) => {
+        console.log(response);
+        return response.data;
+      },
+      keepUnusedDataFor: 60,
+    }),
   }),
 });
 
@@ -212,4 +225,5 @@ export const {
   useGetSimilarAnimesByIdQuery,
   useGetAnimeNewsByIdQuery,
   useGetSingleCharacterByIdQuery,
+  useGetPeopleFullByIdQuery,
 } = animeApi;

@@ -392,3 +392,27 @@ export const PersonSchema = z
 // TypeScript tipleri
 export type PersonVoiceActorType = z.infer<typeof PersonVoiceActorSchema>;
 export type PersonType = z.infer<typeof PersonSchema>;
+
+export const VoiceActorDetailSchema = z
+  .object({
+    mal_id: z.number(),
+    name: z.string(),
+    images: z.object({
+      jpg: z.object({
+        image_url: z.string(),
+      }),
+    }),
+    birthday: z.string().nullable().optional(),
+    about: z.string().nullable().optional(),
+    website_url: z.string().nullable().optional(),
+  })
+  .transform((data) => ({
+    id: data.mal_id,
+    name: data.name,
+    image: data.images.jpg.image_url,
+    birthday: data.birthday ?? null,
+    about: data.about ?? "",
+    website: data.website_url ?? null,
+  }));
+
+export type VoiceActorDetailType = z.infer<typeof VoiceActorDetailSchema>;
