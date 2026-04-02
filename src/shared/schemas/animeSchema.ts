@@ -343,3 +343,52 @@ export const singleEpisodeSchema = z
   }));
 
 export type SingleEpisodeType = z.infer<typeof singleEpisodeSchema>;
+
+// Voice Actor şeması
+const PersonVoiceActorSchema = z.object({
+  language: z.string(),
+  person: z.object({
+    mal_id: z.number(),
+    name: z.string(),
+    url: z.string(),
+    images: z.object({
+      jpg: z.object({
+        image_url: z.string(),
+      }),
+    }),
+  }),
+});
+
+// Main Character/Person şeması
+export const PersonSchema = z
+  .object({
+    mal_id: z.number(),
+    name: z.string(),
+    images: z.object({
+      jpg: z.object({
+        image_url: z.string().nullable().optional(),
+      }),
+    }),
+    nicknames: z.array(z.string()).nullable().optional(),
+    about: z.string().nullable().optional(),
+    voices: z.array(PersonVoiceActorSchema).optional(),
+  })
+  .transform((data) => ({
+    id: data.mal_id,
+    name: data.name,
+    image: data.images.jpg.image_url,
+    voiceActors:
+      data.voices?.map((va) => ({
+        id: va.person.mal_id,
+        name: va.person.name,
+        image: va.person.images.jpg.image_url,
+        language: va.language,
+        url: va.person.url,
+      })) ?? [],
+    nicknames: data.nicknames ?? [],
+    about: data.about ?? "",
+  }));
+
+// TypeScript tipleri
+export type PersonVoiceActorType = z.infer<typeof PersonVoiceActorSchema>;
+export type PersonType = z.infer<typeof PersonSchema>;
