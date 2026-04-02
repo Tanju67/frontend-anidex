@@ -1,5 +1,7 @@
+import ActorDetail from "../components/actorDetail/ActorDetail";
+
 function ActorDetailPage() {
-  return <div>ActorDetailPage</div>;
+  return <ActorDetail />;
 }
 
 export default ActorDetailPage;
