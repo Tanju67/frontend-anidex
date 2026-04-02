@@ -5,19 +5,17 @@ import {
   AllActorsPage,
   AllCharactersPage,
   AllEpisodesPage,
-  AllNewsPage,
   AnimeDetailLayout,
-  AnimeDetailPage,
   CharacterPage,
   ErrorPage,
   HomePage,
   LoginPage,
-  NewsDetailPage,
+  NewAnimePage,
+  PopularAnimePage,
   RegisterPage,
   ReviewsPage,
   RootLayout,
-  SearchResultsPage,
-  WatchTrailerPage,
+  SearchAnimePage,
   WatchlistPage,
 } from "./pages";
 import AnimeDetailWrapper from "./pages/AnimeDetailWrapper";
@@ -32,8 +30,11 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
 
       // Search & Watchlist
-      { path: "search-result", element: <SearchResultsPage /> },
+      { path: "search", element: <SearchAnimePage /> },
       { path: "watchlist", element: <WatchlistPage /> },
+      { path: "popular", element: <PopularAnimePage /> },
+      { path: "new", element: <NewAnimePage /> },
+      { path: "genre/:firstGenre", element: <PopularAnimePage /> },
 
       // Auth
       { path: "login", element: <LoginPage /> },
@@ -74,13 +75,6 @@ const router = createBrowserRouter([
             element: <ActorDetailPage />,
           },
         ],
-      },
-
-      // News
-      {
-        path: "news/:newsId",
-        element: <AllNewsPage />,
-        children: [{ path: "detail", element: <NewsDetailPage /> }],
       },
 
       // {
