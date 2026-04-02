@@ -6,6 +6,7 @@ import {
   type CharactersType,
   type EpisodesResponseType,
   type NewsResponseType,
+  type PersonType,
   type RecommendationsType,
   type ReviewsResponseType,
   type RowSliderType,
@@ -180,6 +181,17 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       },
       keepUnusedDataFor: 60,
     }),
+
+    getSingleCharacterById: builder.query<PersonType, string>({
+      query: (id) => ({
+        url: `/characters/${id}/full`,
+        method: "GET",
+      }),
+      transformResponse: (response) => {
+        return response.data;
+      },
+      keepUnusedDataFor: 60,
+    }),
   }),
 });
 
@@ -199,4 +211,5 @@ export const {
   useLazyGetEpisodeByEpisodeIdQuery,
   useGetSimilarAnimesByIdQuery,
   useGetAnimeNewsByIdQuery,
+  useGetSingleCharacterByIdQuery,
 } = animeApi;

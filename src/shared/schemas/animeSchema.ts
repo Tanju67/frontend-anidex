@@ -374,7 +374,7 @@ export const PersonSchema = z
     voices: z.array(PersonVoiceActorSchema).optional(),
   })
   .transform((data) => ({
-    id: data.mal_id,
+    characterId: data.mal_id,
     name: data.name,
     image: data.images.jpg.image_url,
     voiceActors:
