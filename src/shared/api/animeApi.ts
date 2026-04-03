@@ -5,10 +5,10 @@ import {
   type BannerSliderType,
   type CharactersType,
   type EpisodesResponseType,
-  type NewsResponseType,
   type PersonType,
   type RecommendationsType,
   type ReviewsResponseType,
+  type RowSliderResponse,
   type RowSliderType,
   type SingleEpisodeType,
   type SliderItemType,
@@ -73,15 +73,16 @@ export const animeApi = baseAnimeApi.injectEndpoints({
     }),
 
     getCurrentSeason: builder.query<
-      BannerSliderType,
+      RowSliderResponse,
       { page: number; limit: number }
     >({
       query: ({ page, limit }) => ({
         url: `/seasons/now?page=${page}&limit=${limit}`,
         method: "GET",
       }),
-      transformResponse: (response: { data: BannerSliderType }) => {
-        return response.data;
+      transformResponse: (response) => {
+        console.log(response);
+        return response;
       },
       keepUnusedDataFor: 60,
     }),
@@ -214,6 +215,7 @@ export const {
   useGetRandomAnimeQuery,
   useGetAnimeByGenreQuery,
   useGetCurrentSeasonQuery,
+  useLazyGetCurrentSeasonQuery,
   useGetAnimeByIdQuery,
   useGetCharactersByAnimeIdQuery,
   useGetAnimePictureByIdQuery,

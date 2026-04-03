@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
-import type { RowSliderItemType } from "../../schemas/animeSchema";
-import Button from "../button/Button";
 import { Link } from "react-router-dom";
+import type { RowSliderItemType } from "../../schemas/animeSchema";
 
 function RowSliderItem({ image, title, year, id }: RowSliderItemType) {
   return (

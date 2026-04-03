@@ -1,5 +1,7 @@
+import NewAnime from "../components/newAnime/NewAnime";
+
 function NewAnimePage() {
-  return <div>NewAnimePage</div>;
+  return <NewAnime />;
 }
 
 export default NewAnimePage;

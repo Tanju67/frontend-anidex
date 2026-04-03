@@ -12,6 +12,11 @@ const TitleSchema = z.object({
   title: z.string(),
 });
 
+export const PaginationSchema = z.object({
+  last_visible_page: z.number(),
+  has_next_page: z.boolean(),
+});
+
 export const SliderItemSchema = z
   .object({
     mal_id: z.number(),
@@ -118,12 +123,14 @@ export const RowSliderSchema = z.array(RowSliderItemSchema);
 export type RowSliderItemType = z.infer<typeof RowSliderItemSchema>;
 export type RowSliderType = z.infer<typeof RowSliderSchema>;
 
-export type AnimeType = "tv" | "movie" | "ova" | "special" | "ona" | "music";
-
-export const PaginationSchema = z.object({
-  last_visible_page: z.number(),
-  has_next_page: z.boolean(),
+export const RowSliderResponseSchema = z.object({
+  data: z.array(RowSliderItemSchema),
+  pagination: PaginationSchema,
 });
+
+export type RowSliderResponse = z.infer<typeof RowSliderResponseSchema>;
+
+export type AnimeType = "tv" | "movie" | "ova" | "special" | "ona" | "music";
 
 const VoiceActorSchema = z.object({
   person: z.object({
