@@ -1,10 +1,7 @@
 import { useGetCurrentSeasonQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
-import {
-  RowSliderResponseSchema,
-  RowSliderSchema,
-} from "../../shared/schemas/animeSchema";
+import { RowSliderResponseSchema } from "../../shared/schemas/animeSchema";
 import SectionSlider from "../../shared/UIElements/sectionSlider/SectionSlider";
 import RowSliderSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
 
@@ -23,7 +20,6 @@ function TrendAnime() {
     isLoading: query.isLoading,
     schema: RowSliderResponseSchema,
   });
-  console.log(data);
 
   if (!isVisible) {
     return <div ref={ref} className="min-h-100" />;

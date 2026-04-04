@@ -1,5 +1,7 @@
+import PopularAnime from "../components/popularAnime/PopularAnime";
+
 function PopularAnimePage() {
-  return <div>PopularAnimePage</div>;
+  return <PopularAnime />;
 }
 
 export default PopularAnimePage;

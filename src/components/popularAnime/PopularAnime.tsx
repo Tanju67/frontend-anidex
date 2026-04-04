@@ -1,37 +1,31 @@
 import { useEffect, useState } from "react";
-import { useLazyGetCurrentSeasonQuery } from "../../shared/api/animeApi";
-import { useInView } from "../../shared/hooks/useInView";
 import {
-  type AnimeType,
   RowSliderResponseSchema,
+  type AnimeType,
   type RowSliderType,
 } from "../../shared/schemas/animeSchema";
-import GridContent from "../../shared/UIElements/gridContent/GridContent";
-import GridContentSkeleton from "../../shared/UIElements/skeleton/GridContentSkeleton";
-import Spinner from "../../shared/UIElements/spinner/Spinner";
+import { useLazyGetTopAnimeQuery } from "../../shared/api/animeApi";
+import { useInView } from "../../shared/hooks/useInView";
 import SectionGrid from "../../shared/UIElements/gridContent/SectionGrid";
-import { typesDataForNewAnimeFilter } from "../../shared/utils/data";
+import GridContentSkeleton from "../../shared/UIElements/skeleton/GridContentSkeleton";
+import GridContent from "../../shared/UIElements/gridContent/GridContent";
+import Spinner from "../../shared/UIElements/spinner/Spinner";
+import { typesDataForPopularAnimeFilter } from "../../shared/utils/data";
 
-function NewAnime({
-  thisSeason = false,
-  title = "New This Year",
-}: {
-  thisSeason: boolean;
-  title?: string;
-}) {
+function PopularAnime() {
   const [page, setPage] = useState(1);
   const [allAnime, setAllAnime] = useState<RowSliderType>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [type, setType] = useState<AnimeType>("all");
 
-  const [getAnimes, { isLoading, isFetching }] = useLazyGetCurrentSeasonQuery();
+  const [getAnimes, { isLoading, isFetching }] = useLazyGetTopAnimeQuery();
 
   useEffect(() => {
     setPage(1);
     setAllAnime([]);
     setHasNextPage(true);
-    getAnimes({ page: 1, limit: 12, type: type, includeContinuing: thisSeason })
+    getAnimes({ page: 1, limit: 12, type: type })
       .unwrap()
       .then((res) => {
         const parsed = RowSliderResponseSchema.parse(res);
@@ -39,7 +33,7 @@ function NewAnime({
         setAllAnime(parsed.data);
         setHasNextPage(res.pagination.has_next_page);
       });
-  }, [getAnimes, type, thisSeason]);
+  }, [getAnimes, type]);
 
   const loadMore = async () => {
     if (isLoadingMore || isFetching || !hasNextPage) return;
@@ -51,7 +45,6 @@ function NewAnime({
         page: nextPage,
         limit: 12,
         type: type,
-        includeContinuing: thisSeason,
       }).unwrap();
       const parsed = RowSliderResponseSchema.parse(res);
 
@@ -76,15 +69,15 @@ function NewAnime({
 
   if (isLoading && page === 1) {
     return (
-      <SectionGrid title={title}>
-        <GridContentSkeleton title={title} />
+      <SectionGrid title="Most Popular Anime">
+        <GridContentSkeleton title="Most Popular Anime" />
       </SectionGrid>
     );
   }
 
   if (!allAnime.length) {
     return (
-      <SectionGrid title={title} setType={setType} type={type}>
+      <SectionGrid title="Most Popular Anime" setType={setType} type={type}>
         <div className="opacity-60">No data found</div>
       </SectionGrid>
     );
@@ -92,10 +85,10 @@ function NewAnime({
 
   return (
     <SectionGrid
-      title={title}
+      title="Most Popular Anime"
       setType={setType}
       type={type}
-      filterData={typesDataForNewAnimeFilter}
+      filterData={typesDataForPopularAnimeFilter}
     >
       <GridContent data={allAnime} />
       {hasNextPage && (
@@ -107,4 +100,4 @@ function NewAnime({
   );
 }
 
-export default NewAnime;
+export default PopularAnime;

@@ -15,3 +15,4 @@ export { default as AnimeDetailLayout } from "./AnimeDetailLayout";
 export { default as SearchAnimePage } from "./SearchAnimePage";
 export { default as PopularAnimePage } from "./PopularAnimePage";
 export { default as NewAnimePage } from "./NewAnimePage";
+export { default as ThisSeasonPage } from "./ThisSeasonPage";

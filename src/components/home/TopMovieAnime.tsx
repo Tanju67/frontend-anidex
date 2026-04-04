@@ -1,7 +1,7 @@
 import { useGetTopAnimeQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
-import { RowSliderSchema } from "../../shared/schemas/animeSchema";
+import { RowSliderResponseSchema } from "../../shared/schemas/animeSchema";
 import SectionSlider from "../../shared/UIElements/sectionSlider/SectionSlider";
 import RowSliderSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
 
@@ -19,7 +19,7 @@ function TopMovieAnime() {
   const { data, isLoading, isError } = useSafeQuery({
     data: query.data,
     isLoading: query.isLoading,
-    schema: RowSliderSchema,
+    schema: RowSliderResponseSchema,
   });
 
   if (!isVisible) {
@@ -27,11 +27,11 @@ function TopMovieAnime() {
   }
 
   if (isLoading) return <RowSliderSkeleton title="Top Movies" />;
-  if (isError || !data?.length)
+  if (isError || !data?.data.length)
     return <div className="text-center opacity-60">No data found</div>;
   return (
     <div ref={ref}>
-      <SectionSlider title="Top Movies" data={data} />
+      <SectionSlider title="Top Movies" data={data.data} />
     </div>
   );
 }

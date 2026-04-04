@@ -19,15 +19,17 @@ import { baseAnimeApi } from "./baseAnimeApi";
 export const animeApi = baseAnimeApi.injectEndpoints({
   endpoints: (builder) => ({
     getTopAnime: builder.query<
-      RowSliderType,
+      RowSliderResponse,
       { page: number; limit: number; type: AnimeType }
     >({
       query: ({ page, limit, type }) => ({
-        url: `/top/anime?page=${page}&limit=${limit}&type=${type}`,
+        url: `/top/anime?sfw&page=${page}&limit=${limit}${
+          type && type !== "all" ? `&type=${type}` : ""
+        }`,
         method: "GET",
       }),
-      transformResponse: (response: { data: RowSliderType }) => {
-        return response.data;
+      transformResponse: (response) => {
+        return response;
       },
       keepUnusedDataFor: 60,
     }),
@@ -37,7 +39,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       { page: number; limit: number }
     >({
       query: ({ page, limit }) => ({
-        url: `/seasons/upcoming?page=${page}&limit=${limit}`,
+        url: `/seasons/upcoming?sfw&page=${page}&limit=${limit}`,
         method: "GET",
       }),
       transformResponse: (response: { data: BannerSliderType }) => {
@@ -48,7 +50,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
 
     getRandomAnime: builder.query<SliderItemType, void>({
       query: () => ({
-        url: `/random/anime`,
+        url: `/random/anime?sfw`,
         method: "GET",
       }),
       transformResponse: (response) => {
@@ -62,7 +64,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       { page: number; limit: number; genre: number }
     >({
       query: ({ page, limit, genre }) => ({
-        url: `/anime?genres=${genre}&page=${page}&limit=${limit}`,
+        url: `/anime?sfw&genres=${genre}&page=${page}&limit=${limit}`,
         method: "GET",
       }),
       transformResponse: (response: { data: RowSliderType }) => {
@@ -73,12 +75,17 @@ export const animeApi = baseAnimeApi.injectEndpoints({
 
     getCurrentSeason: builder.query<
       RowSliderResponse,
-      { page: number; limit: number; type?: AnimeType }
+      {
+        page: number;
+        limit: number;
+        type?: AnimeType;
+        includeContinuing?: boolean;
+      }
     >({
-      query: ({ page, limit, type }) => ({
-        url: `/seasons/now?page=${page}&limit=${limit}${
+      query: ({ page, limit, type, includeContinuing }) => ({
+        url: `/seasons/now?sfw&page=${page}&limit=${limit}${
           type && type !== "all" ? `&filter=${type}` : ""
-        }`,
+        }${includeContinuing ? `&continuing` : ""}`,
         method: "GET",
       }),
       transformResponse: (response) => {
@@ -211,6 +218,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
 
 export const {
   useGetTopAnimeQuery,
+  useLazyGetTopAnimeQuery,
   useGetUpcomingAnimeQuery,
   useGetRandomAnimeQuery,
   useGetAnimeByGenreQuery,

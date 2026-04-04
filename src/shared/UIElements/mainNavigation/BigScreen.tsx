@@ -38,6 +38,9 @@ function BigScreen() {
           <NavLink to="/new">New</NavLink>
         </li>
         <li className="content-center-x transtion-colors h-full p-2 duration-300 hover:bg-white/10">
+          <NavLink to="/this-season">This Season</NavLink>
+        </li>
+        <li className="content-center-x transtion-colors h-full p-2 duration-300 hover:bg-white/10">
           <NavLink to="/popular">Popular</NavLink>
         </li>
         <li

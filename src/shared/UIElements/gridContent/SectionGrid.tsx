@@ -3,28 +3,23 @@ import Filter from "./Filter";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { AnimeType } from "../../schemas/animeSchema";
+import { typesDataForNewAnimeFilter } from "../../utils/data";
 
-const types = [
-  { label: "All", value: "all" },
-  { label: "TV", value: "tv" },
-  { label: "Movie", value: "movie" },
-  { label: "OVA", value: "ova" },
-  { label: "Special", value: "special" },
-  { label: "ONA", value: "ona" },
-  { label: "Music", value: "music" },
-];
+type SectionGridProps = {
+  title: string;
+  children: React.ReactNode;
+  setType?: React.Dispatch<React.SetStateAction<AnimeType>>;
+  type?: AnimeType;
+  filterData?: { label: string; value: AnimeType }[];
+};
 
 function SectionGrid({
   title,
   children,
   setType,
   type,
-}: {
-  title: string;
-  children: React.ReactNode;
-  setType?: React.Dispatch<React.SetStateAction<AnimeType>>;
-  type?: AnimeType;
-}) {
+  filterData,
+}: SectionGridProps) {
   const [isOpen, setIsOpen] = useState(false);
   const filterHandler = (type: AnimeType) => {
     if (!setType) return;
@@ -56,7 +51,7 @@ function SectionGrid({
                 className="absolute top-10 right-0 z-50 w-50 bg-slate-900 p-4"
               >
                 <div className="flex flex-col gap-4">
-                  {types.map((item) => (
+                  {filterData!.map((item) => (
                     <Filter
                       key={item.value}
                       item={item}

@@ -16,6 +16,7 @@ import {
   ReviewsPage,
   RootLayout,
   SearchAnimePage,
+  ThisSeasonPage,
   WatchlistPage,
 } from "./pages";
 import AnimeDetailWrapper from "./pages/AnimeDetailWrapper";
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
       { path: "watchlist", element: <WatchlistPage /> },
       { path: "popular", element: <PopularAnimePage /> },
       { path: "new", element: <NewAnimePage /> },
+      { path: "this-season", element: <ThisSeasonPage /> },
       { path: "genre/:firstGenre", element: <PopularAnimePage /> },
 
       // Auth

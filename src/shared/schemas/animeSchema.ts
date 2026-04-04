@@ -137,6 +137,9 @@ export type AnimeType =
   | "special"
   | "ona"
   | "music"
+  | "cm"
+  | "pv"
+  | "tv_special"
   | "all";
 
 const VoiceActorSchema = z.object({
