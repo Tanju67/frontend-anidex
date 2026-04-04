@@ -7,6 +7,7 @@ import { CharactersSchema } from "../../shared/schemas/animeSchema";
 import Character from "../../shared/UIElements/character/Character";
 
 import CharacterContentSkeleton from "../../shared/UIElements/skeleton/CharacterContentSkeleton";
+import SectionTitle from "../animeDetail/SectionTitle";
 
 function AllCharacters() {
   const { animeId } = useParams();
@@ -33,9 +34,18 @@ function AllCharacters() {
 
   const visibleCharacters = data?.slice(0, visibleCount) ?? [];
 
-  if (isLoading) return <CharacterContentSkeleton isCharacter={false} />;
+  if (isLoading)
+    return (
+      <SectionTitle title="All Characters" skeleton={true}>
+        <CharacterContentSkeleton isCharacter={false} />
+      </SectionTitle>
+    );
   if (isError || !data?.length)
-    return <div className="text-center opacity-60">No data found</div>;
+    return (
+      <SectionTitle title="All Characters" isBack={true}>
+        <div className="text-center opacity-60">No data found</div>
+      </SectionTitle>
+    );
 
   return (
     <div className="max-w-400rem mx-auto">

@@ -16,6 +16,7 @@ function Reviews() {
   const [page, setPage] = useState(1);
   const [allReviews, setAllReviews] = useState<ReviewsType>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const [getReviews, { isLoading, isFetching }] =
     useLazyGetAnimeReviewsByIdQuery();
@@ -34,7 +35,8 @@ function Reviews() {
   }, [animeId, getReviews]);
 
   const loadMore = async () => {
-    if (!animeId) return;
+    if (!animeId || isLoadingMore) return;
+    setIsLoadingMore(true);
 
     const nextPage = page + 1;
 
@@ -47,12 +49,14 @@ function Reviews() {
       setPage(nextPage);
     } catch (err) {
       console.error("Error loading more episodes:", err);
+    } finally {
+      setIsLoadingMore(false);
     }
   };
 
   const { ref } = useInView({
     onEnter: () => {
-      if (hasNextPage && !isFetching && !isLoading) {
+      if (hasNextPage && !isFetching && !isLoading && !isLoadingMore) {
         loadMore();
       }
     },
@@ -61,14 +65,18 @@ function Reviews() {
 
   if (isLoading && page === 1) {
     return (
-      <SectionTitle title="All Episodes" isBack={true}>
+      <SectionTitle title="All Episodes" skeleton={true}>
         <ReviewContentSkeleton />
       </SectionTitle>
     );
   }
 
   if (!allReviews.length) {
-    return <div className="text-center opacity-60">No reviews found</div>;
+    return (
+      <SectionTitle title="All Episodes" isBack={true}>
+        <div className="opacity-60">No reviews found</div>
+      </SectionTitle>
+    );
   }
 
   return (

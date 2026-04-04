@@ -19,11 +19,9 @@ function CharecterContentItem(
   const itemId = isCharacter ? characterId : defaultVoiceActors?.id;
 
   return (
-    <li
-      className={`flex flex-col items-center gap-2 ${isRounded ? "w-30 max-[400px]:w-20 lg:w-40 xl:w-50" : "w-30 max-[400px]:w-20 lg:w-40 xl:w-50"}`}
-    >
+    <li className={`w-full`}>
       <div
-        className={`group relative flex flex-col items-center justify-center overflow-hidden ${isRounded ? "h-30 w-30 rounded-full max-[400px]:h-20 max-[400px]:w-20 lg:h-40 lg:w-40 xl:h-50 xl:w-50" : "h-40 w-30 rounded-lg max-[400px]:h-30 max-[400px]:w-20 md:h-50 lg:h-70 lg:w-40 xl:w-50"}`}
+        className={`group relative overflow-hidden ${isRounded ? "aspect-square rounded-full" : "aspect-2/3 rounded-lg"}`}
       >
         <ImagePlaceholder
           src={itemImage || ""}

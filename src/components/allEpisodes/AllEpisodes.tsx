@@ -16,6 +16,7 @@ function AllEpisodes() {
   const [page, setPage] = useState(1);
   const [allEpisodes, setAllEpisodes] = useState<EpisodesType>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const [getEpisodes, { isLoading, isFetching }] =
     useLazyGetAnimeEpisodesByIdQuery();
@@ -34,7 +35,8 @@ function AllEpisodes() {
   }, [animeId, getEpisodes]);
 
   const loadMore = async () => {
-    if (!animeId) return;
+    if (!animeId || isLoadingMore) return;
+    setIsLoadingMore(true);
 
     const nextPage = page + 1;
 
@@ -47,6 +49,8 @@ function AllEpisodes() {
       setPage(nextPage);
     } catch (err) {
       console.error("Error loading more episodes:", err);
+    } finally {
+      setIsLoadingMore(false);
     }
   };
 
@@ -68,7 +72,11 @@ function AllEpisodes() {
   }
 
   if (!allEpisodes.length) {
-    return <div className="text-center opacity-60">No reviews found</div>;
+    return (
+      <SectionTitle title="All Episodes" isBack={true}>
+        <div className="opacity-60">No reviews found</div>
+      </SectionTitle>
+    );
   }
   return (
     <div>

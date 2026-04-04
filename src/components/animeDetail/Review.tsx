@@ -33,7 +33,11 @@ function Review() {
       </SectionTitle>
     );
   if (isError || !data?.length)
-    return <div className="text-center opacity-60">No data found</div>;
+    return (
+      <SectionTitle title="Reviews">
+        <div className="opacity-60">No data found</div>
+      </SectionTitle>
+    );
 
   const filteredData = data.slice(0, 3);
 

@@ -6,8 +6,6 @@ function VoiceActorItem({
   name,
   image,
   language,
-  url,
-  isCharacter,
 }: {
   id: number;
   name: string;
@@ -18,15 +16,11 @@ function VoiceActorItem({
 }) {
   const { animeId } = useParams();
   return (
-    <li
-      className={`flex flex-col items-center gap-2 ${"w-30 max-[400px]:w-20 lg:w-40 xl:w-50"}`}
-    >
+    <li className={`flex w-full flex-col gap-2`}>
       <span className="line-clamp-1 w-full bg-white/10 text-center">
         {language}
       </span>
-      <div
-        className={`group relative flex flex-col items-center justify-center overflow-hidden ${"h-40 w-30 rounded-lg max-[400px]:h-30 max-[400px]:w-20 md:h-50 lg:h-70 lg:w-40 xl:w-50"}`}
-      >
+      <div className={`group relative aspect-2/3 flex-col overflow-hidden`}>
         <ImagePlaceholder
           src={image || ""}
           alt={name}

@@ -18,9 +18,18 @@ function CharacterDetail() {
     schema: PersonSchema,
   });
 
-  if (isLoading) return <GeneralDetailContentSkeleton />;
+  if (isLoading)
+    return (
+      <SectionTitle title={`Character Detail`} skeleton={true}>
+        <GeneralDetailContentSkeleton />
+      </SectionTitle>
+    );
   if (isError || !data)
-    return <div className="text-center opacity-60">No data found</div>;
+    return (
+      <SectionTitle title={`Character Detail`} isBack={true}>
+        <div className="opacity-60">No data found</div>
+      </SectionTitle>
+    );
 
   console.log(data);
 

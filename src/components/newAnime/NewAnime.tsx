@@ -66,7 +66,11 @@ function NewAnime() {
   }
 
   if (!allAnime.length) {
-    return <div className="text-center opacity-60">No reviews found</div>;
+    return (
+      <SectionGrid title="Currently Airing Anime">
+        <div className="opacity-60">No reviews found</div>
+      </SectionGrid>
+    );
   }
   console.log(allAnime);
   return (

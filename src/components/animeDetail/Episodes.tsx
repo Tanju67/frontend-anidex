@@ -3,10 +3,9 @@ import { useGetAnimeEpisodesByIdQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { EpisodesSchema } from "../../shared/schemas/animeSchema";
-import CardSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
+import EpisodesContentSkeleton from "../../shared/UIElements/skeleton/EpisodesContentSkeleton";
 import EpisodesContent from "./EpisodesContent";
 import SectionTitle from "./SectionTitle";
-import EpisodesContentSkeleton from "../../shared/UIElements/skeleton/EpisodesContentSkeleton";
 
 function Episodes() {
   const { animeId } = useParams();
@@ -34,7 +33,11 @@ function Episodes() {
       </SectionTitle>
     );
   if (isError || !data?.length)
-    return <div className="text-center opacity-60">No data found</div>;
+    return (
+      <SectionTitle title="Episodes">
+        <div className="opacity-60">No data found</div>
+      </SectionTitle>
+    );
 
   const filteredData = data.slice(0, 6);
 
