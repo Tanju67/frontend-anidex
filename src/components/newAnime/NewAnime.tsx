@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLazyGetCurrentSeasonQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
 import {
+  type AnimeType,
   RowSliderResponseSchema,
   type RowSliderType,
 } from "../../shared/schemas/animeSchema";
@@ -15,11 +16,15 @@ function NewAnime() {
   const [allAnime, setAllAnime] = useState<RowSliderType>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [type, setType] = useState<AnimeType>("all");
 
   const [getAnimes, { isLoading, isFetching }] = useLazyGetCurrentSeasonQuery();
 
   useEffect(() => {
-    getAnimes({ page: 1, limit: 12 })
+    setPage(1);
+    setAllAnime([]);
+    setHasNextPage(true);
+    getAnimes({ page: 1, limit: 12, type: type !== "all" ? type : undefined })
       .unwrap()
       .then((res) => {
         const parsed = RowSliderResponseSchema.parse(res);
@@ -27,15 +32,19 @@ function NewAnime() {
         setAllAnime(parsed.data);
         setHasNextPage(res.pagination.has_next_page);
       });
-  }, [getAnimes]);
+  }, [getAnimes, type]);
 
   const loadMore = async () => {
-    if (isLoadingMore || isFetching) return;
+    if (isLoadingMore || isFetching || !hasNextPage) return;
     setIsLoadingMore(true);
     const nextPage = page + 1;
 
     try {
-      const res = await getAnimes({ page: nextPage, limit: 12 }).unwrap();
+      const res = await getAnimes({
+        page: nextPage,
+        limit: 12,
+        type: type !== "all" ? type : undefined,
+      }).unwrap();
       const parsed = RowSliderResponseSchema.parse(res);
 
       setAllAnime((prev) => [...prev, ...parsed.data]);
@@ -67,14 +76,14 @@ function NewAnime() {
 
   if (!allAnime.length) {
     return (
-      <SectionGrid title="Currently Airing Anime">
-        <div className="opacity-60">No reviews found</div>
+      <SectionGrid title="Currently Airing Anime" setType={setType} type={type}>
+        <div className="opacity-60">No data found</div>
       </SectionGrid>
     );
   }
-  console.log(allAnime);
+
   return (
-    <SectionGrid title="Currently Airing Anime">
+    <SectionGrid title="Currently Airing Anime" setType={setType} type={type}>
       <GridContent data={allAnime} />
       {hasNextPage && (
         <div ref={ref} className="flex h-20 items-center justify-center">

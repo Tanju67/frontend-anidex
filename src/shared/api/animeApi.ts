@@ -52,7 +52,6 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response) => {
-        console.log(response);
         return response.data;
       },
       keepUnusedDataFor: 60,
@@ -74,14 +73,15 @@ export const animeApi = baseAnimeApi.injectEndpoints({
 
     getCurrentSeason: builder.query<
       RowSliderResponse,
-      { page: number; limit: number }
+      { page: number; limit: number; type?: AnimeType }
     >({
-      query: ({ page, limit }) => ({
-        url: `/seasons/now?page=${page}&limit=${limit}`,
+      query: ({ page, limit, type }) => ({
+        url: `/seasons/now?page=${page}&limit=${limit}${
+          type && type !== "all" ? `&filter=${type}` : ""
+        }`,
         method: "GET",
       }),
       transformResponse: (response) => {
-        console.log(response);
         return response;
       },
       keepUnusedDataFor: 60,

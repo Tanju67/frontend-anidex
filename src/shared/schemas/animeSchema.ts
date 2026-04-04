@@ -130,7 +130,14 @@ export const RowSliderResponseSchema = z.object({
 
 export type RowSliderResponse = z.infer<typeof RowSliderResponseSchema>;
 
-export type AnimeType = "tv" | "movie" | "ova" | "special" | "ona" | "music";
+export type AnimeType =
+  | "tv"
+  | "movie"
+  | "ova"
+  | "special"
+  | "ona"
+  | "music"
+  | "all";
 
 const VoiceActorSchema = z.object({
   person: z.object({
