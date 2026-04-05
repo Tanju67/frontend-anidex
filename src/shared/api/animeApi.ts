@@ -1,5 +1,6 @@
 import {
   type AllNewsType,
+  type AnimeFilter,
   type AnimeImageType,
   type AnimeType,
   type BannerSliderType,
@@ -20,12 +21,12 @@ export const animeApi = baseAnimeApi.injectEndpoints({
   endpoints: (builder) => ({
     getTopAnime: builder.query<
       RowSliderResponse,
-      { page: number; limit: number; type: AnimeType }
+      { page: number; limit: number; type: AnimeType; filter: AnimeFilter }
     >({
-      query: ({ page, limit, type }) => ({
+      query: ({ page, limit, type, filter }) => ({
         url: `/top/anime?sfw&page=${page}&limit=${limit}${
           type && type !== "all" ? `&type=${type}` : ""
-        }`,
+        }${filter && filter !== "all" ? `&filter=${filter}` : ""}`,
         method: "GET",
       }),
       transformResponse: (response) => {

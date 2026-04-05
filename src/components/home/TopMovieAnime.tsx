@@ -12,6 +12,7 @@ function TopMovieAnime() {
       page: 1,
       limit: 10,
       type: "movie",
+      filter: "all",
     },
     { skip: !isVisible, refetchOnMountOrArgChange: false },
   );

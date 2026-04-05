@@ -142,6 +142,12 @@ export type AnimeType =
   | "tv_special"
   | "all";
 
+export type AnimeFilter =
+  | "airing"
+  | "upcoming"
+  | "bypopularity"
+  | "favorite"
+  | "all";
 const VoiceActorSchema = z.object({
   person: z.object({
     mal_id: z.number(),

@@ -1,4 +1,4 @@
-import type { AnimeType } from "../schemas/animeSchema";
+import type { AnimeFilter, AnimeType } from "../schemas/animeSchema";
 
 export const typesDataForNewAnimeFilter: { label: string; value: AnimeType }[] =
   [
@@ -25,4 +25,12 @@ export const typesDataForPopularAnimeFilter: {
   { label: "CM", value: "cm" },
   { label: "PV", value: "pv" },
   { label: "TV Special", value: "tv_special" },
+];
+
+export const filterData: { label: string; value: AnimeFilter }[] = [
+  { label: "All", value: "all" },
+  { label: "Airing", value: "airing" },
+  { label: "Upcoming", value: "upcoming" },
+  { label: "By Popularity", value: "bypopularity" },
+  { label: "Favorite", value: "favorite" },
 ];

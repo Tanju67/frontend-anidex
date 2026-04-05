@@ -12,6 +12,7 @@ function TopAnime() {
       page: 1,
       limit: 10,
       type: "tv",
+      filter: "all",
     },
     { skip: !isVisible, refetchOnMountOrArgChange: false },
   );
