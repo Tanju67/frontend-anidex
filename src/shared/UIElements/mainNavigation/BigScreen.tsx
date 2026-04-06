@@ -7,21 +7,7 @@ import { RiLoginBoxFill } from "react-icons/ri";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useArrangeScrollBar } from "../../hooks/useArrangeScrollBar";
-
-const genres = [
-  "Action",
-  "Adventure",
-  "Comedy",
-  "Mystery",
-  "Drama",
-  "Fantasy",
-  "Horror",
-  "Romance",
-  "Sci-Fi",
-  "Sports",
-  "Slice of Life",
-  "Supernatural",
-];
+import { genres } from "../../utils/data";
 
 function BigScreen() {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,9 +40,7 @@ function BigScreen() {
             className="content-center-x gap-1"
           >
             <span>Categories</span>
-            <span>
-              <FaCaretDown />
-            </span>
+            <span>{isOpen ? <FaCaretUp /> : <FaCaretDown />}</span>
           </button>
         </li>
       </div>
@@ -113,13 +97,13 @@ function BigScreen() {
                 {genres.map((genre) => (
                   <li
                     className="w-full px-2 py-4 hover:bg-slate-800"
-                    key={genre}
+                    key={genre.id}
                   >
                     <NavLink
-                      to={`/genre/${genre.toLowerCase()}`}
+                      to={`/genre/${genre.id}`}
                       onClick={() => setIsOpen(false)}
                     >
-                      {genre}
+                      {genre.name}
                     </NavLink>
                   </li>
                 ))}

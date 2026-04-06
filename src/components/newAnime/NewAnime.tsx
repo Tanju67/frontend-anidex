@@ -84,7 +84,12 @@ function NewAnime({
 
   if (!allAnime.length) {
     return (
-      <SectionGrid title={title} setType={setType} type={type}>
+      <SectionGrid
+        title={title}
+        setType={setType}
+        type={type}
+        typeData={typesDataForNewAnimeFilter}
+      >
         <div className="opacity-60">No data found</div>
       </SectionGrid>
     );
@@ -95,7 +100,7 @@ function NewAnime({
       title={title}
       setType={setType}
       type={type}
-      filterData={typesDataForNewAnimeFilter}
+      typeData={typesDataForNewAnimeFilter}
     >
       <GridContent data={allAnime} />
       {hasNextPage && (

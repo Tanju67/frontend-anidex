@@ -10,11 +10,11 @@ import {
   type RecommendationsType,
   type ReviewsResponseType,
   type RowSliderResponse,
-  type RowSliderType,
   type SingleEpisodeType,
   type SliderItemType,
   type VoiceActorDetailType,
 } from "../schemas/animeSchema";
+import type { AnimeRating } from "../utils/data";
 import { baseAnimeApi } from "./baseAnimeApi";
 
 export const animeApi = baseAnimeApi.injectEndpoints({
@@ -23,12 +23,26 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       RowSliderResponse,
       { page: number; limit: number; type: AnimeType; filter: AnimeFilter }
     >({
-      query: ({ page, limit, type, filter }) => ({
-        url: `/top/anime?sfw&page=${page}&limit=${limit}${
-          type && type !== "all" ? `&type=${type}` : ""
-        }${filter && filter !== "all" ? `&filter=${filter}` : ""}`,
-        method: "GET",
-      }),
+      query: ({ page, limit, type, filter }) => {
+        const params = new URLSearchParams();
+
+        params.append("page", page.toString());
+        params.append("limit", limit.toString());
+        params.append("sfw", ""); // flag
+
+        if (type && type !== "all") {
+          params.append("type", type);
+        }
+
+        if (filter && filter !== "all") {
+          params.append("filter", filter);
+        }
+
+        return {
+          url: `/top/anime?${params.toString()}`,
+          method: "GET",
+        };
+      },
       transformResponse: (response) => {
         return response;
       },
@@ -61,15 +75,35 @@ export const animeApi = baseAnimeApi.injectEndpoints({
     }),
 
     getAnimeByGenre: builder.query<
-      RowSliderType,
-      { page: number; limit: number; genre: number }
+      RowSliderResponse,
+      {
+        page: number;
+        limit: number;
+        genre: number;
+        type?: AnimeType;
+        rating: AnimeRating;
+      }
     >({
-      query: ({ page, limit, genre }) => ({
-        url: `/anime?sfw&genres=${genre}&page=${page}&limit=${limit}`,
-        method: "GET",
-      }),
-      transformResponse: (response: { data: RowSliderType }) => {
-        return response.data;
+      query: ({ page, limit, genre, type, rating }) => {
+        const params = new URLSearchParams();
+
+        params.append("page", page.toString());
+        params.append("limit", limit.toString());
+        params.append("genres", genre.toString());
+        params.append("rating", rating.toString());
+        params.append("sfw", ""); // flag
+
+        if (type && type !== "all") {
+          params.append("type", type);
+        }
+
+        return {
+          url: `/anime?${params.toString()}`,
+          method: "GET",
+        };
+      },
+      transformResponse: (response) => {
+        return response;
       },
       keepUnusedDataFor: 60,
     }),
@@ -83,12 +117,26 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         includeContinuing?: boolean;
       }
     >({
-      query: ({ page, limit, type, includeContinuing }) => ({
-        url: `/seasons/now?sfw&page=${page}&limit=${limit}${
-          type && type !== "all" ? `&filter=${type}` : ""
-        }${includeContinuing ? `&continuing` : ""}`,
-        method: "GET",
-      }),
+      query: ({ page, limit, type, includeContinuing }) => {
+        const params = new URLSearchParams();
+
+        params.append("page", page.toString());
+        params.append("limit", limit.toString());
+        params.append("sfw", ""); // flag
+
+        if (type && type !== "all") {
+          params.append("filter", type);
+        }
+
+        if (includeContinuing) {
+          params.append("continuing", ""); // flag
+        }
+
+        return {
+          url: `/seasons/now?${params.toString()}`,
+          method: "GET",
+        };
+      },
       transformResponse: (response) => {
         return response;
       },
@@ -223,6 +271,7 @@ export const {
   useGetUpcomingAnimeQuery,
   useGetRandomAnimeQuery,
   useGetAnimeByGenreQuery,
+  useLazyGetAnimeByGenreQuery,
   useGetCurrentSeasonQuery,
   useLazyGetCurrentSeasonQuery,
   useGetAnimeByIdQuery,

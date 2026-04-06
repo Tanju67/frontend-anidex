@@ -6,6 +6,7 @@ import {
   AllCharactersPage,
   AllEpisodesPage,
   AnimeDetailLayout,
+  CategoriesPage,
   CharacterPage,
   ErrorPage,
   HomePage,
@@ -36,7 +37,7 @@ const router = createBrowserRouter([
       { path: "popular", element: <PopularAnimePage /> },
       { path: "new", element: <NewAnimePage /> },
       { path: "this-season", element: <ThisSeasonPage /> },
-      { path: "genre/:firstGenre", element: <PopularAnimePage /> },
+      { path: "genre/:genreId", element: <CategoriesPage /> },
 
       // Auth
       { path: "login", element: <LoginPage /> },

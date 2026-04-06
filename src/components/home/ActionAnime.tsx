@@ -1,7 +1,7 @@
 import { useGetAnimeByGenreQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
-import { RowSliderSchema } from "../../shared/schemas/animeSchema";
+import { RowSliderResponseSchema } from "../../shared/schemas/animeSchema";
 import SectionSlider from "../../shared/UIElements/sectionSlider/SectionSlider";
 import RowSliderSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
 
@@ -12,6 +12,8 @@ function ActionAnime() {
       page: 1,
       limit: 10,
       genre: 1,
+      type: "tv",
+      rating: "g",
     },
     { skip: !isVisible, refetchOnMountOrArgChange: false },
   );
@@ -19,7 +21,7 @@ function ActionAnime() {
   const { data, isLoading, isError } = useSafeQuery({
     data: query.data,
     isLoading: query.isLoading,
-    schema: RowSliderSchema,
+    schema: RowSliderResponseSchema,
   });
 
   if (!isVisible) {
@@ -27,11 +29,11 @@ function ActionAnime() {
   }
 
   if (isLoading) return <RowSliderSkeleton title="Action Series" />;
-  if (isError || !data?.length)
+  if (isError || !data?.data.length)
     return <div className="text-center opacity-60">No data found</div>;
   return (
     <div ref={ref}>
-      <SectionSlider title="Explore Action Series" data={data} />
+      <SectionSlider title="Explore Action Series" data={data.data} />
     </div>
   );
 }
