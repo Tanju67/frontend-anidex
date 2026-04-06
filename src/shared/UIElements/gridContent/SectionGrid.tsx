@@ -3,7 +3,11 @@ import { useState } from "react";
 import { ImSortAmountAsc } from "react-icons/im";
 import { TbFilter2Pause } from "react-icons/tb";
 import type { AnimeFilter, AnimeType } from "../../schemas/animeSchema";
+import type { AnimeRating } from "../../utils/data";
 import Filter from "./Filter";
+import FilterButton from "./FilterButton";
+import FilterDropdown from "./FilterDropdown";
+import { is } from "zod/v4/locales";
 
 type SectionGridProps = {
   title: string;
@@ -14,6 +18,9 @@ type SectionGridProps = {
   type?: AnimeType;
   typeData?: { label: string; value: AnimeType }[];
   filterData?: { label: string; value: AnimeFilter }[];
+  rating?: AnimeRating;
+  setRating?: React.Dispatch<React.SetStateAction<AnimeRating>>;
+  ratingData?: { label: string; value: AnimeRating }[];
 };
 
 function SectionGrid({
@@ -25,9 +32,13 @@ function SectionGrid({
   type,
   typeData,
   filterData,
+  rating,
+  setRating,
+  ratingData,
 }: SectionGridProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isRatingOpen, setIsRatingOpen] = useState(false);
   const typeHandler = (type: AnimeType) => {
     if (!setType) return;
     setType(type);
@@ -39,87 +50,94 @@ function SectionGrid({
     setFilter(filter);
     setIsFilterOpen(false);
   };
+
+  const ratingHandler = (rating: AnimeRating) => {
+    if (!setRating) return;
+    setRating(rating);
+    setIsRatingOpen(false);
+  };
   return (
     <section className="mx-auto min-h-screen max-w-300 p-4 lg:p-10">
       <div className="mb-2 flex items-center justify-between sm:mb-4 md:mb-6 lg:mb-10">
         <h2 className="section-title-size">{title}</h2>
         <div className="relative">
           <div className="flex">
-            {filter && (
-              <button
-                onClick={() => {
-                  setIsFilterOpen(!isFilterOpen);
-                  setIsOpen(false);
-                }}
-                className={
-                  "flex items-center justify-center gap-2 px-4 py-2 duration-300 hover:bg-white/10" +
-                  (isFilterOpen ? " bg-slate-900" : "")
-                }
-              >
-                <ImSortAmountAsc className="h-6 w-6" />
-                <span>{filter}</span>
-              </button>
-            )}
-            {type && (
-              <button
-                onClick={() => {
-                  setIsOpen(!isOpen);
-                  setIsFilterOpen(false);
-                }}
-                className={
-                  "flex items-center justify-center gap-2 px-4 py-2 duration-300 hover:bg-white/10" +
-                  (isOpen ? " bg-slate-900" : "")
-                }
-              >
-                <TbFilter2Pause className="h-6 w-6" />
-                <span>Filter</span>
-              </button>
-            )}
-          </div>
-
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="absolute top-10 right-0 z-50 w-50 bg-slate-900 p-4"
-              >
-                <div className="flex flex-col gap-4">
-                  {typeData!.map((item) => (
+            {rating && (
+              <>
+                <FilterButton
+                  title="Rating"
+                  isDropdownOpen={isRatingOpen}
+                  onClick={() => {
+                    setIsRatingOpen(!isRatingOpen);
+                    setIsOpen(false);
+                    setIsFilterOpen(false);
+                  }}
+                >
+                  <TbFilter2Pause className="h-6 w-6" />
+                </FilterButton>
+                <FilterDropdown isDropdownOpen={isRatingOpen}>
+                  {ratingData!.map((item) => (
                     <Filter
+                      label={item.label}
                       key={item.value}
-                      item={item}
-                      type={type || "all"}
-                      typeHandler={typeHandler}
+                      checkedValue={item.value === rating}
+                      onChange={() => ratingHandler(item.value as AnimeRating)}
                     />
                   ))}
-                </div>
-              </motion.div>
+                </FilterDropdown>{" "}
+              </>
             )}
-            {isFilterOpen && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="absolute top-10 right-0 z-50 w-50 bg-slate-900 p-4"
-              >
-                <div className="flex flex-col gap-4">
+            {filter && (
+              <>
+                <FilterButton
+                  title="Filter"
+                  isDropdownOpen={isFilterOpen}
+                  onClick={() => {
+                    setIsFilterOpen(!isFilterOpen);
+                    setIsOpen(false);
+                    setIsRatingOpen(false);
+                  }}
+                >
+                  <TbFilter2Pause className="h-6 w-6" />
+                </FilterButton>
+                <FilterDropdown isDropdownOpen={isFilterOpen}>
                   {filterData!.map((item) => (
                     <Filter
-                      isFilter={true}
+                      label={item.label}
                       key={item.value}
-                      item={item}
-                      filter={filter || "all"}
-                      filterHandler={filterHandler}
+                      checkedValue={item.value === filter}
+                      onChange={() => filterHandler(item.value as AnimeFilter)}
                     />
                   ))}
-                </div>
-              </motion.div>
+                </FilterDropdown>{" "}
+              </>
             )}
-          </AnimatePresence>
+            {type && (
+              <>
+                <FilterButton
+                  title="Filter"
+                  isDropdownOpen={isOpen}
+                  onClick={() => {
+                    setIsOpen(!isOpen);
+                    setIsFilterOpen(false);
+                    setIsRatingOpen(false);
+                  }}
+                >
+                  <TbFilter2Pause className="h-6 w-6" />
+                </FilterButton>
+                <FilterDropdown isDropdownOpen={isOpen}>
+                  {typeData!.map((item) => (
+                    <Filter
+                      label={item.label}
+                      key={item.value}
+                      checkedValue={item.value === type}
+                      onChange={() => typeHandler(item.value as AnimeType)}
+                    />
+                  ))}
+                </FilterDropdown>{" "}
+              </>
+            )}
+          </div>
         </div>
       </div>
 
