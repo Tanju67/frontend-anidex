@@ -1,6 +1,7 @@
 import type { AnimeFilter, AnimeType } from "../schemas/animeSchema";
 
 export type AnimeRating = "g" | "pg" | "pg13" | "r17";
+export type AnimeStatus = "airing" | "complete" | "upcoming" | "all";
 
 export const typesDataForNewAnimeFilter: { label: string; value: AnimeType }[] =
   [
@@ -42,6 +43,13 @@ export const ratingData: { label: string; value: AnimeRating }[] = [
   { label: "Children", value: "pg" },
   { label: "Teens 13 or Older", value: "pg13" },
   { label: "17+ (vioence and profanity)", value: "r17" },
+];
+
+export const statusData: { label: string; value: AnimeStatus }[] = [
+  { label: "All", value: "all" },
+  { label: "Airing", value: "airing" },
+  { label: "Completed", value: "complete" },
+  { label: "Upcoming", value: "upcoming" },
 ];
 
 export const genres = [

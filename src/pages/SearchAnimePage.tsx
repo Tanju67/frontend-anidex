@@ -1,5 +1,7 @@
+import SearchLayout from "../components/searchAnime/SearchLayout";
+
 function SearchAnimePage() {
-  return <div>SearchAnimePage</div>;
+  return <SearchLayout />;
 }
 
 export default SearchAnimePage;

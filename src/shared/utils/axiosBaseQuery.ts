@@ -44,7 +44,7 @@ export const axiosBaseQuery =
   ) => {
     try {
       const result = await limit(async () => {
-        await scheduleRequest(); // 🔥 kritik nokta
+        await scheduleRequest();
         return axiosInst({ url, method, data, params, signal: api.signal });
       });
       const apiStatus = result.data?.status;
@@ -69,6 +69,9 @@ export const axiosBaseQuery =
     } catch (error: unknown) {
       console.log(error);
       const err = error as AxiosError<JikanError>;
+      if (err.code === "ERR_CANCELED") {
+        return { error: { status: 0, data: { message: "Request aborted" } } };
+      }
       const status = err.response?.status ?? 0;
       const data = err.response?.data;
 

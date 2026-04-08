@@ -14,7 +14,7 @@ import {
   type SliderItemType,
   type VoiceActorDetailType,
 } from "../schemas/animeSchema";
-import type { AnimeRating } from "../utils/data";
+import type { AnimeRating, AnimeStatus } from "../utils/data";
 import { baseAnimeApi } from "./baseAnimeApi";
 
 export const animeApi = baseAnimeApi.injectEndpoints({
@@ -79,22 +79,38 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       {
         page: number;
         limit: number;
-        genre: number;
+        genre?: number;
         type?: AnimeType;
-        rating: AnimeRating;
+        rating?: AnimeRating;
+        status?: AnimeStatus;
+        search?: string;
       }
     >({
-      query: ({ page, limit, genre, type, rating }) => {
+      query: ({ page, limit, genre, type, rating, status, search }) => {
         const params = new URLSearchParams();
 
         params.append("page", page.toString());
         params.append("limit", limit.toString());
-        params.append("genres", genre.toString());
-        params.append("rating", rating.toString());
         params.append("sfw", ""); // flag
 
         if (type && type !== "all") {
           params.append("type", type);
+        }
+
+        if (rating) {
+          params.append("rating", rating);
+        }
+
+        if (genre) {
+          params.append("genres", genre.toString());
+        }
+
+        if (status && status !== "all") {
+          params.append("status", status);
+        }
+
+        if (search) {
+          params.append("q", search);
         }
 
         return {

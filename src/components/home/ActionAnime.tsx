@@ -12,8 +12,8 @@ function ActionAnime() {
       page: 1,
       limit: 10,
       genre: 1,
-      type: "tv",
-      rating: "g",
+      type: "all",
+      rating: "pg13",
     },
     { skip: !isVisible, refetchOnMountOrArgChange: false },
   );

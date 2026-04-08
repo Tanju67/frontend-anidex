@@ -14,7 +14,7 @@ function FilterDropdown({ isDropdownOpen, children }: FilterDropdownProps) {
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.3 }}
-          className="absolute top-10 right-0 z-50 w-50 bg-slate-900 p-4"
+          className="absolute top-10 right-0 z-50 w-80 bg-slate-900 p-4"
         >
           <div className="flex flex-col gap-4">{children}</div>
         </motion.div>

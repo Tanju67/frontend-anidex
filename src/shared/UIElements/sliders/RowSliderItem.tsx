@@ -4,7 +4,7 @@ import type { RowSliderItemType } from "../../schemas/animeSchema";
 
 function RowSliderItem({ image, title, year, id }: RowSliderItemType) {
   return (
-    <motion.div className="group relative w-[40%] shrink-0 cursor-pointer snap-start overflow-hidden rounded-lg sm:w-[30%] md:w-[25%] lg:w-[19.5%]">
+    <motion.div className="group relative max-h-110 w-[40%] shrink-0 cursor-pointer snap-start overflow-hidden rounded-lg sm:w-[30%] md:w-[25%] lg:w-[19.5%]">
       <motion.img
         src={image}
         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"

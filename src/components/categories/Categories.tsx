@@ -13,8 +13,10 @@ import GridContentSkeleton from "../../shared/UIElements/skeleton/GridContentSke
 import Spinner from "../../shared/UIElements/spinner/Spinner";
 import {
   type AnimeRating,
+  type AnimeStatus,
   genres,
   ratingData,
+  statusData,
   typesDataForPopularAnimeFilter,
 } from "../../shared/utils/data";
 
@@ -26,6 +28,7 @@ function Categories() {
   const { genreId } = useParams();
   const [type, setType] = useState<AnimeType>("all");
   const [raiting, setRating] = useState<AnimeRating>("g");
+  const [status, setStatus] = useState<AnimeStatus>("all");
 
   const [getAnimes, { isLoading, isFetching }] = useLazyGetAnimeByGenreQuery();
 
@@ -41,6 +44,7 @@ function Categories() {
       genre: +genreId!,
       type: type,
       rating: raiting,
+      status: status,
     })
       .unwrap()
       .then((res) => {
@@ -49,7 +53,7 @@ function Categories() {
         setAllAnime(parsed.data);
         setHasNextPage(res.pagination.has_next_page);
       });
-  }, [getAnimes, genreId, type, raiting]);
+  }, [getAnimes, genreId, type, raiting, status]);
 
   const loadMore = async () => {
     if (isLoadingMore || isFetching || !hasNextPage) return;
@@ -63,6 +67,7 @@ function Categories() {
         genre: +genreId!,
         type: type,
         rating: raiting,
+        status: status,
       }).unwrap();
       const parsed = RowSliderResponseSchema.parse(res);
 
@@ -103,13 +108,14 @@ function Categories() {
         rating={raiting}
         setRating={setRating}
         ratingData={ratingData}
+        status={status}
+        setStatus={setStatus}
+        statusData={statusData}
       >
         <div className="opacity-60">No data found</div>
       </SectionGrid>
     );
   }
-
-  console.log(allAnime);
 
   return (
     <div className="py-10">
@@ -126,6 +132,9 @@ function Categories() {
         rating={raiting}
         setRating={setRating}
         ratingData={ratingData}
+        status={status}
+        setStatus={setStatus}
+        statusData={statusData}
       >
         <GridContent data={allAnime} />
         {hasNextPage && (
