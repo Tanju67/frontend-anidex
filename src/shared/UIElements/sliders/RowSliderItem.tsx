@@ -14,9 +14,7 @@ function RowSliderItem({ image, title, year, id }: RowSliderItemType) {
       <Link
         to={`/anime/${id}`}
         className="hover:border-main-btn absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-black/70 opacity-0 transition-all duration-300 group-hover:opacity-100 hover:border-2"
-      >
-        <span className="bg-main-btn/50 hover:bg-main-btn h-10 w-10 rounded-full transition-colors duration-300"></span>
-      </Link>
+      ></Link>
 
       {/* Bottom Info */}
       <div className="bg-main-btn/80 absolute bottom-0 flex w-full items-center justify-between p-2 text-xs text-white md:text-sm">

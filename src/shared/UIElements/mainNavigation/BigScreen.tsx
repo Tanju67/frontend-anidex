@@ -8,16 +8,17 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useArrangeScrollBar } from "../../hooks/useArrangeScrollBar";
 import { genres } from "../../utils/data";
+import logo from "../../../assets/logo.png";
 
 function BigScreen() {
   const [isOpen, setIsOpen] = useState(false);
   useArrangeScrollBar(isOpen);
   return (
-    <ul className="hidden h-full justify-between px-16 sm:flex">
+    <ul className="hidden h-full justify-between px-16 md:flex">
       <div className="flex">
         <div className="content-center-x h-full p-2">
           <NavLink to="/">
-            <p className="text-main-btn font-bold">Anidex</p>
+            <img src={logo} alt="logo" className="h-12" />
           </NavLink>
         </div>
         <li className="content-center-x transtion-colors h-full p-2 duration-300 hover:bg-white/10">

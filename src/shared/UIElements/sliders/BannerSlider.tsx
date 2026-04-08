@@ -78,7 +78,7 @@ const BannerSlider: React.FC<BannerSliderProps> = ({
       </Button>
 
       {/* 🔘 Dots */}
-      <div className="absolute bottom-[2vh] left-1/2 z-50 flex -translate-x-1/2 gap-2 md:bottom-[18vh] md:left-[10vw] md:translate-x-0 lg:bottom-[30vh]">
+      <div className="absolute bottom-[2vh] left-1/2 z-40 flex -translate-x-1/2 gap-2 md:bottom-[18vh] md:left-[10vw] md:translate-x-0 lg:bottom-[30vh]">
         {items.map((_, i) => (
           <Button
             key={i}

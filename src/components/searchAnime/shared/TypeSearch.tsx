@@ -84,6 +84,8 @@ function TypeSearch({ title }: { title: string }) {
     triggerOnce: false,
   });
 
+  if (search.trim().length < 3) return null;
+
   if (isLoading && page === 1) {
     return (
       <div className="mx-auto h-full max-w-300 pt-30">

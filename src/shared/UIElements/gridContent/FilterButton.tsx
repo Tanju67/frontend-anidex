@@ -16,7 +16,7 @@ function FilterButton({
       <button
         onClick={onClick}
         className={
-          "flex items-center justify-center gap-2 px-4 py-2 duration-300 hover:bg-white/10" +
+          "flex items-center justify-center gap-2 p-2 text-sm duration-300 hover:bg-white/10 md:px-4 md:text-base" +
           (isDropdownOpen ? " bg-slate-900" : "")
         }
       >
