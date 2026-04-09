@@ -11,14 +11,7 @@ type TopResultsProps = {
 };
 
 function TopResults({ search }: TopResultsProps) {
-  const [debounced, setDebounced] = useState(search);
-
-  useEffect(() => {
-    const t = setTimeout(() => setDebounced(search), 700);
-    return () => clearTimeout(t);
-  }, [search]);
-
-  const trimmed = debounced.trim();
+  const trimmed = search.trim();
   const query = useGetAnimeByGenreQuery(
     {
       page: 1,
@@ -28,8 +21,6 @@ function TopResults({ search }: TopResultsProps) {
     },
     {
       skip: search.trim().length < 3,
-      refetchOnMountOrArgChange: false,
-      refetchOnFocus: false,
     },
   );
 

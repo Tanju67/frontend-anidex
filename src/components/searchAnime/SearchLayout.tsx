@@ -13,6 +13,8 @@ function SearchLayout() {
   const initialSearch = searchParams.get("q") || "";
   const [inputValue, setInputValue] = useState(initialSearch);
 
+  const [debouncedValue, setDebouncedValue] = useState(initialSearch);
+
   // Debounced URL update
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -20,15 +22,17 @@ function SearchLayout() {
 
       if (inputValue.trim().length >= 3) {
         params.set("q", inputValue.trim());
+        setDebouncedValue(inputValue.trim());
       } else {
         params.delete("q");
+        setDebouncedValue("");
       }
 
       setSearchParams(params);
-    }, 400); // 400ms debounce
+    }, 600);
 
     return () => clearTimeout(timer);
-  }, [inputValue, searchParams, setSearchParams]);
+  }, [inputValue]);
 
   return (
     <section className="min-h-screen">
@@ -40,7 +44,7 @@ function SearchLayout() {
       </div>
 
       {/* Conditional rendering */}
-      {!type && <MainSearch search={inputValue} />}
+      {!type && <MainSearch search={debouncedValue} />}
       {type === "tv" && <TypeSearch title="Only Series" />}
       {type === "movie" && <TypeSearch title="Only Movies" />}
     </section>

@@ -1,23 +1,24 @@
 import type { AxiosError, AxiosRequestConfig } from "axios";
 import { animeAxiosInstance } from "../utils/animeAxioasInstance";
 import pLimit from "p-limit";
-import type { BaseQueryApi } from "@reduxjs/toolkit/query";
+import type { BaseQueryApi, BaseQueryFn } from "@reduxjs/toolkit/query";
+import axios from "axios";
 
 const limit = pLimit(3); // aynı anda 3 request
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 let lastRequestTime = 0;
 
-const RATE_LIMIT_MS = 350; // ~3 req/sec (1000 / 3 ≈ 333)
+const RATE_LIMIT_MS = 550; // ~3 req/sec (1000 / 3 ≈ 333)
 
 const scheduleRequest = async () => {
   const now = Date.now();
   const diff = now - lastRequestTime;
 
   if (diff < RATE_LIMIT_MS) {
-    await delay(RATE_LIMIT_MS - diff);
+    const jitter = Math.random() * 100;
+    await delay(RATE_LIMIT_MS - diff + jitter);
   }
-
   lastRequestTime = Date.now();
 };
 
@@ -37,45 +38,55 @@ type AxiosBaseQueryArgs = {
 
 // store/baseApi.ts
 export const axiosBaseQuery =
-  (axiosInst = animeAxiosInstance) =>
+  (axiosInst = animeAxiosInstance): BaseQueryFn<AxiosBaseQueryArgs> =>
   async (
     { url, method, data, params }: AxiosBaseQueryArgs,
     api: BaseQueryApi,
   ) => {
+    // 1. En başta iptal kontrolü
+    if (api.signal.aborted) {
+      return { error: { status: 0, data: { message: "Request aborted" } } };
+    }
+
     try {
       const result = await limit(async () => {
+        // 2. Kuyrukta beklerken iptal kontrolü
+        if (api.signal.aborted) {
+          throw new axios.Cancel("Canceled before request");
+        }
+
         await scheduleRequest();
+
+        // 3. İstek tam çıkarken son kontrol
+        if (api.signal.aborted) {
+          throw new axios.Cancel("Canceled after delay");
+        }
+
         return axiosInst({ url, method, data, params, signal: api.signal });
       });
-      const apiStatus = result.data?.status;
-      const apiError = result.data?.error || result.data?.messages;
 
+      // Jikan API özel durum kontrolü
+      const apiStatus = result.data?.status;
       if (apiStatus && apiStatus >= 400) {
-        // HTTP status değil ama API hatası var → reject et
-        const error = new Error(
-          apiError?.toString() || "API returned an error",
-        ) as AxiosError<JikanError>;
-        error.response = {
-          status: apiStatus,
-          data: result.data,
-          statusText: "",
-          headers: {},
-          config: result.config,
-        };
-        throw error;
+        throw { response: { status: apiStatus, data: result.data } };
       }
 
       return { data: result.data };
-    } catch (error: unknown) {
-      console.log(error);
-      const err = error as AxiosError<JikanError>;
-      if (err.code === "ERR_CANCELED") {
+    } catch (error: any) {
+      // IPTAL DURUMU: Network panelinde Cancelled görünecek ve middleware yönlendirme yapmayacak
+      if (
+        axios.isCancel(error) ||
+        error.name === "AbortError" ||
+        api.signal.aborted
+      ) {
         return { error: { status: 0, data: { message: "Request aborted" } } };
       }
+
+      const err = error as AxiosError<JikanError>;
       const status = err.response?.status ?? 0;
       const data = err.response?.data;
 
-      // Kullanıcı dostu mesaj
+      // SENİN KULLANICI DOSTU MESAJLARIN
       let userMessage = "Something went wrong. Please try again.";
 
       switch (status) {
@@ -85,9 +96,6 @@ export const axiosBaseQuery =
         case 404:
           userMessage =
             "Sorry! The resource you are looking for was not found.";
-          break;
-        case 405:
-          userMessage = "This action is not allowed.";
           break;
         case 429:
           userMessage =
@@ -100,8 +108,6 @@ export const axiosBaseQuery =
           userMessage = "Service is currently unavailable. Please try later.";
           break;
       }
-
-      console.log("AXIOS ERROR RAW MESSAGE:", data?.error || data?.messages);
 
       return {
         error: {

@@ -5,7 +5,6 @@ import { useSafeQuery } from "../../../shared/hooks/useSafeQuery";
 import { RowSliderSchema } from "../../../shared/schemas/animeSchema";
 import SectionTitle from "../../animeDetail/SectionTitle";
 import SearchItem from "./SearchItem";
-import { useEffect, useState } from "react";
 
 type MainSearchTypeResultProps = {
   search: string;
@@ -19,14 +18,8 @@ function MainSearchTypeResult({
   title,
 }: MainSearchTypeResultProps) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [debounced, setDebounced] = useState(search);
 
-  useEffect(() => {
-    const t = setTimeout(() => setDebounced(search), 700);
-    return () => clearTimeout(t);
-  }, [search]);
-
-  const trimmed = debounced.trim();
+  const trimmed = search.trim();
 
   const query = useGetAnimeByGenreQuery(
     {
@@ -37,8 +30,6 @@ function MainSearchTypeResult({
     },
     {
       skip: search.trim().length < 3,
-      refetchOnMountOrArgChange: false,
-      refetchOnFocus: false,
     },
   );
 
