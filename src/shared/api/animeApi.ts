@@ -119,9 +119,10 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         };
       },
       transformResponse: (response) => {
+        console.log(response);
         return response;
       },
-      keepUnusedDataFor: 60,
+      keepUnusedDataFor: 5,
     }),
 
     getCurrentSeason: builder.query<

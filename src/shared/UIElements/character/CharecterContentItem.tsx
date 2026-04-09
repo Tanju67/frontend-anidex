@@ -3,7 +3,11 @@ import type { CharacterType } from "../../schemas/animeSchema";
 import ImagePlaceholder from "../imagePlaceholder/ImagePlaceholder";
 
 function CharecterContentItem(
-  data: CharacterType & { isCharacter: boolean; isRounded?: boolean },
+  data: CharacterType & {
+    isCharacter: boolean;
+    isRounded?: boolean;
+    isAllCharacters?: boolean;
+  },
 ) {
   const {
     image,
@@ -12,11 +16,15 @@ function CharecterContentItem(
     characterId,
     isRounded,
     defaultVoiceActors,
+    isAllCharacters,
   } = data;
 
   const itemImage = isCharacter ? image : defaultVoiceActors?.image;
   const itemName = isCharacter ? name : defaultVoiceActors?.name;
   const itemId = isCharacter ? characterId : defaultVoiceActors?.id;
+
+  let link = isCharacter ? `characters/${characterId}` : `actors/${itemId}`;
+  if (isAllCharacters) link = isCharacter ? `${characterId}` : `${itemId}`;
 
   return (
     <li className={`w-full`}>
@@ -29,7 +37,7 @@ function CharecterContentItem(
           className="h-full w-full rounded-lg object-cover object-center"
         />
         <Link
-          to={isCharacter ? `characters/${itemId}` : `actors/${itemId}`}
+          to={link}
           className={`hover:border-main-btn absolute inset-0 z-10 flex items-center justify-center bg-black/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hover:border-2 ${isRounded ? "rounded-full" : "rounded-lg"}`}
         >
           <span className="bg-main-btn/50 hover:bg-main-btn h-10 w-10 rounded-full transition-colors duration-300"></span>

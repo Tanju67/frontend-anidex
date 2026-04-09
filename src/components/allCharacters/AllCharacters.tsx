@@ -50,6 +50,7 @@ function AllCharacters() {
   return (
     <div className="max-w-400rem mx-auto">
       <Character
+        isAllCharacters={true}
         isCharacter={true}
         title="All Characters"
         data={visibleCharacters}

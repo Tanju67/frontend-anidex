@@ -9,6 +9,7 @@ type CharacterProps = {
   link?: string;
   title: string;
   isBack?: boolean;
+  isAllCharacters?: boolean;
 };
 
 function Character({
@@ -18,6 +19,7 @@ function Character({
   link,
   title,
   isBack = false,
+  isAllCharacters,
 }: CharacterProps) {
   console.log(data);
   return (
@@ -26,6 +28,7 @@ function Character({
         data={data}
         isCharacter={isCharacter}
         isRounded={isRounded}
+        isAllCharacters={isAllCharacters}
       />
     </SectionTitle>
   );

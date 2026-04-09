@@ -1,10 +1,11 @@
 import { useSearchParams } from "react-router-dom";
 import MainSearchTypeSkeleton from "../../../shared/UIElements/skeleton/MainSearchTypeSkeleton";
-import useAnimeSearch from "../../../shared/hooks/useAnimeSearch";
+import { useGetAnimeByGenreQuery } from "../../../shared/api/animeApi";
 import { useSafeQuery } from "../../../shared/hooks/useSafeQuery";
 import { RowSliderSchema } from "../../../shared/schemas/animeSchema";
 import SectionTitle from "../../animeDetail/SectionTitle";
 import SearchItem from "./SearchItem";
+import { useEffect, useState } from "react";
 
 type MainSearchTypeResultProps = {
   search: string;
@@ -18,10 +19,31 @@ function MainSearchTypeResult({
   title,
 }: MainSearchTypeResultProps) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const query = useAnimeSearch({ search, limit: 6, type: type });
+  const [debounced, setDebounced] = useState(search);
+
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(search), 700);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  const trimmed = debounced.trim();
+
+  const query = useGetAnimeByGenreQuery(
+    {
+      page: 1,
+      limit: 6,
+      type: type,
+      search: trimmed,
+    },
+    {
+      skip: search.trim().length < 3,
+      refetchOnMountOrArgChange: false,
+      refetchOnFocus: false,
+    },
+  );
 
   const { data, isLoading } = useSafeQuery({
-    data: query.data,
+    data: query.data?.data,
     isLoading: query.isLoading,
     schema: RowSliderSchema,
   });

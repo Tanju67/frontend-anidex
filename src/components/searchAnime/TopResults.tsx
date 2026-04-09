@@ -1,4 +1,5 @@
-import useAnimeSearch from "../../shared/hooks/useAnimeSearch";
+import { useEffect, useState } from "react";
+import { useGetAnimeByGenreQuery } from "../../shared/api/animeApi";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { RowSliderSchema } from "../../shared/schemas/animeSchema";
 import GridContent from "../../shared/UIElements/gridContent/GridContent";
@@ -10,10 +11,30 @@ type TopResultsProps = {
 };
 
 function TopResults({ search }: TopResultsProps) {
-  const query = useAnimeSearch({ search, limit: 6, type: "all" });
+  const [debounced, setDebounced] = useState(search);
+
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(search), 700);
+    return () => clearTimeout(t);
+  }, [search]);
+
+  const trimmed = debounced.trim();
+  const query = useGetAnimeByGenreQuery(
+    {
+      page: 1,
+      limit: 6,
+      type: "all",
+      search: trimmed,
+    },
+    {
+      skip: search.trim().length < 3,
+      refetchOnMountOrArgChange: false,
+      refetchOnFocus: false,
+    },
+  );
 
   const { data, isLoading } = useSafeQuery({
-    data: query.data,
+    data: query.data?.data,
     isLoading: query.isLoading,
     schema: RowSliderSchema,
   });
