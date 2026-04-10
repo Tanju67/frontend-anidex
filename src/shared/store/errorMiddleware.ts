@@ -5,16 +5,20 @@ export const rtkQueryErrorLogger: Middleware =
     if (isRejectedWithValue(action)) {
       const status = action.payload?.status;
       const message = action.payload?.data?.message || "Something went wrong";
+      const endpointName = action.meta?.arg?.endpointName;
 
-      // 1. İptal edilen istekleri (status 0) görmezden gel
-      // 2. Hız limiti hatalarını (status 429) görmezden gel (sayfa değişmesin)
-      if (status === 0 || status === 429) {
-        console.warn("Hata görmezden gelindi (Abort veya 429):", message);
+      if (status === 0 || status === 429) return next(action);
+
+      const authEndpoints = ["googleLogin", "login", "register"];
+      if (authEndpoints.includes(endpointName)) {
+        console.log("Authentication Error", message);
         return next(action);
       }
 
-      // Sadece 500, 404 veya 400 gibi "gerçek" hatalarda yönlendir
-      window.location.href = `/error?message=${encodeURIComponent(message)}&status=${status}`;
+      // 3. KRİTİK HATALAR (500 vb.) veya Anime API hataları
+      if (status >= 500 || status === 404) {
+        window.location.href = `/error?message=${encodeURIComponent(message)}&status=${status}`;
+      }
     }
 
     return next(action);
