@@ -1,5 +1,7 @@
+import Register from "../components/register/register";
+
 function RegisterPage() {
-  return <div>RegisterPage</div>;
+  return <Register />;
 }
 
 export default RegisterPage;
