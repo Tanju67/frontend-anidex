@@ -25,3 +25,23 @@ export const authUserSchema = z.object({
 });
 
 export type AuthUser = z.infer<typeof authUserSchema>;
+
+// Tekil kullanıcı objesi
+export const userSchema = z.object({
+  _id: z.string(),
+  fullName: z.string(),
+  email: z.string().email(),
+  authMethod: z.enum(["local", "google"]),
+  googleId: z.string().optional(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
+});
+
+// Backend'den gelen sarmalanmış (wrapped) yanıt
+export const currentUserResponseSchema = z.object({
+  data: userSchema,
+});
+
+// TypeScript Tipleri
+export type User = z.infer<typeof userSchema>;
+export type CurrentUserResponse = z.infer<typeof currentUserResponseSchema>;

@@ -1,5 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { LoginFormData, RegisterFormData } from "../schemas/backendSchema";
+import type {
+  CurrentUserResponse,
+  LoginFormData,
+  RegisterFormData,
+  User,
+} from "../schemas/backendSchema";
 import type { LoginResponse, RegisterResponse } from "../types/types";
 
 export const backendApi = createApi({
@@ -14,6 +19,7 @@ export const backendApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     // Normal Register
     register: builder.mutation<RegisterResponse, RegisterFormData>({
@@ -30,6 +36,12 @@ export const backendApi = createApi({
         method: "POST",
         body: userData,
       }),
+    }),
+
+    getCurrentUser: builder.query<User, void>({
+      query: () => "/auth/current",
+      transformResponse: (response: CurrentUserResponse) => response.data,
+      providesTags: ["User"],
     }),
   }),
 });

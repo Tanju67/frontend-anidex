@@ -43,7 +43,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
           method: "GET",
         };
       },
-      transformResponse: (response) => {
+      transformResponse: (response: RowSliderResponse) => {
         return response;
       },
       keepUnusedDataFor: 60,
@@ -68,7 +68,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         url: `/random/anime?sfw`,
         method: "GET",
       }),
-      transformResponse: (response) => {
+      transformResponse: (response: { data: SliderItemType }) => {
         return response.data;
       },
       keepUnusedDataFor: 60,
@@ -118,7 +118,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
           method: "GET",
         };
       },
-      transformResponse: (response) => {
+      transformResponse: (response: RowSliderResponse) => {
         console.log(response);
         return response;
       },
@@ -154,7 +154,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
           method: "GET",
         };
       },
-      transformResponse: (response) => {
+      transformResponse: (response: RowSliderResponse) => {
         return response;
       },
       keepUnusedDataFor: 60,
@@ -165,7 +165,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         url: `/anime/${id}`,
         method: "GET",
       }),
-      transformResponse: (response) => {
+      transformResponse: (response: { data: SliderItemType }) => {
         return response.data;
       },
       keepUnusedDataFor: 60,
@@ -176,7 +176,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         url: `/anime/${id}/characters`,
         method: "GET",
       }),
-      transformResponse: (response) => {
+      transformResponse: (response: { data: CharactersType }) => {
         return response.data;
       },
       keepUnusedDataFor: 60,
@@ -187,7 +187,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         url: `/anime/${id}/pictures`,
         method: "GET",
       }),
-      transformResponse: (response) => {
+      transformResponse: (response: { data: AnimeImageType }) => {
         return response.data;
       },
       keepUnusedDataFor: 60,
@@ -201,7 +201,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         url: `/anime/${id}/reviews?page=${page}`,
         method: "GET",
       }),
-      transformResponse: (response) => {
+      transformResponse: (response: ReviewsResponseType) => {
         return response;
       },
       keepUnusedDataFor: 60,
@@ -215,7 +215,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         url: `/anime/${id}/episodes?page=${page}`,
         method: "GET",
       }),
-      transformResponse: (response) => {
+      transformResponse: (response: EpisodesResponseType) => {
         return response;
       },
       keepUnusedDataFor: 60,
@@ -229,7 +229,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         url: `/anime/${id}/episodes/${episode}`,
         method: "GET",
       }),
-      transformResponse: (response) => {
+      transformResponse: (response: { data: SingleEpisodeType }) => {
         return response.data;
       },
       keepUnusedDataFor: 60,
@@ -262,7 +262,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         url: `/characters/${id}/full`,
         method: "GET",
       }),
-      transformResponse: (response) => {
+      transformResponse: (response: { data: PersonType }) => {
         return response.data;
       },
       keepUnusedDataFor: 60,
@@ -273,7 +273,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         url: `/people/${id}/full`,
         method: "GET",
       }),
-      transformResponse: (response) => {
+      transformResponse: (response: { data: VoiceActorDetailType }) => {
         console.log(response);
         return response.data;
       },
