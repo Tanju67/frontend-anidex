@@ -1,17 +1,24 @@
 import { useState, type SyntheticEvent } from "react";
 import { FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
 import { IoMailSharp } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Button from "../../shared/UIElements/button/Button";
 import Spinner from "../../shared/UIElements/spinner/Spinner";
 import img from "../../assets/login.jpg";
 import { FcGoogle } from "react-icons/fc";
+import { useLoginMutation } from "../../shared/api/backendApi";
+import { loginSchema } from "../../shared/schemas/backendSchema";
+import { toaster } from "../../shared/utils/toaster";
+import type { MyBackendError } from "../../shared/types/types";
 
 function Form() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   const isLoading = false;
   const isLoadingUser = false;
+
+  const [login, { isLoading: isLoadingLogin }] = useLoginMutation();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -24,6 +31,29 @@ function Form() {
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    const result = loginSchema.safeParse(formData);
+
+    if (!result.success) {
+      const message = result.error.issues[0]?.message || "Invalid form data";
+      toaster("error", message);
+      return;
+    }
+
+    try {
+      const response = await login(formData).unwrap();
+      localStorage.setItem("token", response.token);
+      console.log(response);
+      toaster("success", response.message);
+      setFormData({
+        email: "",
+        password: "",
+      });
+      setTimeout(() => navigate("/"), 1500);
+    } catch (error) {
+      const err = error as MyBackendError;
+      const message = err.data?.message || "Something went wrong";
+      toaster("error", message);
+    }
   };
   return (
     <div className="container-box mt-28 md:mt-0">
@@ -94,7 +124,7 @@ function Form() {
                 className="bg-main-btn hover:bg-main-btn-hover w-full p-2"
                 disabled={isLoading}
               >
-                {isLoading ? (
+                {isLoadingLogin ? (
                   <>
                     <Spinner />
                     Loading...
@@ -104,7 +134,6 @@ function Form() {
                 )}
               </Button>
               <Button
-                type="submit"
                 className="w-full bg-gray-600 p-2 hover:bg-gray-700"
                 disabled={isLoading}
               >

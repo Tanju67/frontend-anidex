@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { RegisterFormData } from "../schemas/backendSchema";
-import type { RegisterResponse } from "../types/types";
+import type { LoginFormData, RegisterFormData } from "../schemas/backendSchema";
+import type { LoginResponse, RegisterResponse } from "../types/types";
 
 export const backendApi = createApi({
   reducerPath: "backendApi",
@@ -23,7 +23,15 @@ export const backendApi = createApi({
         body: userData,
       }),
     }),
+
+    login: builder.mutation<LoginResponse, LoginFormData>({
+      query: (userData) => ({
+        url: "/auth/login",
+        method: "POST",
+        body: userData,
+      }),
+    }),
   }),
 });
 
-export const { useRegisterMutation } = backendApi;
+export const { useRegisterMutation, useLoginMutation } = backendApi;

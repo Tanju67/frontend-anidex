@@ -1,4 +1,4 @@
-import type { RegisterFormData } from "../schemas/backendSchema";
+import type { LoginFormData, RegisterFormData } from "../schemas/backendSchema";
 
 export interface MyBackendError {
   data: {
@@ -11,4 +11,10 @@ export interface RegisterResponse {
   token: string;
   message: string;
   data: RegisterFormData;
+}
+
+export interface LoginResponse {
+  token: string;
+  message: string;
+  data: LoginFormData;
 }
