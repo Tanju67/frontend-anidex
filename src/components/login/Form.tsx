@@ -1,18 +1,21 @@
+import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 import { useState, type SyntheticEvent } from "react";
 import { FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
 import { IoMailSharp } from "react-icons/io5";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import img from "../../assets/login.jpg";
+import {
+  backendApi,
+  useGoogleLoginMutation,
+  useLoginMutation,
+} from "../../shared/api/backendApi";
+import { loginSchema } from "../../shared/schemas/backendSchema";
+import type { MyBackendError } from "../../shared/types/types";
 import Button from "../../shared/UIElements/button/Button";
 import Spinner from "../../shared/UIElements/spinner/Spinner";
-import img from "../../assets/login.jpg";
-import { FcGoogle } from "react-icons/fc";
-import { useLoginMutation } from "../../shared/api/backendApi";
-import { loginSchema } from "../../shared/schemas/backendSchema";
 import { toaster } from "../../shared/utils/toaster";
-import type { MyBackendError } from "../../shared/types/types";
-import { useDispatch } from "react-redux";
-import { backendApi } from "../../shared/api/backendApi";
 
 function Form() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,6 +25,7 @@ function Form() {
   const dispatch = useDispatch();
 
   const [login, { isLoading: isLoadingLogin }] = useLoginMutation();
+  const [googleLoginMutation] = useGoogleLoginMutation();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -30,6 +34,29 @@ function Form() {
 
   const handleUserLogin = async (e: SyntheticEvent) => {
     e.preventDefault();
+  };
+
+  const handleGoogleSuccess = async (
+    credentialResponse: CredentialResponse,
+  ) => {
+    if (!credentialResponse.credential) {
+      toaster("error", "No credential found");
+      return;
+    }
+    try {
+      const response = await googleLoginMutation({
+        idToken: credentialResponse.credential,
+      }).unwrap();
+
+      localStorage.setItem("token", response.token);
+      dispatch(backendApi.util.invalidateTags(["User"]));
+      toaster("success", "Login successful");
+      navigate("/");
+    } catch (error) {
+      const err = error as MyBackendError;
+      const message = err.data?.message || "Something went wrong";
+      toaster("error", message);
+    }
   };
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -137,22 +164,16 @@ function Form() {
                   "Sign In "
                 )}
               </Button>
-              <Button
-                className="w-full bg-gray-600 p-2 hover:bg-gray-700"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Spinner />
-                    Loading...
-                  </>
-                ) : (
-                  <span className="content-center-x">
-                    <FcGoogle className="mr-2 text-2xl" />
-                    <span>Sign In whit Google</span>
-                  </span>
-                )}
-              </Button>
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={() => toaster("error", "Login failed")}
+                useOneTap
+                theme="outline"
+                shape="rectangular"
+                size="large"
+                text="signin_with"
+              />
+
               <div className="flex gap-2">
                 <Button
                   type="button"

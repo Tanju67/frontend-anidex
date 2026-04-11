@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type {
+  CreateWatchlistItem,
+  CreateWatchlistResponse,
   CurrentUserResponse,
   LoginFormData,
   RegisterFormData,
@@ -19,7 +21,7 @@ export const backendApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User"],
+  tagTypes: ["User", "Anime"],
   endpoints: (builder) => ({
     // Normal Register
     register: builder.mutation<RegisterResponse, RegisterFormData>({
@@ -43,8 +45,33 @@ export const backendApi = createApi({
       transformResponse: (response: CurrentUserResponse) => response.data,
       providesTags: ["User"],
     }),
+
+    googleLogin: builder.mutation<LoginResponse, { idToken: string }>({
+      query: (body) => ({
+        url: "/auth/google",
+        method: "POST",
+        body: body,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    createAnime: builder.mutation<CreateWatchlistResponse, CreateWatchlistItem>(
+      {
+        query: (animeData) => ({
+          url: "/animes",
+          method: "POST",
+          body: animeData,
+        }),
+        invalidatesTags: ["Anime"],
+      },
+    ),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useGetCurrentUserQuery } =
-  backendApi;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useGetCurrentUserQuery,
+  useGoogleLoginMutation,
+  useCreateAnimeMutation,
+} = backendApi;

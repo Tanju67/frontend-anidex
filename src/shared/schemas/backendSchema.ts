@@ -1,3 +1,4 @@
+import { Watch } from "react-loader-spinner";
 import { z } from "zod";
 
 export const registerSchema = z.object({
@@ -45,3 +46,21 @@ export const currentUserResponseSchema = z.object({
 // TypeScript Tipleri
 export type User = z.infer<typeof userSchema>;
 export type CurrentUserResponse = z.infer<typeof currentUserResponseSchema>;
+
+export const createWatchlistItemSchema = z.object({
+  animeId: z.number(),
+  title: z.string(),
+  images: z.string(),
+  createdBy: z.string().nullable().optional(),
+});
+
+export type CreateWatchlistItem = z.infer<typeof createWatchlistItemSchema>;
+
+export const createWatchlistResponseSchema = z.object({
+  data: createWatchlistItemSchema,
+  message: z.string(),
+});
+
+export type CreateWatchlistResponse = z.infer<
+  typeof createWatchlistResponseSchema
+>;
