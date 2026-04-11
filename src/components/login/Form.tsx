@@ -11,12 +11,15 @@ import { useLoginMutation } from "../../shared/api/backendApi";
 import { loginSchema } from "../../shared/schemas/backendSchema";
 import { toaster } from "../../shared/utils/toaster";
 import type { MyBackendError } from "../../shared/types/types";
+import { useDispatch } from "react-redux";
+import { backendApi } from "../../shared/api/backendApi";
 
 function Form() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const isLoading = false;
   const isLoadingUser = false;
+  const dispatch = useDispatch();
 
   const [login, { isLoading: isLoadingLogin }] = useLoginMutation();
 
@@ -43,6 +46,7 @@ function Form() {
       const response = await login(formData).unwrap();
       localStorage.setItem("token", response.token);
       console.log(response);
+      dispatch(backendApi.util.invalidateTags(["User"]));
       toaster("success", response.message);
       setFormData({
         email: "",

@@ -1,15 +1,26 @@
-import { MdOutlineMenuOpen } from "react-icons/md";
-import logo from "../../../assets/logo.png";
-import { NavLink } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
-import { BsBookmarkPlusFill } from "react-icons/bs";
-import { RiLoginBoxFill } from "react-icons/ri";
-import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+import { BsBookmarkPlusFill } from "react-icons/bs";
+import { FaSearch } from "react-icons/fa";
+import { MdOutlineMenuOpen } from "react-icons/md";
+import { RiLoginBoxFill, RiLogoutBoxRFill } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import logo from "../../../assets/logo.png";
+import { backendApi, useGetCurrentUserQuery } from "../../api/backendApi";
 import MenuSmallScreen from "./MenuSmallScreen";
 
 function SmallScreen() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: user } = useGetCurrentUserQuery();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatch(backendApi.util.resetApiState());
+    navigate("/login");
+  };
   return (
     <nav className="flex h-full w-full items-center px-4 md:hidden">
       <div className="flex w-full items-center justify-between">
@@ -34,7 +45,7 @@ function SmallScreen() {
             </NavLink>
           </li>
           <li className="content-center-x transtion-colors h-full p-2 duration-300 hover:bg-white/10">
-            <NavLink to="/watchlist">
+            <NavLink to={user ? "/watchlist" : "/login"}>
               <button className="content-center-x gap-1">
                 <span>
                   <BsBookmarkPlusFill />
@@ -42,15 +53,28 @@ function SmallScreen() {
               </button>
             </NavLink>
           </li>
-          <li className="content-center-x transtion-colors h-full p-2 duration-300 hover:bg-white/10">
-            <NavLink to="/login">
-              <button className="content-center-x gap-1">
-                <span>
-                  <RiLoginBoxFill />
-                </span>
-              </button>
-            </NavLink>
-          </li>
+          {user ? (
+            <>
+              <li className="content-center-x transtion-colors text-main-btn h-full p-2 duration-300 hover:bg-red-500/20">
+                <button
+                  onClick={handleLogout}
+                  className="content-center-x gap-1"
+                >
+                  <RiLogoutBoxRFill className="size-5" />
+                  <span className="">Logout </span>
+                </button>
+              </li>
+            </>
+          ) : (
+            <li className="content-center-x transtion-colors h-full p-2 duration-300 hover:bg-white/10">
+              <NavLink to="/login">
+                <button className="content-center-x gap-1">
+                  <RiLoginBoxFill className="size-5" />
+                  <span className="">Login</span>
+                </button>
+              </NavLink>
+            </li>
+          )}
         </div>
       </div>
       <AnimatePresence>

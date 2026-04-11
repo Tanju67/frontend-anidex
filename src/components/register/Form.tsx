@@ -13,6 +13,8 @@ import {
 } from "../../shared/schemas/backendSchema";
 import { toaster } from "../../shared/utils/toaster";
 import type { MyBackendError } from "../../shared/types/types";
+import { useDispatch } from "react-redux";
+import { backendApi } from "../../shared/api/backendApi";
 
 function Form() {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,6 +23,7 @@ function Form() {
     email: "",
     password: "",
   });
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -41,6 +44,7 @@ function Form() {
       const response = await register(formData).unwrap();
       localStorage.setItem("token", response.token);
       console.log(response);
+      dispatch(backendApi.util.invalidateTags(["User"]));
       toaster("success", response.message);
       setFormData({
         fullName: "",

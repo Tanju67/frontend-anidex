@@ -46,4 +46,5 @@ export const backendApi = createApi({
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation } = backendApi;
+export const { useRegisterMutation, useLoginMutation, useGetCurrentUserQuery } =
+  backendApi;
