@@ -1,4 +1,5 @@
 import { BsBookmarkPlusFill } from "react-icons/bs";
+import { RiBookmark2Fill } from "react-icons/ri";
 import {
   useCreateAnimeMutation,
   useDeleteAnimeMutation,
@@ -10,7 +11,6 @@ import type { MyBackendError } from "../../types/types";
 import { toaster } from "../../utils/toaster";
 import Spinner from "../spinner/Spinner";
 import Button from "./Button";
-import { RiBookmark2Fill } from "react-icons/ri";
 
 function WatchlistButton({
   id,
@@ -73,7 +73,7 @@ function WatchlistButton({
           onClick={handleRemove}
           className={`main-btn-sm main-text-size border-main-btn hover:bg-main-btn-hover bg-main-btn gap-2 border-2 text-white hover:border-white`}
         >
-          <span>{isLoading ? <Spinner /> : <RiBookmark2Fill />}</span>
+          <span>{isDeleting ? <Spinner /> : <RiBookmark2Fill />}</span>
         </Button>
       )}
     </>

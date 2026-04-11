@@ -1,22 +1,10 @@
 import { motion } from "framer-motion";
-import { BsBookmarkPlusFill } from "react-icons/bs";
-import { RiBookmark2Fill } from "react-icons/ri";
 import { IoInformationCircleOutline } from "react-icons/io5";
-import { data, Link } from "react-router-dom";
-import {
-  useCreateAnimeMutation,
-  useGetSingleAnimeQuery,
-} from "../../shared/api/backendApi";
+import { Link } from "react-router-dom";
 import type { SliderItemType } from "../../shared/schemas/animeSchema";
-import type { MyBackendError } from "../../shared/types/types";
 import Button from "../../shared/UIElements/button/Button";
-import Spinner from "../../shared/UIElements/spinner/Spinner";
-import { toaster } from "../../shared/utils/toaster";
-import { ToastContainer } from "react-toastify";
-import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
-import { createWatchlistItemSchema } from "../../shared/schemas/backendSchema";
-import { is } from "zod/v4/locales";
 import WatchlistButton from "../../shared/UIElements/button/WatchlistButton";
+import { ToastContainer } from "react-toastify";
 
 function SliderItem({
   title,

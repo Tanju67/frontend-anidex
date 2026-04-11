@@ -5,9 +5,12 @@ import Modal from "../../shared/UIElements/modal/Modal";
 import { useState } from "react";
 import { BsBookmarkPlusFill } from "react-icons/bs";
 import Button from "../../shared/UIElements/button/Button";
+import WatchlistButton from "../../shared/UIElements/button/WatchlistButton";
+import { ToastContainer } from "react-toastify";
 
 function GeneralDetailContent(props: SliderItemType) {
   const {
+    id,
     image,
     title,
     year,
@@ -77,24 +80,11 @@ function GeneralDetailContent(props: SliderItemType) {
                 </Button>
               )}
 
-              <Button
-                className={
-                  trailer
-                    ? `border-main-btn text-main-btn hover:bg-main-btn-hover content-center-x gap-2 border-2 px-2 hover:text-white`
-                    : "bg-main-btn hover:bg-main-btn-hover w-full px-4 py-2"
-                }
-              >
-                <span
-                  className={
-                    !trailer
-                      ? "flex w-50 items-center justify-center gap-2"
-                      : ""
-                  }
-                >
-                  {!trailer && <span>Add to Watchlist</span>}
-                  <BsBookmarkPlusFill />
-                </span>
-              </Button>
+              <WatchlistButton
+                id={String(id)}
+                title={String(title)}
+                image={image}
+              />
             </div>
 
             {/* Synopsis */}
@@ -132,6 +122,7 @@ function GeneralDetailContent(props: SliderItemType) {
           />
         </div>
       </Modal>
+      <ToastContainer />
     </section>
   );
 }
