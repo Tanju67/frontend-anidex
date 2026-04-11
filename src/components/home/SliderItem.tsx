@@ -1,9 +1,22 @@
 import { motion } from "framer-motion";
 import { BsBookmarkPlusFill } from "react-icons/bs";
+import { RiBookmark2Fill } from "react-icons/ri";
 import { IoInformationCircleOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
+import {
+  useCreateAnimeMutation,
+  useGetSingleAnimeQuery,
+} from "../../shared/api/backendApi";
 import type { SliderItemType } from "../../shared/schemas/animeSchema";
+import type { MyBackendError } from "../../shared/types/types";
 import Button from "../../shared/UIElements/button/Button";
+import Spinner from "../../shared/UIElements/spinner/Spinner";
+import { toaster } from "../../shared/utils/toaster";
+import { ToastContainer } from "react-toastify";
+import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
+import { createWatchlistItemSchema } from "../../shared/schemas/backendSchema";
+import { is } from "zod/v4/locales";
+import WatchlistButton from "../../shared/UIElements/button/WatchlistButton";
 
 function SliderItem({
   title,
@@ -52,16 +65,17 @@ function SliderItem({
               </span>
               <span>More Details</span>
             </Button>
-            <Button className="border-main-btn text-main-btn hover:bg-main-btn-hover main-btn-sm main-text-size gap-2 border-2 hover:text-white">
-              <span>
-                <BsBookmarkPlusFill />
-              </span>
-            </Button>
+            <WatchlistButton
+              id={String(id)}
+              title={String(title)}
+              image={image}
+            />
           </div>
         </div>
       </div>
 
       <div className="hidden flex-1 md:block" />
+      <ToastContainer />
     </motion.div>
   );
 }

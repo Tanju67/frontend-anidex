@@ -48,9 +48,9 @@ export type User = z.infer<typeof userSchema>;
 export type CurrentUserResponse = z.infer<typeof currentUserResponseSchema>;
 
 export const createWatchlistItemSchema = z.object({
-  animeId: z.number(),
+  animeId: z.string(),
   title: z.string(),
-  images: z.string(),
+  image: z.string(),
   createdBy: z.string().nullable().optional(),
 });
 

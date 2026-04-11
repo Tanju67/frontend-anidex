@@ -58,13 +58,30 @@ export const backendApi = createApi({
     createAnime: builder.mutation<CreateWatchlistResponse, CreateWatchlistItem>(
       {
         query: (animeData) => ({
-          url: "/animes",
+          url: "/anime",
           method: "POST",
           body: animeData,
         }),
         invalidatesTags: ["Anime"],
       },
     ),
+
+    getSingleAnime: builder.query<CreateWatchlistItem, string>({
+      query: (id) => `/anime/${id}`,
+
+      transformResponse: (response: CreateWatchlistResponse) => {
+        return response.data;
+      },
+      providesTags: ["Anime"],
+    }),
+
+    deleteAnime: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/anime/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Anime"],
+    }),
   }),
 });
 
@@ -74,4 +91,6 @@ export const {
   useGetCurrentUserQuery,
   useGoogleLoginMutation,
   useCreateAnimeMutation,
+  useGetSingleAnimeQuery,
+  useDeleteAnimeMutation,
 } = backendApi;
