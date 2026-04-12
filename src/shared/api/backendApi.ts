@@ -6,6 +6,7 @@ import type {
   LoginFormData,
   RegisterFormData,
   User,
+  UserAllAnimeResponse,
 } from "../schemas/backendSchema";
 import type { LoginResponse, RegisterResponse } from "../types/types";
 
@@ -82,6 +83,17 @@ export const backendApi = createApi({
       }),
       invalidatesTags: ["Anime"],
     }),
+
+    getUserAllAnime: builder.query<
+      UserAllAnimeResponse,
+      { page: number; limit: number }
+    >({
+      query: ({ page, limit }) => `/anime?limit=${limit}&page=${page}`,
+      transformResponse: (response: UserAllAnimeResponse) => {
+        return response;
+      },
+      providesTags: ["Anime"],
+    }),
   }),
 });
 
@@ -93,4 +105,5 @@ export const {
   useCreateAnimeMutation,
   useGetSingleAnimeQuery,
   useDeleteAnimeMutation,
+  useLazyGetUserAllAnimeQuery,
 } = backendApi;

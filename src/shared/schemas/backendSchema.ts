@@ -1,4 +1,3 @@
-import { Watch } from "react-loader-spinner";
 import { z } from "zod";
 
 export const registerSchema = z.object({
@@ -64,3 +63,19 @@ export const createWatchlistResponseSchema = z.object({
 export type CreateWatchlistResponse = z.infer<
   typeof createWatchlistResponseSchema
 >;
+
+export const userAllAnimeResponseSchema = z.object({
+  data: z.array(createWatchlistItemSchema),
+  pagination: z.object({
+    currentPage: z.number(),
+    has_next_page: z.boolean(),
+  }),
+});
+
+export type UserAllAnimeResponse = {
+  data: Array<CreateWatchlistItem>;
+  pagination: {
+    currentPage: number;
+    has_next_page: boolean;
+  };
+};
