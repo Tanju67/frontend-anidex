@@ -13,7 +13,7 @@ function RowSliderItem({ image, title, year, id }: RowSliderItemType) {
       {/* Overlay */}
       <Link
         to={`/anime/${id}`}
-        className="hover:border-main-btn absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-black/70 opacity-0 transition-all duration-300 group-hover:opacity-100 hover:border-2"
+        className="hover:border-main-btn absolute inset-0 z-10 flex items-center justify-center rounded-lg border-2 bg-black/50 opacity-0 transition-all duration-300 group-hover:opacity-100 hover:border-2"
       ></Link>
 
       {/* Bottom Info */}

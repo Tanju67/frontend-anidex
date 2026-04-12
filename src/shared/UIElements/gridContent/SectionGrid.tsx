@@ -69,8 +69,12 @@ function SectionGrid({
     setStatus(status);
     setIsStatusOpen(false);
   };
+
+  const isWatchlist = title === "My Watchlist";
   return (
-    <section className="mx-auto min-h-screen max-w-300 p-4 lg:p-10">
+    <section
+      className={`mx-auto max-w-300 p-4 lg:p-10 ${isWatchlist ? "h-auto" : "min-h-screen"}`}
+    >
       <div className="mb-2 flex items-center justify-between sm:mb-4 md:mb-6 lg:mb-10">
         <h2 className="section-title-size">{title}</h2>
         <div className="relative">

@@ -13,10 +13,8 @@ function GridContentItem({ id, title, image }: RowSliderItemType) {
           />
           <Link
             to={`/anime/${id}`}
-            className="hover:border-main-btn absolute inset-0 z-10 flex items-center justify-center bg-black/70 opacity-0 transition-all duration-300 group-hover:opacity-100 hover:border-2"
-          >
-            <span className="bg-main-btn/50 hover:bg-main-btn h-10 w-10 rounded-full transition-colors duration-300"></span>
-          </Link>
+            className="hover:border-main-btn absolute inset-0 z-10 flex items-center justify-center border-2 bg-black/50 opacity-0 transition-all duration-300 group-hover:opacity-100"
+          ></Link>
         </div>
 
         <div>
