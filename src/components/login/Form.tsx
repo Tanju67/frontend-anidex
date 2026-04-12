@@ -20,11 +20,9 @@ import { toaster } from "../../shared/utils/toaster";
 function Form() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const isLoading = false;
-  const isLoadingUser = false;
   const dispatch = useDispatch();
 
-  const [login, { isLoading: isLoadingLogin }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const [googleLoginMutation] = useGoogleLoginMutation();
 
   const [formData, setFormData] = useState({
@@ -32,8 +30,23 @@ function Form() {
     password: "",
   });
 
-  const handleUserLogin = async (e: SyntheticEvent) => {
-    e.preventDefault();
+  const [demoLogin, setDemoLogin] = useState({
+    email: "test@mail.com",
+    password: "secret123",
+  });
+
+  const handleUserLogin = async () => {
+    try {
+      const response = await login(demoLogin).unwrap();
+      localStorage.setItem("token", response.token);
+      dispatch(backendApi.util.invalidateTags(["User"]));
+      toaster("success", response.message);
+      setTimeout(() => navigate("/"), 1500);
+    } catch (error) {
+      const err = error as MyBackendError;
+      const message = err.data?.message || "Something went wrong";
+      toaster("error", message);
+    }
   };
 
   const handleGoogleSuccess = async (
@@ -152,10 +165,10 @@ function Form() {
 
               <Button
                 type="submit"
-                className="bg-main-btn hover:bg-main-btn-hover w-full p-2"
+                className="bg-main-btn hover:bg-main-btn-hover content-center-x w-full p-2"
                 disabled={isLoading}
               >
-                {isLoadingLogin ? (
+                {isLoading ? (
                   <>
                     <Spinner />
                     Loading...
@@ -177,11 +190,11 @@ function Form() {
               <div className="flex gap-2">
                 <Button
                   type="button"
-                  disabled={isLoadingUser}
-                  // onClick={handleUserLogin}
-                  className="w-full bg-blue-600 p-2 text-xs text-white hover:bg-blue-700 md:text-sm lg:text-base"
+                  disabled={isLoading}
+                  onClick={handleUserLogin}
+                  className="content-center-x w-full bg-blue-600 p-2 text-xs text-white hover:bg-blue-700 md:text-sm lg:text-base"
                 >
-                  {isLoadingUser ? (
+                  {isLoading ? (
                     <>
                       <Spinner />
                       Loading...
