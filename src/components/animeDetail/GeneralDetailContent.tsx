@@ -91,15 +91,13 @@ function GeneralDetailContent(props: SliderItemType) {
 
             {genres.length > 0 && (
               <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center">
-                {/* Başlık ve İkon */}
                 <div className="text-main-btn flex items-center gap-2 opacity-90">
                   <PiTelevision className="text-lg" />
-                  <span className="text-[10px] font-bold tracking-[0.2em] uppercase">
+                  <span className="text-xs font-bold tracking-[0.2em] uppercase">
                     Genres
                   </span>
                 </div>
 
-                {/* Tür Etiketleri */}
                 <div className="flex flex-wrap gap-2">
                   {genres.map((genre, index) => (
                     <span
@@ -113,7 +111,6 @@ function GeneralDetailContent(props: SliderItemType) {
               </div>
             )}
 
-            {/* Buttons */}
             <div className="my-2 hidden gap-2 sm:flex">
               {trailer && (
                 <Button
@@ -136,7 +133,7 @@ function GeneralDetailContent(props: SliderItemType) {
             {synopsis && (
               <>
                 <p
-                  className={`hidden text-start italic ${!isExpanded ? "opacity-80 lg:line-clamp-3" : "opacity-100 lg:line-clamp-none"}`}
+                  className={`hidden text-start italic ${!isExpanded ? "lg:line-clamp-3" : "lg:line-clamp-none"}`}
                 >
                   <span className="text-main-btn mr-2 font-bold tracking-widest uppercase">
                     Synopsis:
@@ -180,7 +177,7 @@ function GeneralDetailContent(props: SliderItemType) {
         <div className="lg:hidden">
           {synopsis && (
             <p
-              className={`mt-4 text-start italic ${!isExpanded ? "line-clamp-3 opacity-80" : "line-clamp-none opacity-100"}`}
+              className={`mt-4 text-start italic ${!isExpanded ? "line-clamp-3" : "line-clamp-none"}`}
             >
               <span className="text-main-btn mr-2 font-bold tracking-widest uppercase">
                 Synopsis:

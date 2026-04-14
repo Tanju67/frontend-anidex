@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { PersonType } from "../../shared/schemas/animeSchema";
 import ImagePlaceholder from "../../shared/UIElements/imagePlaceholder/ImagePlaceholder";
 
@@ -7,7 +8,7 @@ type Props = {
 
 function About({ data }: Props) {
   const { about, name, nicknames, image } = data;
-  console.log(data);
+  const [isExpanded, setIsExpanded] = useState(false);
   return (
     <section className="main-text-size relative">
       <div className="min-h-50 md:min-h-80 lg:min-h-120">
@@ -26,7 +27,19 @@ function About({ data }: Props) {
               <span>{nicknames.join(", ")}</span>
             </p>
           )}
-          <p className="italic">{about}</p>
+          <p
+            className={`italic ${isExpanded ? "" : "line-clamp-4 md:line-clamp-8 lg:line-clamp-14"}`}
+          >
+            {about}
+          </p>
+          {about && about.length > 1000 && (
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="text-main-btn mb-4 text-xs font-bold tracking-tighter uppercase transition-colors hover:text-white"
+            >
+              {isExpanded ? "Show Less ▲" : "Read More ▼"}
+            </button>
+          )}
         </div>
       </div>
     </section>

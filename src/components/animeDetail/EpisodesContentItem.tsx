@@ -70,16 +70,15 @@ function EpisodesContentItem(props: EpisodeType) {
           </div>
 
           {aired && (
-            <span className="hidden text-xs font-medium text-white/30 uppercase sm:block lg:hidden xl:block">
+            <span className="text-xs font-medium text-white/30 uppercase">
               {formatDate(aired)}
             </span>
           )}
         </div>
 
-        {/* Alt Satır: Bölüm Başlığı */}
         <div className="mt-1">
           <h4
-            className={`main-text-size font-semibold transition-colors ${expanded ? "text-main-btn" : "text-gray-200"}`}
+            className={`main-text-size font-semibold transition-colors ${expanded ? "text-main-btn" : ""}`}
           >
             {title}
           </h4>

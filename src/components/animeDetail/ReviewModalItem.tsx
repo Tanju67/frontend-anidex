@@ -7,38 +7,51 @@ interface ReviewModalItemProps {
 }
 
 function ReviewModalItem({ reviewItem }: ReviewModalItemProps) {
-  const { name, date, image, review, score, like, dislike } = reviewItem!;
+  // Veri yoksa boş dön veya yükleniyor göster (crash olmaması için)
+  if (!reviewItem) return null;
+
+  const { name, date, image, review, score, like, dislike } = reviewItem;
+
   return (
-    <li className="bg-white/10 p-4">
-      <div className="mb-2 flex items-center">
-        <div className="flex items-center gap-2">
+    <div className="flex h-full max-h-[80vh] flex-col">
+      <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
+        <div className="flex items-center gap-3">
           <img
             src={image}
             alt={name}
-            className="h-10 w-10 rounded-full sm:h-12 sm:w-12 md:h-14 md:w-14 xl:h-16 xl:w-16"
+            className="border-main-btn/30 h-12 w-12 rounded-full border-2 object-cover"
           />
-          <span className="font-bold">{name}</span>
-          <span>⭐ {score}/10</span>
+          <div className="flex flex-col">
+            <span className="text-lg leading-none font-bold text-gray-100">
+              {name}
+            </span>
+            <span className="mt-1 text-sm font-medium text-yellow-500">
+              ⭐ {score}/10
+            </span>
+          </div>
         </div>
-        <div className="flex-1 text-end">{formatDate(date)}</div>
+        <div className="text-xs font-semibold tracking-widest text-white/30 uppercase">
+          {formatDate(date)}
+        </div>
       </div>
 
-      <div className="relative mb-2 h-100 overflow-y-scroll">
-        <span>{review}</span>
+      <div className="custom-scrollbar flex-1 overflow-y-auto pr-2">
+        <p className="main-text-size leading-relaxed whitespace-pre-line text-gray-300 italic">
+          {review}
+        </p>
       </div>
-      <div className="flex items-center justify-between">
-        <div className="flex gap-4">
-          <span className="content-center-x gap-1">
-            <SlLike />
-            {like}
-          </span>
-          <span className="content-center-x gap-1">
-            <SlDislike />
-            {dislike}
-          </span>
+
+      <div className="mt-6 flex items-center justify-end gap-6 border-t border-white/10 pt-4 text-white/50">
+        <div className="flex items-center gap-2 transition-colors hover:text-green-500">
+          <SlLike className="text-lg" />
+          <span className="font-bold">{like}</span>
+        </div>
+        <div className="flex items-center gap-2 transition-colors hover:text-red-500">
+          <SlDislike className="text-lg" />
+          <span className="font-bold">{dislike}</span>
         </div>
       </div>
-    </li>
+    </div>
   );
 }
 
