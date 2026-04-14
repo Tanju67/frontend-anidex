@@ -91,7 +91,7 @@ function SectionGrid({
                     setIsRatingOpen(false);
                   }}
                 >
-                  <GrSort className="h-6 w-6" />
+                  <GrSort className="h-4 w-4 sm:h-6 sm:w-6" />
                 </FilterButton>
                 <FilterDropdown isDropdownOpen={isStatusOpen}>
                   {statusData!.map((item) => (
@@ -102,7 +102,7 @@ function SectionGrid({
                       onChange={() => statusHandler(item.value as AnimeStatus)}
                     />
                   ))}
-                </FilterDropdown>{" "}
+                </FilterDropdown>
               </>
             )}
             {rating && (
@@ -117,7 +117,7 @@ function SectionGrid({
                     setIsStatusOpen(false);
                   }}
                 >
-                  <TbRating18Plus className="h-6 w-6" />
+                  <TbRating18Plus className="h-4 w-4 sm:h-6 sm:w-6" />
                 </FilterButton>
                 <FilterDropdown isDropdownOpen={isRatingOpen}>
                   {ratingData!.map((item) => (
@@ -143,7 +143,7 @@ function SectionGrid({
                     setIsStatusOpen(false);
                   }}
                 >
-                  <ImSortAmountDesc className="h-6 w-6" />
+                  <ImSortAmountDesc className="h-4 w-4 sm:h-6 sm:w-6" />
                 </FilterButton>
                 <FilterDropdown isDropdownOpen={isFilterOpen}>
                   {filterData!.map((item) => (
@@ -169,7 +169,7 @@ function SectionGrid({
                     setIsStatusOpen(false);
                   }}
                 >
-                  <TbFilter2Pause className="h-6 w-6" />
+                  <TbFilter2Pause className="h-4 w-4 sm:h-6 sm:w-6" />
                 </FilterButton>
                 <FilterDropdown isDropdownOpen={isOpen}>
                   {typeData!.map((item) => (

@@ -59,18 +59,18 @@ function Form() {
     }
   };
   return (
-    <div className="container-box mt-28 md:mt-0">
-      <div className="grid min-h-screen lg:grid-cols-2">
+    <div className="main-text-size py-8">
+      <div className="grid md:min-h-screen lg:grid-cols-2">
         <div className="flex flex-col items-center justify-center p-6 sm:p-12">
           <div className="w-full max-w-md space-y-8">
-            <div className="mb-8 text-center">
-              <div className="group flex flex-col items-center gap-2">
+            <div className="mb-4 text-center lg:mb-8">
+              <div className="group flex flex-col items-center gap-1 sm:gap-2">
                 <h1 className="mt-2 text-2xl font-bold">Create Account</h1>
                 <p className="">Get started with your free account</p>
               </div>
             </div>
 
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div className="form-control text-gray-700">
                 <label className="label text-white">
                   <span className="label-text font-medium">Full Name</span>
@@ -144,7 +144,7 @@ function Form() {
 
               <Button
                 type="submit"
-                className="bg-main-btn content-center-x w-full p-2"
+                className="bg-main-btn content-center-x w-full p-3 lg:p-2"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -169,14 +169,14 @@ function Form() {
           </div>
         </div>
 
-        <div className="content-center-x relative hidden lg:flex">
+        <div className="relative hidden h-full w-full items-center justify-center overflow-hidden lg:flex">
           <img
             src={img}
-            alt=""
-            className="h-200 w-200 -rotate-90 mask-[radial-gradient(45%_55%_at_60%_40%,white_40%,transparent_60%),radial-gradient(50%_40%_at_30%_50%,white_30%,transparent_50%),radial-gradient(35%_45%_at_50%_70%,white_25%,transparent_45%)] object-cover object-center contrast-80 grayscale-[0.3] saturate-30"
+            alt="Login Decoration"
+            className="aspect-square h-[80%] w-auto -rotate-90 mask-[radial-gradient(45%_55%_at_60%_40%,white_40%,transparent_60%),radial-gradient(50%_40%_at_30%_50%,white_30%,transparent_50%),radial-gradient(35%_45%_at_50%_70%,white_25%,transparent_45%)] object-cover contrast-80 grayscale-[0.3] saturate-30 transition-all duration-500"
           />
 
-          <div className="absolute inset-0 bg-[radial-gradient(circle,transparent_10%,black_70%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,transparent_10%,black_70%)]" />
         </div>
         <ToastContainer />
       </div>

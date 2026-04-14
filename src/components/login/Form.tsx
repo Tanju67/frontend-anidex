@@ -100,18 +100,18 @@ function Form() {
     }
   };
   return (
-    <div className="container-box mt-28 md:mt-0">
-      <div className="grid min-h-screen lg:grid-cols-2">
+    <div className="main-text-size py-8">
+      <div className="grid md:min-h-screen lg:grid-cols-2">
         <div className="flex flex-col items-center justify-center p-6 sm:p-12">
           <div className="w-full max-w-md space-y-8">
-            <div className="mb-8 text-center">
-              <div className="group flex flex-col items-center gap-2">
+            <div className="mb-4 text-center lg:mb-8">
+              <div className="group flex flex-col items-center gap-1 sm:gap-2">
                 <h1 className="mt-2 text-2xl font-bold">Welcome Back</h1>
                 <p className="text-text-dark">Sign in to your account</p>
               </div>
             </div>
 
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div className="form-control">
                 <label className="label text-white">
                   <span className="label-text font-medium">Email</span>
@@ -163,36 +163,36 @@ function Form() {
                 </div>
               </div>
 
-              <Button
-                type="submit"
-                className="bg-main-btn hover:bg-main-btn-hover content-center-x w-full p-2"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Spinner />
-                    Loading...
-                  </>
-                ) : (
-                  "Sign In "
-                )}
-              </Button>
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={() => toaster("error", "Login failed")}
-                useOneTap
-                theme="outline"
-                shape="rectangular"
-                size="large"
-                text="signin_with"
-              />
+              <div className="space-y-4 md:space-y-6">
+                <Button
+                  type="submit"
+                  className="bg-main-btn hover:bg-main-btn-hover content-center-x w-full p-3 md:p-2"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <Spinner />
+                      Loading...
+                    </>
+                  ) : (
+                    "Sign In "
+                  )}
+                </Button>
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={() => toaster("error", "Login failed")}
+                  useOneTap
+                  theme="outline"
+                  shape="rectangular"
+                  size="large"
+                  text="signin_with"
+                />
 
-              <div className="flex gap-2">
                 <Button
                   type="button"
                   disabled={isLoading}
                   onClick={handleUserLogin}
-                  className="content-center-x w-full bg-blue-600 p-2 text-xs text-white hover:bg-blue-700 md:text-sm lg:text-base"
+                  className="content-center-x w-full bg-blue-600 p-3 text-white hover:bg-blue-700 md:p-2"
                 >
                   {isLoading ? (
                     <>
@@ -217,15 +217,16 @@ function Form() {
           </div>
         </div>
 
-        <div className="content-center-x relative hidden lg:flex">
+        <div className="relative hidden h-full min-h-125 w-full items-center justify-center overflow-hidden lg:flex">
           <img
             src={img}
-            alt=""
-            className="h-200 w-200 -rotate-90 mask-[radial-gradient(45%_55%_at_60%_40%,white_40%,transparent_60%),radial-gradient(50%_40%_at_30%_50%,white_30%,transparent_50%),radial-gradient(35%_45%_at_50%_70%,white_25%,transparent_45%)] object-cover object-center contrast-80 grayscale-[0.3] saturate-30"
+            alt="Login Image"
+            className="aspect-square h-auto w-full max-w-125 -rotate-90 mask-[radial-gradient(45%_55%_at_60%_40%,white_40%,transparent_60%),radial-gradient(50%_40%_at_30%_50%,white_30%,transparent_50%),radial-gradient(35%_45%_at_50%_70%,white_25%,transparent_45%)] object-cover object-center contrast-80 grayscale-[0.3] saturate-30 xl:max-w-175"
           />
 
-          <div className="absolute inset-0 bg-[radial-gradient(circle,transparent_10%,black_70%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,transparent_10%,black_70%)]" />
         </div>
+
         <ToastContainer />
       </div>
     </div>

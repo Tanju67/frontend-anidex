@@ -57,6 +57,7 @@ function SliderItem({
               id={String(id)}
               title={String(title)}
               image={image}
+              trailer={true}
             />
           </div>
         </div>

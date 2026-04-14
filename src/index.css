@@ -5,9 +5,11 @@
 
 @theme {
   --font-primary: "Manrope", sans-serif;
-  --font-secondary: "Outfit", sans-serif --color-bg: #fff;
-  --color-text-main: #fff;
+  --font-secondary: "Outfit", sans-serif;
+  --color-text-main: #ddd;
   --color-bg: #000;
+  --color-nav: #1a1a1a;
+  --color-nav-secondary: #3a3a3a;
   --color-main-btn: #c70039;
   --color-main-btn-hover: #b30033;
 
@@ -50,15 +52,21 @@ a {
 }
 
 .animeTitle {
-  @apply mb-2 line-clamp-1 cursor-pointer bg-linear-to-r from-orange-400 to-pink-500 bg-clip-text text-xl font-extrabold tracking-wide text-transparent drop-shadow-lg sm:text-2xl md:text-3xl lg:mb-4 lg:text-5xl;
+  @apply mb-2 line-clamp-1 cursor-pointer bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-xl font-extrabold tracking-wide text-transparent drop-shadow-lg sm:text-2xl md:text-3xl lg:mb-4 lg:text-5xl;
 }
 
 .overlay-header {
   @apply absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,1),rgba(0,0,0,.6),rgba(0,0,0,.3),rgba(0,0,0,.8),rgba(0,0,0,.9),rgba(0,0,0,1))] md:bg-[linear-gradient(to_left,rgba(0,0,0,0),rgba(0,0,0,0),rgba(0,0,0,.7),rgba(0,0,0,.8),rgba(0,0,0,.9),rgba(0,0,0,1))] lg:bg-[radial-gradient(circle_at_right,rgba(0,0,0,0),rgba(0,0,0,.6),rgba(0,0,0,1),rgba(0,0,0,1),rgba(0,0,0,1))];
 }
 
-.main-text-size {
+/* .main-text-size {
   @apply text-xs sm:text-sm md:text-base lg:text-lg;
+  @apply leading-relaxed text-gray-300;
+} */
+
+.main-text-size {
+  @apply text-sm md:text-base;
+  @apply leading-relaxed text-[#e1e1e1];
 }
 
 .main-btn-sm {
@@ -87,6 +95,7 @@ a {
 
 .section-title-size {
   @apply text-base sm:text-lg md:text-2xl lg:text-3xl;
+  @apply font-bold tracking-tight text-slate-100;
 }
 
 .section-subtitle-size {

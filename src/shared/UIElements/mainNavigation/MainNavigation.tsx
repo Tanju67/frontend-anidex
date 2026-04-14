@@ -3,7 +3,7 @@ import SmallScreen from "./SmallScreen";
 
 function MainNavigation() {
   return (
-    <nav className="fixed z-50 h-(--nav-height) w-full bg-slate-800 text-white">
+    <nav className="bg-nav/80 fixed z-50 h-(--nav-height) w-full border-b border-white/10 backdrop-blur-md">
       <BigScreen />
       <SmallScreen />
     </nav>

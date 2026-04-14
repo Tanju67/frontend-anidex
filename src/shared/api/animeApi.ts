@@ -216,6 +216,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response: EpisodesResponseType) => {
+        console.log(response);
         return response;
       },
       keepUnusedDataFor: 60,

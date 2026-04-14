@@ -34,7 +34,7 @@ function SmallScreen() {
             </NavLink>
           </div>
         </div>
-        <div className="flex">
+        <div className="content-center-x flex">
           <li className="content-center-x transtion-colors h-full p-2 duration-300 hover:bg-white/10">
             <NavLink to="/search">
               <button className="content-center-x gap-1">
@@ -80,16 +80,20 @@ function SmallScreen() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "100%" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-0 right-0 bottom-0 left-0 z-50 h-screen overflow-scroll bg-black"
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ type: "tween", duration: 0.3 }}
+            // inset-0 ve z-index ile tüm ekranı kusursuz kaplıyoruz
+            className="fixed inset-0 z-1000 h-screen w-full overflow-y-auto bg-black"
           >
+            {/* Menü İçeriği */}
             <MenuSmallScreen handleNavmenu={setIsOpen} />
+
+            {/* Kapatma Butonu - Z-index ile en üste aldık */}
             <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="absolute top-4 right-10 text-4xl transition-all duration-100 hover:scale-120 hover:rotate-180"
+              onClick={() => setIsOpen(false)}
+              className="absolute top-4 right-6 z-1001 text-5xl font-light text-white"
             >
               &times;
             </button>

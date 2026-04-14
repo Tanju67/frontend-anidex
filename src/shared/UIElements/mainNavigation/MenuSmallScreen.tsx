@@ -12,77 +12,76 @@ type Props = {
 
 function MenuSmallScreen({ handleNavmenu }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <>
-      <div
-        style={{ backgroundImage: `url(${navBg})` }}
-        className="relative flex min-h-screen w-full flex-col bg-cover bg-fixed bg-center bg-no-repeat px-4 py-10"
-      >
-        <div className="fixed inset-0 bg-linear-to-r from-black/90 via-black/90 to-black/50" />
-        <div className="z-20 h-full p-2">
-          <NavLink to="/">
+    <div
+      style={{ backgroundImage: `url(${navBg})` }}
+      className="relative min-h-screen w-full bg-cover bg-fixed bg-center bg-no-repeat px-6 py-12"
+    >
+      <div className="absolute inset-0 z-0 bg-linear-to-r from-black via-black/80 to-transparent" />
+
+      {/* İçerik: z-10 vererek karartmanın üzerine çıkarıyoruz */}
+      <div className="relative z-10 flex flex-col gap-8">
+        <div>
+          <NavLink to="/" onClick={() => handleNavmenu(false)}>
             <img src={logo} alt="logo" className="h-12" />
           </NavLink>
         </div>
-        <ul className="z-20 flex w-full flex-col">
-          <li className="w-full p-4 transition-all duration-300 hover:bg-white/10">
+
+        <ul className="flex w-full flex-col text-xl">
+          <li className="border-b border-white/5 py-4">
             <NavLink onClick={() => handleNavmenu(false)} to="/new">
               New
             </NavLink>
           </li>
-          <li className="w-full p-4 transition-all duration-300 hover:bg-white/10">
+          <li className="border-b border-white/5 py-4">
             <NavLink onClick={() => handleNavmenu(false)} to="/this-season">
               This Season
             </NavLink>
           </li>
-          <li className="w-full p-4 transition-all duration-300 hover:bg-white/10">
+          <li className="border-b border-white/5 py-4">
             <NavLink onClick={() => handleNavmenu(false)} to="/popular">
               Popular
             </NavLink>
           </li>
-          <li className="w-full p-4 transition-all duration-300 hover:bg-white/10">
+
+          <li className="py-4">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="content-center-x gap-1"
+              className="flex w-full items-center gap-2"
             >
               <span>Categories</span>
-              <span>{isOpen ? <FaCaretUp /> : <FaCaretDown />}</span>
+              {isOpen ? <FaCaretUp /> : <FaCaretDown />}
             </button>
+
             <AnimatePresence>
               {isOpen && (
-                <>
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className=""
-                  >
-                    <ul
-                      className={`grid grid-cols-3 ${isOpen ? "bg-white/10" : ""}`}
-                    >
-                      {genres.map((genre) => (
-                        <li
-                          className={"hover:bg-main-btn/50 w-full px-2 py-2"}
-                          key={genre.id}
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="overflow-hidden"
+                >
+                  <ul className="mt-4 grid grid-cols-2 gap-2 rounded-lg bg-white/5 p-4 text-base">
+                    {genres.map((genre) => (
+                      <li key={genre.id} className="py-1">
+                        <NavLink
+                          to={`/genre/${genre.id}`}
+                          onClick={() => handleNavmenu(false)}
+                          className="hover:text-main-btn"
                         >
-                          <NavLink
-                            to={`/genre/${genre.id}`}
-                            onClick={() => handleNavmenu(false)}
-                          >
-                            {genre.name}
-                          </NavLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                </>
+                          {genre.name}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
               )}
             </AnimatePresence>
           </li>
         </ul>
       </div>
-    </>
+    </div>
   );
 }
 

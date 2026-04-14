@@ -8,11 +8,11 @@ function Filter({
   onChange: () => void;
 }) {
   return (
-    <label className="label cursor-pointer gap-2">
+    <label className="label main-text-size cursor-pointer gap-2">
       <input
         type="radio"
         name="anime-type"
-        className="radio text-main-btn border-main-btn border-2"
+        className="radio radio-sm sm:radio-md md:radio-lg text-main-btn border-main-btn border-2"
         checked={checkedValue}
         onChange={onChange}
       />

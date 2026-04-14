@@ -3,7 +3,6 @@ import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { SliderItemSchema } from "../../shared/schemas/animeSchema";
 import RandomAnimeItemSkeleton from "../../shared/UIElements/skeleton/RandomAnimeItemSkeleton";
-import CardSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
 import RandomAnimeItem from "./RandomAnimeItem";
 
 function RandomAnime() {
@@ -24,9 +23,24 @@ function RandomAnime() {
     return <div ref={ref} className="min-h-100" />;
   }
 
-  if (isLoading) return <RandomAnimeItemSkeleton />;
+  if (isLoading)
+    return (
+      <div>
+        <h2 className="section-title-size mb-2 md:mb-4 md:text-center">
+          Discover Something New
+        </h2>
+        <RandomAnimeItemSkeleton />
+      </div>
+    );
   if (isError || !data)
-    return <div className="text-center opacity-60">No data found</div>;
+    return (
+      <div>
+        <h2 className="section-title-size mb-2 md:mb-4 md:text-center">
+          Discover Something New
+        </h2>
+        <div className="text-center opacity-60">No data found</div>
+      </div>
+    );
 
   return (
     <div ref={ref} className="section-padding main-text-size">

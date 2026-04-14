@@ -22,29 +22,25 @@ function RandomAnimeItem({
       className="relative w-full bg-cover bg-center bg-no-repeat lg:py-8"
       style={{ backgroundImage: `url(${image})` }}
     >
-      {/* 🌑 Gradient overlay (Netflix style) */}
       <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/95 to-black/90" />
 
-      {/* 🎯 Content */}
       <motion.div
         className="content-center-x relative z-10 mx-auto h-full gap-4 p-2 text-center md:p-12 lg:w-4/5 lg:gap-16 lg:p-4"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <div className="">
+        <div className="flex-1">
           <img
             src={image}
             alt=""
-            className="h-60 w-40 rounded-2xl object-cover md:h-80 md:w-50 lg:h-120 lg:w-80"
+            className="aspect-2/3 rounded-2xl object-cover"
           />
         </div>
-        <div className="flex w-full flex-1 flex-col items-start justify-start gap-1">
-          {/* Title */}
+        <div className="flex w-full flex-2 flex-col items-start justify-start gap-1">
           <Link to={`/anime/${id}`} className="text-start">
             <h2 className="animeTitle">{title}</h2>
           </Link>
 
-          {/* Info */}
           {year && (
             <div className="flex items-center justify-start gap-2 text-sm md:text-base lg:text-lg">
               <span>
@@ -59,7 +55,6 @@ function RandomAnimeItem({
             {duration && <span>⌛ {duration}</span>}
           </div>
 
-          {/* Synopsis */}
           {synopsis && (
             <p className="my-2 hidden text-start text-sm text-gray-300 italic md:line-clamp-3 md:text-base lg:line-clamp-6 lg:text-lg">
               {synopsis}
@@ -76,7 +71,6 @@ function RandomAnimeItem({
             </div>
           )}
 
-          {/* Buttons */}
           <div className="mt-4 flex w-full gap-4 text-sm md:text-base lg:text-lg">
             <Button
               isLink={true}

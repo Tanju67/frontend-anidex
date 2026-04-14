@@ -34,6 +34,8 @@ function Categories() {
 
   const genreObj = genres.find((g) => g.id === +genreId!);
 
+  const GenreIcon = genreObj?.icon;
+
   useEffect(() => {
     setPage(1);
     setAllAnime([]);
@@ -118,12 +120,16 @@ function Categories() {
   }
 
   return (
-    <div className="py-10">
+    <div className="py-4 md:py-10">
       <h2 className="section-title-size content-center-x gap-2 uppercase">
-        <span>{genreObj?.emoji}</span>
+        {GenreIcon && (
+          <GenreIcon size={32} strokeWidth={1.5} className="text-main-btn" />
+        )}
         <span>{genreObj?.name}</span>
       </h2>
-      <p className="mx-auto mt-2 w-80 text-center">{genreObj?.description}</p>
+      <p className="main-text-size mx-auto mt-2 w-80 text-center">
+        {genreObj?.description}
+      </p>
       <SectionGrid
         title={genreObj?.name as string}
         type={type}

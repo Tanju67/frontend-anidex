@@ -37,7 +37,7 @@ function SearchLayout() {
   return (
     <section className="min-h-screen">
       {/* Fixed input */}
-      <div className="fixed z-50 h-20 w-full bg-[#333] md:h-30">
+      <div className="bg-nav-secondary/80 fixed z-40 h-20 w-full backdrop-blur-md md:h-30">
         <div className="mx-auto h-full max-w-300">
           <SearchInput search={inputValue} handleChange={setInputValue} />
         </div>

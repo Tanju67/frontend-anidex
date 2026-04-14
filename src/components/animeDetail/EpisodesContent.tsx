@@ -7,7 +7,7 @@ type EpisodesContentProps = {
 
 function EpisodesContent({ data }: EpisodesContentProps) {
   return (
-    <ul className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+    <ul className="grid grid-cols-1 items-start gap-2 lg:grid-cols-2">
       {data.map((item) => (
         <EpisodesContentItem key={item.id} {...item} />
       ))}

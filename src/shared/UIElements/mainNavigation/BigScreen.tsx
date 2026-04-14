@@ -23,7 +23,7 @@ function BigScreen() {
     navigate("/login");
   };
   return (
-    <ul className="hidden h-full justify-between px-16 md:flex">
+    <ul className="hidden h-full justify-between px-2 md:flex lg:px-16">
       <div className="flex">
         <div className="content-center-x h-full p-2">
           <NavLink to="/">
@@ -100,24 +100,21 @@ function BigScreen() {
           <>
             <div
               onClick={() => setIsOpen(false)}
-              className="fixed top-(--nav-height) left-0 h-screen w-full bg-slate-900/50"
+              className="bg-nav/50 fixed top-(--nav-height) left-0 h-screen w-full backdrop-blur-3xl!"
             ></div>
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="absolute top-(--nav-height) left-63.5 w-[50vw] bg-slate-900 p-4 lg:w-[30vw]"
+              className="bg-nav absolute top-(--nav-height) left-63.5 z-50 w-[50vw] p-4 lg:w-[30vw]"
             >
               <h3 className="border-b border-b-slate-600 px-2 font-bold">
                 Genres:
               </h3>
               <ul className="grid grid-cols-3">
                 {genres.map((genre) => (
-                  <li
-                    className="w-full px-2 py-4 hover:bg-slate-800"
-                    key={genre.id}
-                  >
+                  <li className="hover:bg-bg w-full px-2 py-4" key={genre.id}>
                     <NavLink
                       to={`/genre/${genre.id}`}
                       onClick={() => setIsOpen(false)}
