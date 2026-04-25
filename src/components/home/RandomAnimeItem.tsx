@@ -86,7 +86,6 @@ function RandomAnimeItem({
             )}
           </div>
 
-          {/* Synopsis (Daha temiz tipografi) */}
           {synopsis && (
             <p className="mb-6 line-clamp-3 text-sm leading-relaxed text-gray-400 md:text-base lg:line-clamp-4">
               {synopsis}
@@ -107,7 +106,6 @@ function RandomAnimeItem({
             </div>
           )}
 
-          {/* Buton */}
           <Button
             isLink={true}
             link={`/anime/${id}`}

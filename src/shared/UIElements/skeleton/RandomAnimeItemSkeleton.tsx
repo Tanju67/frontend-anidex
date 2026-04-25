@@ -3,9 +3,6 @@ import { motion } from "framer-motion";
 const RandomAnimeItemSkeleton = () => {
   return (
     <div className="section-padding main-text-size">
-      <h2 className="section-title-size mb-2 md:mb-4 md:text-center">
-        Discover Something New
-      </h2>
       <div className="relative w-full lg:py-8">
         {/* Gradient overlay placeholder */}
         <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/95 to-black/90" />

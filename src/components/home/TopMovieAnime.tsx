@@ -4,6 +4,7 @@ import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { RowSliderResponseSchema } from "../../shared/schemas/animeSchema";
 import SectionSlider from "../../shared/UIElements/sectionSlider/SectionSlider";
 import RowSliderSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
+import NoData from "./NoData";
 
 function TopMovieAnime() {
   const { ref, isVisible } = useInView({ rootMargin: "50px" });
@@ -28,8 +29,7 @@ function TopMovieAnime() {
   }
 
   if (isLoading) return <RowSliderSkeleton title="Top Movies" />;
-  if (isError || !data?.data.length)
-    return <div className="text-center opacity-60">No data found</div>;
+  if (isError || !data?.data.length) return <NoData title="Top Movies" />;
   return (
     <div ref={ref}>
       <SectionSlider title="Top Movies" data={data.data} />

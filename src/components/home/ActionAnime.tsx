@@ -4,6 +4,7 @@ import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { RowSliderResponseSchema } from "../../shared/schemas/animeSchema";
 import SectionSlider from "../../shared/UIElements/sectionSlider/SectionSlider";
 import RowSliderSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
+import NoData from "./NoData";
 
 function ActionAnime() {
   const { ref, isVisible } = useInView({ rootMargin: "50px" });
@@ -29,8 +30,7 @@ function ActionAnime() {
   }
 
   if (isLoading) return <RowSliderSkeleton title="Action Series" />;
-  if (isError || !data?.data.length)
-    return <div className="text-center opacity-60">No data found</div>;
+  if (isError || !data?.data.length) return <NoData title="Action Series" />;
   return (
     <div ref={ref}>
       <SectionSlider title="Explore Action Series" data={data.data} />

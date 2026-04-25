@@ -23,24 +23,15 @@ function RandomAnime() {
     return <div ref={ref} className="min-h-100" />;
   }
 
-  if (isLoading)
-    return (
-      <div>
-        <h2 className="section-title-size mb-2 md:mb-4 md:text-center">
-          Discover Something New
-        </h2>
-        <RandomAnimeItemSkeleton />
-      </div>
-    );
-  if (isError || !data)
-    return (
-      <div>
-        <h2 className="section-title-size mb-2 md:mb-4 md:text-center">
-          Discover Something New
-        </h2>
-        <div className="text-center opacity-60">No data found</div>
-      </div>
-    );
+  let content;
+
+  if (isLoading) {
+    content = <RandomAnimeItemSkeleton />;
+  } else if (isError || !data) {
+    content = <div className="opacity-60 lg:text-center">No data found</div>;
+  } else {
+    content = <RandomAnimeItem {...data} />;
+  }
 
   return (
     <div ref={ref} className="section-padding main-text-size">
@@ -48,7 +39,7 @@ function RandomAnime() {
         Discover Something New
       </h2>
 
-      <RandomAnimeItem {...data} />
+      {content}
     </div>
   );
 }

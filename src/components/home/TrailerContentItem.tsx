@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import type { PromoType } from "../../shared/schemas/animeSchema";
 import Modal from "../../shared/UIElements/modal/Modal";
-import { useState } from "react";
 
 function TrailerContentItem({
   animeTitle,
