@@ -3,6 +3,8 @@ import MainNavigation from "../shared/UIElements/mainNavigation/MainNavigation";
 import ScrollToTop from "../shared/utils/ScrollToTop";
 import Footer from "../shared/UIElements/footer/Footer";
 import ScrollToTopButton from "../shared/utils/ScrollToTopButton";
+import { Suspense } from "react";
+import GlobalLoadingScreen from "../shared/UIElements/globalLoadingScreen/GlobalLoadingScreen";
 
 function RootLayout() {
   return (
@@ -10,7 +12,9 @@ function RootLayout() {
       <MainNavigation />
       <ScrollToTop />
       <main className="pt-(--nav-height)">
-        <Outlet />
+        <Suspense fallback={<GlobalLoadingScreen />}>
+          <Outlet />
+        </Suspense>
       </main>
       <Footer />
       <ScrollToTopButton />
