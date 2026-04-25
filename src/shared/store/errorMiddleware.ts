@@ -15,6 +15,12 @@ export const rtkQueryErrorLogger: Middleware =
         action.payload?.data?.message || "An unexpected error occurred";
       const endpointName = action.meta?.arg?.endpointName;
 
+      if (action.meta?.arg?.endpointName === "getTopAnime") {
+        // Rastgele bir endpoint
+        window.location.href = `/error?message=Simulated Server Error&status=500`;
+        return next(action);
+      }
+
       /**
        * 1. RATE LIMITING & NETWORK ERRORS
        * Status 0: Network error (usually CORS or no connection)
