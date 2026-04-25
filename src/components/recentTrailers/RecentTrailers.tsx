@@ -6,11 +6,10 @@ import {
   type AllPromosType,
 } from "../../shared/schemas/animeSchema";
 import SectionGrid from "../../shared/UIElements/gridContent/SectionGrid";
-import GridContentSkeleton from "../../shared/UIElements/skeleton/GridContentSkeleton";
+import IsLoadingMore from "../../shared/UIElements/isLoadingMore/IsLoadingMore";
+import TrailerSkeleton from "../../shared/UIElements/skeleton/TrailerSkeleton";
 import Spinner from "../../shared/UIElements/spinner/Spinner";
 import TrailerContent from "../home/TrailerContent";
-import TrailerSkeleton from "../../shared/UIElements/skeleton/TrailerSkeleton";
-import { all } from "axios";
 
 function RecentTrailers() {
   const [page, setPage] = useState(1);
@@ -50,8 +49,6 @@ function RecentTrailers() {
       setHasNextPage(res.pagination.has_next_page);
       setPage(nextPage);
     } catch (err) {
-      // Middleware'in yönlendirme yapmasını engellemek için
-      // endpoint adını Middleware'deki 'nonCriticalEndpoints' listesine eklemeyi unutma!
       console.error("Initial load failed:", err);
     } finally {
       setIsLoadingMore(false);
@@ -94,18 +91,8 @@ function RecentTrailers() {
           ref={ref}
           className="flex h-32 flex-col items-center justify-center gap-2"
         >
-          {isLoadingMore ? (
-            <Spinner />
-          ) : (
-            isError && (
-              <button
-                onClick={() => loadMore()}
-                className="text-xs font-bold tracking-widest text-red-500 uppercase transition-colors hover:text-white"
-              >
-                Server Timeout - Click to Retry
-              </button>
-            )
-          )}
+          {isLoadingMore && !isError && <Spinner />}
+          {isError && <IsLoadingMore loadMore={loadMore} />}
         </div>
       )}
     </SectionGrid>

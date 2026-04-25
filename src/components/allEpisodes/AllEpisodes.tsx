@@ -18,7 +18,7 @@ function AllEpisodes() {
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const [getEpisodes, { isLoading, isFetching }] =
+  const [getEpisodes, { isLoading, isFetching, isError }] =
     useLazyGetAnimeEpisodesByIdQuery();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ function AllEpisodes() {
   }, [animeId, getEpisodes]);
 
   const loadMore = async () => {
-    if (!animeId || isLoadingMore) return;
+    if (!animeId || isLoadingMore || !hasNextPage) return;
     setIsLoadingMore(true);
 
     const nextPage = page + 1;
@@ -56,32 +56,33 @@ function AllEpisodes() {
 
   const { ref } = useInView({
     onEnter: () => {
-      if (hasNextPage && !isFetching && !isLoading) {
+      if (
+        hasNextPage &&
+        !isFetching &&
+        !isLoading &&
+        !isLoadingMore &&
+        !isError
+      ) {
         loadMore();
       }
     },
     triggerOnce: false,
   });
 
+  let content;
+
   if (isLoading && page === 1) {
-    return (
-      <SectionTitle title="All Episodes" isBack={true}>
-        <EpisodesContentSkeleton />
-      </SectionTitle>
-    );
+    content = <EpisodesContentSkeleton count={12} />;
+  } else if (!allEpisodes.length) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    content = <EpisodesContent data={allEpisodes} />;
   }
 
-  if (!allEpisodes.length) {
-    return (
-      <SectionTitle title="All Episodes" isBack={true}>
-        <div className="opacity-60">No reviews found</div>
-      </SectionTitle>
-    );
-  }
   return (
     <div>
       <SectionTitle title="All Episodes" isBack={true}>
-        <EpisodesContent data={allEpisodes} />
+        {content}
       </SectionTitle>
 
       {hasNextPage && (

@@ -5,7 +5,6 @@ import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { CharactersSchema } from "../../shared/schemas/animeSchema";
 import Character from "../../shared/UIElements/character/Character";
-
 import CharacterContentSkeleton from "../../shared/UIElements/skeleton/CharacterContentSkeleton";
 import SectionTitle from "../animeDetail/SectionTitle";
 
@@ -32,23 +31,24 @@ function AllCharacters() {
     triggerOnce: false,
   });
 
-  const visibleCharacters = data?.slice(0, visibleCount) ?? [];
+  let visibleCharacters;
+  let content;
 
-  if (isLoading)
-    return (
+  if (isLoading) {
+    content = (
       <SectionTitle title="All Characters" skeleton={true}>
         <CharacterContentSkeleton isCharacter={false} />
       </SectionTitle>
     );
-  if (isError || !data?.length)
-    return (
+  } else if (isError || !data || data.length === 0) {
+    content = (
       <SectionTitle title="All Characters" isBack={true}>
-        <div className="text-center opacity-60">No data found</div>
+        <div className="opacity-60">No data found</div>
       </SectionTitle>
     );
-
-  return (
-    <div className="max-w-400rem mx-auto">
+  } else {
+    visibleCharacters = data.slice(0, visibleCount);
+    content = (
       <Character
         isAllCharacters={true}
         isCharacter={true}
@@ -56,8 +56,14 @@ function AllCharacters() {
         data={visibleCharacters}
         isBack={true}
       />
+    );
+  }
 
-      {visibleCount < data.length && <div ref={ref} className="h-20" />}
+  return (
+    <div className="max-w-400rem mx-auto">
+      {content}
+
+      {data && visibleCount < data.length && <div ref={ref} className="h-20" />}
     </div>
   );
 }

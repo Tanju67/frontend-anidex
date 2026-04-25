@@ -1,7 +1,7 @@
+import { FaLink } from "react-icons/fa";
 import type { VoiceActorDetailType } from "../../shared/schemas/animeSchema";
 import ImagePlaceholder from "../../shared/UIElements/imagePlaceholder/ImagePlaceholder";
 import { formatDate } from "../../shared/utils/helper";
-import { FaLink } from "react-icons/fa";
 
 type ActorDetailContentProps = {
   data: VoiceActorDetailType;

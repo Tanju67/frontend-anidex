@@ -1,6 +1,6 @@
-import CharacterContent from "./CharacterContent";
 import SectionTitle from "../../../components/animeDetail/SectionTitle";
 import type { CharactersType } from "../../schemas/animeSchema";
+import CharacterContent from "./CharacterContent";
 
 type CharacterProps = {
   data: CharactersType;

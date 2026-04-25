@@ -31,7 +31,6 @@ function CharecterContentItem(
       <div
         className={`group relative overflow-hidden bg-white/5 transition-all duration-300 hover:shadow-lg hover:shadow-black/40 ${isRounded ? "aspect-square rounded-full shadow-inner" : "aspect-2/3 rounded-xl shadow-md"}`}
       >
-        {/* Resim */}
         <ImagePlaceholder
           src={itemImage || ""}
           alt={itemName || ""}
@@ -66,7 +65,6 @@ function CharecterContentItem(
         </Link>
       </div>
 
-      {/* İsim Alanı */}
       <div className="mt-3 flex flex-col items-center text-center">
         <span className="main-text-size group-hover:text-main-btn w-full truncate font-semibold text-gray-200 transition-colors">
           {itemName}

@@ -17,23 +17,20 @@ function ActorDetail() {
     schema: VoiceActorDetailSchema,
   });
 
-  if (isLoading)
-    return (
-      <SectionTitle skeleton={true} title="Voice Actor Detail">
-        <GeneralDetailContentSkeleton />
-      </SectionTitle>
-    );
-  if (isError || !data)
-    return (
-      <SectionTitle title="Voice Actor Detail" isBack={true}>
-        <div className="opacity-60">No data found</div>
-      </SectionTitle>
-    );
+  let content;
+
+  if (isLoading) {
+    content = <GeneralDetailContentSkeleton />;
+  } else if (isError || !data) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    content = <ActorDetailContent data={data} />;
+  }
 
   console.log(data);
   return (
     <SectionTitle title={`Voice Actor Detail`} isBack={true}>
-      <ActorDetailContent data={data} />
+      {content}
     </SectionTitle>
   );
 }
