@@ -1,9 +1,11 @@
+import { Link } from "react-router-dom";
 import { useGetRecentPromosQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { AllPromosSchema } from "../../shared/schemas/animeSchema";
 import RowSliderSkeleton from "../../shared/UIElements/skeleton/RowSliderSkeleton";
 import TrailerContent from "./TrailerContent";
+import Button from "../../shared/UIElements/button/Button";
 
 function Trailer() {
   const { ref, isVisible } = useInView({ rootMargin: "50px" });
@@ -33,9 +35,13 @@ function Trailer() {
         Watch Recent Trailers
       </h2>
       <TrailerContent data={slicedData} />
-      <button className="mt-2 font-bold text-gray-400 transition-colors duration-300 hover:text-white">
+      <Button
+        isLink={true}
+        link="/trailer"
+        className="mt-2 font-bold text-gray-400 transition-colors duration-300 hover:text-white"
+      >
         SEE MORE &rarr;
-      </button>
+      </Button>
     </div>
   );
 }

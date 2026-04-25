@@ -348,4 +348,5 @@ export const {
   useGetSingleCharacterByIdQuery,
   useGetPeopleFullByIdQuery,
   useGetRecentPromosQuery,
+  useLazyGetRecentPromosQuery,
 } = animeApi;

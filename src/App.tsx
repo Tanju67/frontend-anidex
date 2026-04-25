@@ -6,6 +6,7 @@ import {
   AllCharactersPage,
   AllEpisodesPage,
   AnimeDetailLayout,
+  AnimeDetailWrapper,
   CategoriesPage,
   CharacterPage,
   ErrorPage,
@@ -13,6 +14,7 @@ import {
   LoginPage,
   NewAnimePage,
   PopularAnimePage,
+  RecentTrailersPage,
   RegisterPage,
   ReviewsPage,
   RootLayout,
@@ -20,7 +22,6 @@ import {
   ThisSeasonPage,
   WatchlistPage,
 } from "./pages";
-import AnimeDetailWrapper from "./pages/AnimeDetailWrapper";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
       { path: "new", element: <NewAnimePage /> },
       { path: "this-season", element: <ThisSeasonPage /> },
       { path: "genre/:genreId", element: <CategoriesPage /> },
+      { path: "trailer", element: <RecentTrailersPage /> },
 
       // Auth
       { path: "login", element: <LoginPage /> },

@@ -17,3 +17,5 @@ export { default as PopularAnimePage } from "./PopularAnimePage";
 export { default as NewAnimePage } from "./NewAnimePage";
 export { default as ThisSeasonPage } from "./ThisSeasonPage";
 export { default as CategoriesPage } from "./CategoriesPage";
+export { default as RecentTrailersPage } from "./RecentTrailersPage";
+export { default as AnimeDetailWrapper } from "./AnimeDetailWrapper";

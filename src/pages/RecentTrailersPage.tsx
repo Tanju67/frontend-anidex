@@ -1,5 +1,7 @@
+import RecentTrailers from "../components/recentTrailers/RecentTrailers";
+
 function RecentTrailersPage() {
-  return <div>RecentTrailersPage</div>;
+  return <RecentTrailers />;
 }
 
 export default RecentTrailersPage;

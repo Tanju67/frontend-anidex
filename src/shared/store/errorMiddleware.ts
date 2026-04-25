@@ -34,6 +34,12 @@ export const rtkQueryErrorLogger: Middleware =
         return next(action);
       }
 
+      const animeEndpoints = ["getRecentPromos"];
+      if (animeEndpoints.includes(endpointName)) {
+        console.log("Anime Error", message);
+        return next(action);
+      }
+
       /**
        * 3. CRITICAL ERRORS & TIMEOUTS
        * Status 500-504: Internal Server Error or Gateway Timeouts
