@@ -1,25 +1,48 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import type { RowSliderItemType } from "../../../shared/schemas/animeSchema";
 
 function SearchItem({ id, title, image, year }: RowSliderItemType) {
   return (
-    <li className="mb-2 bg-white/10 p-2 transition-all duration-100 hover:bg-white/10 sm:mb-0 sm:bg-transparent">
-      <Link to={`/anime/${id}`}>
-        <div className="flex gap-2">
-          <div>
-            <img
-              src={image}
-              alt={title}
-              className="h-30 max-w-20 object-cover object-center"
-            />
-          </div>
-          <div className="flex flex-col justify-center">
-            <p className="text-xs font-bold sm:text-sm md:text-base">{title}</p>
-            <p className="text-xs font-bold sm:text-sm">{year}</p>
+    <motion.li
+      whileHover={{ x: 5 }} // Hover yapınca sağa doğru hafifçe kaysın
+      className="group list-none"
+    >
+      <Link
+        to={`/anime/${id}`}
+        className="flex items-center gap-4 rounded-lg border border-transparent p-2 transition-all duration-300 hover:border-white/10 hover:bg-white/5"
+      >
+        {/* Resim Alanı */}
+        <div className="relative h-24 w-16 shrink-0 overflow-hidden rounded-md shadow-md">
+          <img
+            src={image}
+            alt={title}
+            loading="lazy"
+            className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+          />
+          {/* Resim üzerine çok hafif bir overlay */}
+          <div className="absolute inset-0 bg-black/10 transition-colors group-hover:bg-transparent" />
+        </div>
+
+        {/* Metin Alanı */}
+        <div className="flex flex-col justify-center overflow-hidden">
+          <h4 className="group-hover:text-main-btn line-clamp-1 text-sm font-bold text-gray-200 transition-colors md:text-base">
+            {title}
+          </h4>
+
+          <div className="mt-1 flex items-center gap-2">
+            {year && (
+              <span className="rounded bg-white/5 px-2 py-0.5 text-[10px] font-semibold text-gray-400">
+                {year}
+              </span>
+            )}
+            <span className="text-main-btn text-[10px] tracking-tighter uppercase opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              View Details →
+            </span>
           </div>
         </div>
       </Link>
-    </li>
+    </motion.li>
   );
 }
 

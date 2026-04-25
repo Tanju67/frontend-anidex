@@ -171,7 +171,7 @@ function GeneralDetailContent(props: SliderItemType) {
             id={String(id)}
             title={String(title)}
             image={image}
-            trailer={true}
+            trailer={Boolean(trailer)}
           />
         </div>
         <div className="lg:hidden">

@@ -3,8 +3,8 @@ import Banner from "./Banner";
 import RandomAnime from "./RandomAnime";
 import TopAnime from "./TopAnime";
 import TopMovieAnime from "./TopMovieAnime";
+import Trailer from "./Trailer";
 import TrendAnime from "./TrendAnime";
-import Upcoming from "./Upcoming";
 
 function Home() {
   return (
@@ -12,9 +12,9 @@ function Home() {
       <Banner />
       <TrendAnime />
       <TopAnime />
+      <Trailer />
       <TopMovieAnime />
       <RandomAnime />
-      <Upcoming />
       <ActionAnime />
     </div>
   );

@@ -12,25 +12,29 @@ function ErrorPage({ status, message }: ErrorPageProps) {
 
   const params = new URLSearchParams(search);
   const errorMessage =
-    message || params.get("message") || "Something went wrong";
+    message ||
+    params.get("message") ||
+    (status === 404
+      ? "The page you are looking for does not exist."
+      : "Something went wrong on our servers.");
   const errorStatus = status || params.get("status") || "Error";
   return (
-    <div className="h-screen bg-black text-white flex items-center justify-center px-6 relative">
+    <div className="relative flex h-screen items-center justify-center bg-black px-6 text-white">
       {/* Background glow */}
       <motion.div
-        className="absolute w-[500px] h-[500px] bg-red-500/20 rounded-full blur-3xl pointer-events-none"
+        className="pointer-events-none absolute h-125 w-125 rounded-full bg-red-500/20 blur-3xl"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       />
 
-      <div className="text-center max-w-xl relative z-10">
+      <div className="relative z-10 max-w-xl text-center">
         {/* STATUS */}
         <motion.h1
           initial={{ opacity: 0, scale: 0.7 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
-          className="text-7xl font-bold mb-6 text-red-500"
+          className="mb-6 text-7xl font-bold text-red-500"
         >
           {errorStatus}
         </motion.h1>
@@ -40,7 +44,7 @@ function ErrorPage({ status, message }: ErrorPageProps) {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="text-lg text-gray-300 mb-8"
+          className="mb-8 text-lg text-gray-300"
         >
           {errorMessage}
         </motion.p>
@@ -50,12 +54,12 @@ function ErrorPage({ status, message }: ErrorPageProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="flex gap-4 justify-center"
+          className="flex justify-center gap-4"
         >
           {/* Retry */}
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition"
+            className="rounded-lg bg-red-600 px-6 py-2 transition hover:bg-red-700"
           >
             Retry
           </button>
@@ -63,7 +67,7 @@ function ErrorPage({ status, message }: ErrorPageProps) {
           {/* Home */}
           <button
             onClick={() => navigate("/")}
-            className="px-6 py-2 bg-gray-700 hover:bg-gray-800 rounded-lg transition"
+            className="rounded-lg bg-gray-700 px-6 py-2 transition hover:bg-gray-800"
           >
             Go Home
           </button>

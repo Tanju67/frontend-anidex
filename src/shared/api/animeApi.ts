@@ -7,6 +7,7 @@ import {
   type CharactersType,
   type EpisodesResponseType,
   type PersonType,
+  type PromoResponseType,
   type RecommendationsType,
   type ReviewsResponseType,
   type RowSliderResponse,
@@ -17,8 +18,18 @@ import {
 import type { AnimeRating, AnimeStatus } from "../utils/data";
 import { baseAnimeApi } from "./baseAnimeApi";
 
+/**
+ * Anime API Service
+ * * Extends the baseAnimeApi by injecting specific Jikan v4 endpoints.
+ * * Handles all anime-related data fetching including top charts,
+ * seasonal updates, and detailed resource information.
+ */
 export const animeApi = baseAnimeApi.injectEndpoints({
   endpoints: (builder) => ({
+    /**
+     * Fetches top-ranked anime based on filters and type.
+     * @param {page, limit, type, filter}
+     */
     getTopAnime: builder.query<
       RowSliderResponse,
       { page: number; limit: number; type: AnimeType; filter: AnimeFilter }
@@ -28,7 +39,7 @@ export const animeApi = baseAnimeApi.injectEndpoints({
 
         params.append("page", page.toString());
         params.append("limit", limit.toString());
-        params.append("sfw", ""); // flag
+        params.append("sfw", ""); // Safe For Work filter
 
         if (type && type !== "all") {
           params.append("type", type);
@@ -43,12 +54,12 @@ export const animeApi = baseAnimeApi.injectEndpoints({
           method: "GET",
         };
       },
-      transformResponse: (response: RowSliderResponse) => {
-        return response;
-      },
       keepUnusedDataFor: 60,
     }),
 
+    /**
+     * Fetches upcoming anime for future seasons.
+     */
     getUpcomingAnime: builder.query<
       BannerSliderType,
       { page: number; limit: number }
@@ -63,6 +74,9 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       keepUnusedDataFor: 60,
     }),
 
+    /**
+     * Retrieves a single random anime recommendation.
+     */
     getRandomAnime: builder.query<SliderItemType, void>({
       query: () => ({
         url: `/random/anime?sfw`,
@@ -74,6 +88,9 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       keepUnusedDataFor: 60,
     }),
 
+    /**
+     * Advanced Search: Fetches anime by genre, rating, status, or search query.
+     */
     getAnimeByGenre: builder.query<
       RowSliderResponse,
       {
@@ -118,13 +135,12 @@ export const animeApi = baseAnimeApi.injectEndpoints({
           method: "GET",
         };
       },
-      transformResponse: (response: RowSliderResponse) => {
-        console.log(response);
-        return response;
-      },
       keepUnusedDataFor: 5,
     }),
 
+    /**
+     * Fetches anime airing in the current season.
+     */
     getCurrentSeason: builder.query<
       RowSliderResponse,
       {
@@ -154,12 +170,12 @@ export const animeApi = baseAnimeApi.injectEndpoints({
           method: "GET",
         };
       },
-      transformResponse: (response: RowSliderResponse) => {
-        return response;
-      },
       keepUnusedDataFor: 60,
     }),
 
+    /**
+     * Resource Details: Fetches full details for a single anime by ID.
+     */
     getAnimeById: builder.query<SliderItemType, string>({
       query: (id) => ({
         url: `/anime/${id}`,
@@ -171,6 +187,9 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       keepUnusedDataFor: 60,
     }),
 
+    /**
+     * Retrieves the character list and their voice actors for a specific anime.
+     */
     getCharactersByAnimeId: builder.query<CharactersType, string>({
       query: (id) => ({
         url: `/anime/${id}/characters`,
@@ -182,6 +201,9 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       keepUnusedDataFor: 60,
     }),
 
+    /**
+     * Fetches official images and posters for an anime.
+     */
     getAnimePictureById: builder.query<AnimeImageType, string>({
       query: (id) => ({
         url: `/anime/${id}/pictures`,
@@ -193,6 +215,9 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       keepUnusedDataFor: 60,
     }),
 
+    /**
+     * Retrieves user reviews for a specific anime.
+     */
     getAnimeReviewsById: builder.query<
       ReviewsResponseType,
       { id: string; page: number }
@@ -201,12 +226,12 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         url: `/anime/${id}/reviews?page=${page}`,
         method: "GET",
       }),
-      transformResponse: (response: ReviewsResponseType) => {
-        return response;
-      },
       keepUnusedDataFor: 60,
     }),
 
+    /**
+     * Fetches the episode list for an anime.
+     */
     getAnimeEpisodesById: builder.query<
       EpisodesResponseType,
       { id: string; page?: number }
@@ -215,13 +240,12 @@ export const animeApi = baseAnimeApi.injectEndpoints({
         url: `/anime/${id}/episodes?page=${page}`,
         method: "GET",
       }),
-      transformResponse: (response: EpisodesResponseType) => {
-        console.log(response);
-        return response;
-      },
       keepUnusedDataFor: 60,
     }),
 
+    /**
+     * Fetches details for a specific episode (Summary, Title, etc.).
+     */
     getEpisodeByEpisodeId: builder.query<
       SingleEpisodeType,
       { id: string; episode: number }
@@ -236,6 +260,9 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       keepUnusedDataFor: 60,
     }),
 
+    /**
+     * Recommendations: Fetches similar anime based on the current resource.
+     */
     getSimilarAnimesById: builder.query<RecommendationsType, string>({
       query: (id) => ({
         url: `/anime/${id}/recommendations`,
@@ -247,6 +274,9 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       keepUnusedDataFor: 60,
     }),
 
+    /**
+     * Fetches official news articles related to the anime.
+     */
     getAnimeNewsById: builder.query<AllNewsType, string>({
       query: (id) => ({
         url: `/anime/${id}/news`,
@@ -258,6 +288,9 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       keepUnusedDataFor: 60,
     }),
 
+    /**
+     * Detailed Character Info: Fetches full bio and media for a character.
+     */
     getSingleCharacterById: builder.query<PersonType, string>({
       query: (id) => ({
         url: `/characters/${id}/full`,
@@ -269,16 +302,26 @@ export const animeApi = baseAnimeApi.injectEndpoints({
       keepUnusedDataFor: 60,
     }),
 
+    /**
+     * Detailed Person Info: Fetches bio and roles for voice actors (Seiyuu).
+     */
     getPeopleFullById: builder.query<VoiceActorDetailType, string>({
       query: (id) => ({
         url: `/people/${id}/full`,
         method: "GET",
       }),
       transformResponse: (response: { data: VoiceActorDetailType }) => {
-        console.log(response);
         return response.data;
       },
       keepUnusedDataFor: 60,
+    }),
+
+    getRecentPromos: builder.query<PromoResponseType, { page: number }>({
+      query: ({ page }) => ({
+        url: `/watch/promos?page=${page}`,
+        method: "GET",
+      }),
+      keepUnusedDataFor: 300,
     }),
   }),
 });
@@ -304,4 +347,5 @@ export const {
   useGetAnimeNewsByIdQuery,
   useGetSingleCharacterByIdQuery,
   useGetPeopleFullByIdQuery,
+  useGetRecentPromosQuery,
 } = animeApi;

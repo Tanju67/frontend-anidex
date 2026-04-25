@@ -34,11 +34,30 @@ function SliderItem({
           <h2 className="animeTitle">{title}</h2>
         </Link>
 
-        <p className="mb-4 flex justify-center gap-4 md:justify-start">
-          {score && <span>⭐ {score} / 10</span>}
-          {year && <span>📅 {year}</span>}
-          {genres && <span>🎉 {genres.join(" | ")}</span>}
-        </p>
+        <div className="mb-6 flex flex-wrap items-center justify-center gap-3 text-sm font-medium md:justify-start">
+          {score && (
+            <span className="flex items-center gap-1 rounded-full border border-yellow-500/20 bg-yellow-500/20 px-3 py-1 text-yellow-500 backdrop-blur-sm">
+              ⭐ {score}
+            </span>
+          )}
+          {year && (
+            <span className="rounded-full bg-white/10 px-3 py-1 text-gray-300 backdrop-blur-sm">
+              {year}
+            </span>
+          )}
+          {genres && (
+            <div className="flex gap-2">
+              {genres.slice(0, 3).map((genre) => (
+                <span
+                  key={genre}
+                  className="rounded-full border border-white/20 px-3 py-1 text-[11px] tracking-wider text-white/70 uppercase"
+                >
+                  {genre}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
 
         <p className="mb-8 hidden lg:line-clamp-4">{synopsis}</p>
         <div>

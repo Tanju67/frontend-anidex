@@ -3,7 +3,6 @@ import GeneralDetail from "../components/animeDetail/GeneralDetail";
 import { useGetAnimeByIdQuery } from "../shared/api/animeApi";
 import { useSafeQuery } from "../shared/hooks/useSafeQuery";
 import { SliderItemSchema } from "../shared/schemas/animeSchema";
-import BannerSkeleton from "../shared/UIElements/skeleton/bannerSkeleton";
 import GeneralDetailContentSkeleton from "../shared/UIElements/skeleton/GeneralDetailContentSkeleton";
 
 function AnimeDetailPage() {

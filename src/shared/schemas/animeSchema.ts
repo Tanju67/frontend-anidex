@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+/**
+ * Genre Schema
+ * Defines the metadata for anime genres (e.g., Action, Adventure).
+ * Data source: Jikan API shared models.
+ */
 export const GenreSchema = z.object({
   mal_id: z.number(),
   type: z.string(),
@@ -7,11 +12,19 @@ export const GenreSchema = z.object({
   url: z.string(),
 });
 
+/**
+ * Title Schema
+ * Represents different variations of an anime title (e.g., English, Japanese, Synonym).
+ */
 const TitleSchema = z.object({
   type: z.string(),
   title: z.string(),
 });
 
+/**
+ * Pagination Schema
+ * Used across all paginated Jikan API responses to manage infinite scroll or page navigation.
+ */
 export const PaginationSchema = z.object({
   last_visible_page: z.number(),
   has_next_page: z.boolean(),
@@ -439,3 +452,56 @@ export const VoiceActorDetailSchema = z
   }));
 
 export type VoiceActorDetailType = z.infer<typeof VoiceActorDetailSchema>;
+
+export const PromoSchema = z
+  .object({
+    title: z.string(), // "PV 1", "Main Trailer" gibi olan başlık
+    entry: z.object({
+      mal_id: z.number(),
+      title: z.string(), // Animenin asıl adı
+      images: z.object({
+        webp: z
+          .object({
+            large_image_url: z.string(),
+          })
+          .optional(),
+        jpg: z.object({
+          large_image_url: z.string(),
+        }),
+      }),
+    }),
+    trailer: z.object({
+      youtube_id: z.string().nullable().optional(),
+      url: z.string().nullable().optional(),
+      embed_url: z.string().nullable().optional(),
+      images: z.object({
+        // Komponentinde kullandığın görsel alanı
+        large_image_url: z.string().nullable().optional(),
+        maximum_image_url: z.string().nullable().optional(),
+      }),
+    }),
+  })
+  .transform((data) => {
+    return {
+      id: data.entry.mal_id,
+      animeTitle: data.entry.title,
+      promoTitle: data.title,
+      thumbnail:
+        data.trailer.images.large_image_url ||
+        data.entry.images.webp?.large_image_url ||
+        data.entry.images.jpg.large_image_url,
+      videoUrl: data.trailer.embed_url,
+    };
+  });
+
+// TypeScript tipini de buradan çıkartabilirsin
+export type PromoType = z.infer<typeof PromoSchema>;
+
+export const AllPromosSchema = z.array(PromoSchema);
+export type AllPromosType = z.infer<typeof AllPromosSchema>;
+
+export const PromoResponseSchema = z.object({
+  data: AllPromosSchema,
+  pagination: PaginationSchema,
+});
+export type PromoResponseType = z.infer<typeof PromoResponseSchema>;

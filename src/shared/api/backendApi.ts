@@ -10,11 +10,21 @@ import type {
 } from "../schemas/backendSchema";
 import type { LoginResponse, RegisterResponse } from "../types/types";
 
+/**
+ * Backend API Service
+ * * Handles all authenticated and unauthenticated interactions with the core backend.
+ * Uses RTK Query for state management, caching, and automatic re-fetching.
+ */
+
 export const backendApi = createApi({
   reducerPath: "backendApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api/v1",
-    prepareHeaders: (headers) => {
+
+    /**
+     * Injects the JWT token from localStorage into the Authorization header
+     * for all outgoing requests.
+     */ prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
@@ -24,7 +34,9 @@ export const backendApi = createApi({
   }),
   tagTypes: ["User", "Anime"],
   endpoints: (builder) => ({
-    // Normal Register
+    /**
+     * Registers a new user with fullName, email and password.
+     */
     register: builder.mutation<RegisterResponse, RegisterFormData>({
       query: (userData) => ({
         url: "/auth/register",
@@ -33,6 +45,9 @@ export const backendApi = createApi({
       }),
     }),
 
+    /**
+     * Authenticates user and returns a session token.
+     */
     login: builder.mutation<LoginResponse, LoginFormData>({
       query: (userData) => ({
         url: "/auth/login",
@@ -41,12 +56,18 @@ export const backendApi = createApi({
       }),
     }),
 
+    /**
+     * Retrieves the profile of the currently authenticated user.
+     */
     getCurrentUser: builder.query<User, void>({
       query: () => "/auth/current",
       transformResponse: (response: CurrentUserResponse) => response.data,
       providesTags: ["User"],
     }),
 
+    /**
+     * Handles Google OAuth authentication via identity token.
+     */
     googleLogin: builder.mutation<LoginResponse, { idToken: string }>({
       query: (body) => ({
         url: "/auth/google",
@@ -56,6 +77,10 @@ export const backendApi = createApi({
       invalidatesTags: ["User"],
     }),
 
+    /**
+     * Adds a new anime to the user's personal watchlist.
+     * Invalidates "Anime" tag to trigger list refresh.
+     */
     createAnime: builder.mutation<CreateWatchlistResponse, CreateWatchlistItem>(
       {
         query: (animeData) => ({
@@ -67,6 +92,9 @@ export const backendApi = createApi({
       },
     ),
 
+    /**
+     * Fetches details for a single anime from the user's watchlist.
+     */
     getSingleAnime: builder.query<CreateWatchlistItem, string>({
       query: (id) => `/anime/${id}`,
 
@@ -76,6 +104,9 @@ export const backendApi = createApi({
       providesTags: ["Anime"],
     }),
 
+    /**
+     * Removes an anime from the user's watchlist.
+     */
     deleteAnime: builder.mutation<void, string>({
       query: (id) => ({
         url: `/anime/${id}`,

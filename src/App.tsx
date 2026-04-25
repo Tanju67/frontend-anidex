@@ -80,10 +80,10 @@ const router = createBrowserRouter([
         ],
       },
 
-      // {
-      //   path: "*",
-      //   element: <ErrorPage status="404" message="Page not found" />,
-      // },
+      {
+        path: "*",
+        element: <ErrorPage status="404" message="Page not found" />,
+      },
     ],
   },
 ]);
