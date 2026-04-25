@@ -4,7 +4,6 @@ import Modal from "../../shared/UIElements/modal/Modal";
 import { useState } from "react";
 
 function TrailerContentItem({
-  id,
   animeTitle,
   promoTitle,
   thumbnail,
