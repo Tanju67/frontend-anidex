@@ -9,6 +9,8 @@ import SectionGrid from "../../shared/UIElements/gridContent/SectionGrid";
 import GridContentSkeleton from "../../shared/UIElements/skeleton/GridContentSkeleton";
 import Spinner from "../../shared/UIElements/spinner/Spinner";
 import TrailerContent from "../home/TrailerContent";
+import TrailerSkeleton from "../../shared/UIElements/skeleton/TrailerSkeleton";
+import { all } from "axios";
 
 function RecentTrailers() {
   const [page, setPage] = useState(1);
@@ -71,27 +73,22 @@ function RecentTrailers() {
     triggerOnce: false,
   });
 
+  let content;
+
   if (isLoading && page === 1) {
-    return (
-      <SectionGrid title={"Recent Trailers"}>
-        <GridContentSkeleton title={"Recent Trailers"} />
-      </SectionGrid>
-    );
+    content = <TrailerSkeleton items={18} />;
+  } else if (!allAnime.length) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    content = <TrailerContent data={allAnime} />;
   }
 
-  if (!allAnime.length) {
-    return (
-      <SectionGrid title={"Recent Trailers"}>
-        <div className="opacity-60">No data found</div>
-      </SectionGrid>
-    );
-  }
   return (
     <SectionGrid
       title={"Recent Trailers"}
       subTitle="Step into the narratives of tomorrow with a glimpse into upcoming premieres."
     >
-      <TrailerContent data={allAnime} />
+      {content}
       {hasNextPage && (
         <div
           ref={ref}

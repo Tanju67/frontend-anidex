@@ -3,6 +3,7 @@ import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { bannerSliderSchema } from "../../shared/schemas/animeSchema";
 import BannerSkeleton from "../../shared/UIElements/skeleton/bannerSkeleton";
 import BannerSlider from "../../shared/UIElements/sliders/BannerSlider";
+import NoBanner from "./NoBanner";
 
 function Banner() {
   const query = useGetUpcomingAnimeQuery(
@@ -19,8 +20,7 @@ function Banner() {
   });
 
   if (isLoading) return <BannerSkeleton />;
-  if (isError || !data?.length)
-    return <div className="text-center opacity-60">No data found</div>;
+  if (isError || !data?.length) return <NoBanner />;
 
   return <BannerSlider items={data} />;
 }

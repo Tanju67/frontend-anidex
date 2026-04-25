@@ -25,7 +25,7 @@ function TrailerContentItem({
         <div className="absolute inset-0 flex items-center justify-center bg-black/40 transition-opacity duration-300 group-hover:opacity-100 sm:opacity-0">
           <div
             onClick={() => setIsOpen(true)}
-            className="bg-main-btn scale-75 transform rounded-full p-4 text-white shadow-2xl transition-transform duration-300 group-hover:scale-100"
+            className="bg-main-btn scale-75 transform cursor-pointer rounded-full p-4 text-white shadow-2xl transition-transform duration-300 group-hover:scale-100"
           >
             <FaPlay size={20} />
           </div>

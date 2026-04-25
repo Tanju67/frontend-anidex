@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import type { SliderItemType } from "../../shared/schemas/animeSchema";
 import Button from "../../shared/UIElements/button/Button";
 import WatchlistButton from "../../shared/UIElements/button/WatchlistButton";
-import { ToastContainer } from "react-toastify";
 
 function SliderItem({
   title,
@@ -83,7 +82,6 @@ function SliderItem({
       </div>
 
       <div className="hidden flex-1 md:block" />
-      <ToastContainer />
     </motion.div>
   );
 }
