@@ -19,7 +19,7 @@ import type { LoginResponse, RegisterResponse } from "../types/types";
 export const backendApi = createApi({
   reducerPath: "backendApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/v1",
+    baseUrl: "https://backend-anidex.onrender.com/api/v1",
 
     /**
      * Injects the JWT token from localStorage into the Authorization header
