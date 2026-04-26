@@ -28,7 +28,7 @@ function About({ data }: Props) {
             </p>
           )}
           <p
-            className={`italic ${isExpanded ? "" : "line-clamp-4 md:line-clamp-8 lg:line-clamp-14"}`}
+            className={`whitespace-pre-line italic ${isExpanded ? "" : "line-clamp-4 md:line-clamp-8 lg:line-clamp-14"}`}
           >
             {about}
           </p>

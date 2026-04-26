@@ -25,7 +25,7 @@ function AnimeDetail() {
 
   const filteredData = data.slice(0, 6);
   return (
-    <div>
+    <div className="min-h-screen">
       <div className="mx-auto max-w-400">
         <Character
           data={filteredData}

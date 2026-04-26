@@ -18,34 +18,37 @@ function CharacterDetail() {
     schema: PersonSchema,
   });
 
-  if (isLoading)
-    return (
+  let content;
+
+  if (isLoading) {
+    content = (
       <SectionTitle title={`Character Detail`} skeleton={true}>
         <GeneralDetailContentSkeleton />
       </SectionTitle>
     );
-  if (isError || !data)
-    return (
+  } else if (isError || !data) {
+    content = (
       <SectionTitle title={`Character Detail`} isBack={true}>
         <div className="opacity-60">No data found</div>
       </SectionTitle>
     );
+  } else {
+    content = (
+      <>
+        <SectionTitle title={`Character Detail`} isBack={true}>
+          <About data={data} />
+        </SectionTitle>
+        <SectionTitle
+          title={`Voice Actors`}
+          subTitle={`All Voice Actors for ${data.name}`}
+        >
+          <VoiceActors data={data} />
+        </SectionTitle>
+      </>
+    );
+  }
 
-  console.log(data);
-
-  return (
-    <div className="">
-      <SectionTitle title={`Character Detail`} isBack={true}>
-        <About data={data} />
-      </SectionTitle>
-      <SectionTitle
-        title={`Voice Actors`}
-        subTitle={`All Voice Actors for ${data.name}`}
-      >
-        <VoiceActors data={data} />
-      </SectionTitle>
-    </div>
-  );
+  return <div>{content}</div>;
 }
 
 export default CharacterDetail;

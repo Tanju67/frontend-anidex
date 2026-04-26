@@ -8,8 +8,6 @@ import ActorDetailContent from "./ActorDetailContent";
 
 function ActorDetail() {
   const { charId } = useParams();
-  console.log(charId);
-
   const query = useGetPeopleFullByIdQuery(charId!);
   const { data, isLoading, isError } = useSafeQuery({
     data: query.data,
@@ -27,7 +25,6 @@ function ActorDetail() {
     content = <ActorDetailContent data={data} />;
   }
 
-  console.log(data);
   return (
     <SectionTitle title={`Voice Actor Detail`} isBack={true}>
       {content}

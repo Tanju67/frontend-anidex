@@ -1,6 +1,6 @@
+import { RiBookmark2Fill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import type { CreateWatchlistItem } from "../../shared/schemas/backendSchema";
-import { RiBookmark2Fill } from "react-icons/ri";
 
 function WatchlistContentItem({
   animeId: id,
@@ -32,7 +32,6 @@ function WatchlistContentItem({
           onClick={() => handleRemove(id)}
           className="text-main-btn text-3xl hover:bg-white"
         >
-          {" "}
           <RiBookmark2Fill />
         </button>
       </div>

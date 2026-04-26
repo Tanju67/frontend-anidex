@@ -1,15 +1,15 @@
+import { AnimatePresence, motion } from "framer-motion";
+import { Star } from "lucide-react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useLazyGetEpisodeByEpisodeIdQuery } from "../../shared/api/animeApi";
 import {
   singleEpisodeSchema,
   type EpisodeType,
   type SingleEpisodeType,
 } from "../../shared/schemas/animeSchema";
-import { formatDate } from "../../shared/utils/helper";
-import { useState } from "react";
-import { useLazyGetEpisodeByEpisodeIdQuery } from "../../shared/api/animeApi";
-import { AnimatePresence, motion } from "framer-motion";
 import Spinner from "../../shared/UIElements/spinner/Spinner";
-import { Star } from "lucide-react";
+import { formatDate } from "../../shared/utils/helper";
 
 function EpisodesContentItem(props: EpisodeType) {
   const { animeId } = useParams();
@@ -100,7 +100,7 @@ function EpisodesContentItem(props: EpisodeType) {
                   <Spinner />
                 </div>
               ) : (
-                <p className="normal-case italic">
+                <p className="whitespace-pre-line normal-case italic">
                   {parsedData?.synopsis ||
                     "No description available for this episode."}
                 </p>

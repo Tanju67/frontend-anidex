@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { ReviewsType, ReviewType } from "../../shared/schemas/animeSchema";
-import ReviewContentItem from "./ReviewContentItem";
 import Modal from "../../shared/UIElements/modal/Modal";
+import ReviewContentItem from "./ReviewContentItem";
 import ReviewModalItem from "./ReviewModalItem";
 
 type ReviewContentProps = { data: ReviewsType };

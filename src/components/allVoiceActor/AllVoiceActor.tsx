@@ -4,9 +4,8 @@ import { useGetCharactersByAnimeIdQuery } from "../../shared/api/animeApi";
 import { useInView } from "../../shared/hooks/useInView";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { CharactersSchema } from "../../shared/schemas/animeSchema";
-import CharacterContentSkeleton from "../../shared/UIElements/skeleton/CharacterContentSkeleton";
 import Character from "../../shared/UIElements/character/Character";
-import SectionTitle from "../animeDetail/SectionTitle";
+import CharacterContentSkeleton from "../../shared/UIElements/skeleton/CharacterContentSkeleton";
 
 function AllVoiceActor() {
   const { animeId } = useParams();
@@ -31,30 +30,30 @@ function AllVoiceActor() {
     triggerOnce: false,
   });
 
-  const visibleCharacters = data?.slice(0, visibleCount) ?? [];
+  let visibleCharacters;
+  let content;
 
-  if (isLoading)
-    return (
-      <SectionTitle title="All Voice Actors" skeleton={true}>
-        <CharacterContentSkeleton isCharacter={false} />
-      </SectionTitle>
-    );
-  if (isError || !data?.length)
-    return (
-      <SectionTitle title="All Voice Actors" isBack={true}>
-        <div className="text-center opacity-60">No data found</div>
-      </SectionTitle>
-    );
-  return (
-    <div className="max-w-400rem mx-auto">
+  if (isLoading) {
+    content = <CharacterContentSkeleton isCharacter={false} />;
+  } else if (isError || !data?.length) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    visibleCharacters = data?.slice(0, visibleCount);
+    content = (
       <Character
         isCharacter={false}
         title="All Voice Actors"
         data={visibleCharacters}
         isBack={true}
       />
+    );
+  }
 
-      {visibleCount < data.length && <div ref={ref} className="h-20" />}
+  return (
+    <div className="max-w-400rem mx-auto">
+      {content}
+
+      {data && visibleCount < data.length && <div ref={ref} className="h-20" />}
     </div>
   );
 }

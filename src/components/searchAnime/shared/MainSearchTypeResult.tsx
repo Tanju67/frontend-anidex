@@ -45,37 +45,31 @@ function MainSearchTypeResult({
     setSearchParams(params);
   };
 
+  let content;
+
   if (isLoading) {
-    return (
-      <SectionTitle title={title}>
-        <MainSearchTypeSkeleton count={6} />
-      </SectionTitle>
+    content = <MainSearchTypeSkeleton count={6} />;
+  } else if (!data?.length && search.trim().length > 2) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    content = (
+      <>
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {data?.map((item, index) => (
+            <SearchItem key={`${item.id}-${index}`} {...item} />
+          ))}
+        </ul>
+        <button
+          onClick={handleClick}
+          className="mt-2 font-bold text-gray-400 transition-colors duration-300 hover:text-white"
+        >
+          SEE MORE &rarr;
+        </button>
+      </>
     );
   }
 
-  if (!data?.length && search.trim().length > 2) {
-    return (
-      <SectionTitle title={title}>
-        <div className="opacity-60">No data found</div>
-      </SectionTitle>
-    );
-  }
-
-  return (
-    <SectionTitle title={title}>
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {data?.map((item) => (
-          <SearchItem key={item.id} {...item} />
-        ))}
-      </ul>
-      <button
-        onClick={handleClick}
-        className="mt-2 font-bold text-gray-400 transition-colors duration-300 hover:text-white"
-      >
-        SEE MORE &rarr;
-      </button>
-    </SectionTitle>
-  );
+  return <SectionTitle title={title}>{content}</SectionTitle>;
 }
 
 export default MainSearchTypeResult;

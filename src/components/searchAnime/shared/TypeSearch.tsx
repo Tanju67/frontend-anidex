@@ -6,10 +6,11 @@ import {
   RowSliderResponseSchema,
   type RowSliderType,
 } from "../../../shared/schemas/animeSchema";
+import IsLoadingMore from "../../../shared/UIElements/isLoadingMore/IsLoadingMore";
+import MainSearchTypeSkeleton from "../../../shared/UIElements/skeleton/MainSearchTypeSkeleton";
 import Spinner from "../../../shared/UIElements/spinner/Spinner";
 import SectionTitle from "../../animeDetail/SectionTitle";
 import SearchItem from "./SearchItem";
-import MainSearchTypeSkeleton from "../../../shared/UIElements/skeleton/MainSearchTypeSkeleton";
 
 function TypeSearch({ title }: { title: string }) {
   const [page, setPage] = useState(1);
@@ -22,7 +23,8 @@ function TypeSearch({ title }: { title: string }) {
   const search = searchParams.get("q") || "";
   const type = searchParams.get("type") === "movie" ? "movie" : "tv";
 
-  const [getAnimes, { isLoading, isFetching }] = useLazyGetAnimeByGenreQuery();
+  const [getAnimes, { isLoading, isFetching, isError }] =
+    useLazyGetAnimeByGenreQuery();
 
   useEffect(() => {
     if (search.length < 3) return;
@@ -77,7 +79,13 @@ function TypeSearch({ title }: { title: string }) {
 
   const { ref } = useInView({
     onEnter: () => {
-      if (hasNextPage && !isFetching && !isLoading && !isLoadingMore) {
+      if (
+        hasNextPage &&
+        !isFetching &&
+        !isLoading &&
+        !isLoadingMore &&
+        !isError
+      ) {
         loadMore();
       }
     },
@@ -86,34 +94,15 @@ function TypeSearch({ title }: { title: string }) {
 
   if (search.trim().length < 3) return null;
 
-  if (isLoading && page === 1) {
-    return (
-      <div className="mx-auto h-full max-w-300 pt-30">
-        <SectionTitle title={title}>
-          <MainSearchTypeSkeleton count={6} />
-        </SectionTitle>
-      </div>
-    );
-  }
+  let content;
 
-  if (!allAnime.length && !isLoading) {
-    return (
-      <div className="mx-auto h-full max-w-300 pt-30">
-        <SectionTitle title={title}>
-          <button
-            onClick={() => navigate(`/search?q=${search}`)}
-            className="mb-4 text-sm opacity-70 hover:opacity-100"
-          >
-            ← ALL RESULTS
-          </button>
-          <div className="opacity-60">No data found</div>
-        </SectionTitle>
-      </div>
-    );
-  }
-  return (
-    <div className="mx-auto h-full max-w-300 pt-30">
-      <SectionTitle title={title}>
+  if (isLoading && page === 1) {
+    content = <MainSearchTypeSkeleton count={6} />;
+  } else if (!allAnime.length && !isLoading) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    content = (
+      <>
         <button
           onClick={() => navigate(`/search?q=${search}`)}
           className="mb-4 text-sm opacity-70 hover:opacity-100"
@@ -121,16 +110,26 @@ function TypeSearch({ title }: { title: string }) {
           ← ALL RESULTS
         </button>
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {allAnime.map((item) => (
-            <SearchItem key={item.id} {...item} />
+          {allAnime.map((item, index) => (
+            <SearchItem key={`${item.id}-${index}`} {...item} />
           ))}
         </ul>
         {hasNextPage && (
-          <div ref={ref} className="flex h-20 items-center justify-center">
-            {isFetching && <Spinner />}
+          <div
+            ref={ref}
+            className="flex h-32 flex-col items-center justify-center gap-2"
+          >
+            {isLoadingMore && !isError && <Spinner />}
+            {isError && <IsLoadingMore loadMore={loadMore} />}
           </div>
         )}
-      </SectionTitle>
+      </>
+    );
+  }
+
+  return (
+    <div className="mx-auto h-full max-w-300 pt-20 md:pt-30">
+      <SectionTitle title={title}>{content}</SectionTitle>
     </div>
   );
 }

@@ -11,12 +11,13 @@ import GridContentSkeleton from "../../shared/UIElements/skeleton/GridContentSke
 import Spinner from "../../shared/UIElements/spinner/Spinner";
 import SectionGrid from "../../shared/UIElements/gridContent/SectionGrid";
 import { typesDataForNewAnimeFilter } from "../../shared/utils/data";
+import IsLoadingMore from "../../shared/UIElements/isLoadingMore/IsLoadingMore";
 
 function NewAnime({
   thisSeason = false,
   title = "New This Year",
 }: {
-  thisSeason: boolean;
+  thisSeason?: boolean;
   title?: string;
 }) {
   const [page, setPage] = useState(1);
@@ -25,7 +26,8 @@ function NewAnime({
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [type, setType] = useState<AnimeType>("all");
 
-  const [getAnimes, { isLoading, isFetching }] = useLazyGetCurrentSeasonQuery();
+  const [getAnimes, { isLoading, isFetching, isError }] =
+    useLazyGetCurrentSeasonQuery();
 
   useEffect(() => {
     setPage(1);
@@ -67,32 +69,27 @@ function NewAnime({
 
   const { ref } = useInView({
     onEnter: () => {
-      if (hasNextPage && !isFetching && !isLoading && !isLoadingMore) {
+      if (
+        hasNextPage &&
+        !isFetching &&
+        !isLoading &&
+        !isLoadingMore &&
+        !isError
+      ) {
         loadMore();
       }
     },
     triggerOnce: false,
   });
 
-  if (isLoading && page === 1) {
-    return (
-      <SectionGrid title={title}>
-        <GridContentSkeleton title={title} />
-      </SectionGrid>
-    );
-  }
+  let content;
 
-  if (!allAnime.length) {
-    return (
-      <SectionGrid
-        title={title}
-        setType={setType}
-        type={type}
-        typeData={typesDataForNewAnimeFilter}
-      >
-        <div className="opacity-60">No data found</div>
-      </SectionGrid>
-    );
+  if (isLoading && page === 1) {
+    content = <GridContentSkeleton title={title} />;
+  } else if (!allAnime.length) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    content = <GridContent data={allAnime} />;
   }
 
   return (
@@ -102,12 +99,14 @@ function NewAnime({
       type={type}
       typeData={typesDataForNewAnimeFilter}
     >
-      <GridContent data={allAnime} />
-      {hasNextPage && (
-        <div ref={ref} className="flex h-20 items-center justify-center">
-          {isFetching && <Spinner />}
-        </div>
-      )}
+      {content}
+      <div
+        ref={ref}
+        className="flex h-32 flex-col items-center justify-center gap-2"
+      >
+        {isLoadingMore && !isError && <Spinner />}
+        {isError && <IsLoadingMore loadMore={loadMore} />}
+      </div>
     </SectionGrid>
   );
 }

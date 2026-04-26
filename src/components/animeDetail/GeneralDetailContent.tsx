@@ -1,7 +1,6 @@
 import { Calendar, Clock, Layers, Star, Tv } from "lucide-react";
 import { useState } from "react";
 import { PiTelevision } from "react-icons/pi";
-import { ToastContainer } from "react-toastify";
 import type { SliderItemType } from "../../shared/schemas/animeSchema";
 import Button from "../../shared/UIElements/button/Button";
 import WatchlistButton from "../../shared/UIElements/button/WatchlistButton";
@@ -133,7 +132,7 @@ function GeneralDetailContent(props: SliderItemType) {
             {synopsis && (
               <>
                 <p
-                  className={`hidden text-start italic ${!isExpanded ? "lg:line-clamp-3" : "lg:line-clamp-none"}`}
+                  className={`hidden text-start whitespace-pre-line italic ${!isExpanded ? "lg:line-clamp-3" : "lg:line-clamp-none"}`}
                 >
                   <span className="text-main-btn mr-2 font-bold tracking-widest uppercase">
                     Synopsis:
@@ -177,7 +176,7 @@ function GeneralDetailContent(props: SliderItemType) {
         <div className="lg:hidden">
           {synopsis && (
             <p
-              className={`mt-4 text-start italic ${!isExpanded ? "line-clamp-3" : "line-clamp-none"}`}
+              className={`mt-4 text-start whitespace-pre-line italic ${!isExpanded ? "line-clamp-3" : "line-clamp-none"}`}
             >
               <span className="text-main-btn mr-2 font-bold tracking-widest uppercase">
                 Synopsis:
@@ -217,7 +216,6 @@ function GeneralDetailContent(props: SliderItemType) {
           />
         </div>
       </Modal>
-      <ToastContainer />
     </section>
   );
 }

@@ -77,7 +77,20 @@ function RecentTrailers() {
   } else if (!allAnime.length) {
     content = <div className="opacity-60">No data found</div>;
   } else {
-    content = <TrailerContent data={allAnime} />;
+    content = (
+      <>
+        <TrailerContent data={allAnime} />{" "}
+        {hasNextPage && (
+          <div
+            ref={ref}
+            className="flex h-32 flex-col items-center justify-center gap-2"
+          >
+            {isLoadingMore && !isError && <Spinner />}
+            {isError && <IsLoadingMore loadMore={loadMore} />}
+          </div>
+        )}
+      </>
+    );
   }
 
   return (
@@ -86,15 +99,6 @@ function RecentTrailers() {
       subTitle="Step into the narratives of tomorrow with a glimpse into upcoming premieres."
     >
       {content}
-      {hasNextPage && (
-        <div
-          ref={ref}
-          className="flex h-32 flex-col items-center justify-center gap-2"
-        >
-          {isLoadingMore && !isError && <Spinner />}
-          {isError && <IsLoadingMore loadMore={loadMore} />}
-        </div>
-      )}
     </SectionGrid>
   );
 }

@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
+import { useLazyGetTopAnimeQuery } from "../../shared/api/animeApi";
+import { useInView } from "../../shared/hooks/useInView";
 import {
   RowSliderResponseSchema,
   type AnimeFilter,
   type AnimeType,
   type RowSliderType,
 } from "../../shared/schemas/animeSchema";
-import { useLazyGetTopAnimeQuery } from "../../shared/api/animeApi";
-import { useInView } from "../../shared/hooks/useInView";
-import SectionGrid from "../../shared/UIElements/gridContent/SectionGrid";
-import GridContentSkeleton from "../../shared/UIElements/skeleton/GridContentSkeleton";
 import GridContent from "../../shared/UIElements/gridContent/GridContent";
+import SectionGrid from "../../shared/UIElements/gridContent/SectionGrid";
+import IsLoadingMore from "../../shared/UIElements/isLoadingMore/IsLoadingMore";
+import GridContentSkeleton from "../../shared/UIElements/skeleton/GridContentSkeleton";
 import Spinner from "../../shared/UIElements/spinner/Spinner";
 import {
   filterData,
@@ -24,7 +25,8 @@ function PopularAnime() {
   const [type, setType] = useState<AnimeType>("all");
   const [filter, setFilter] = useState<AnimeFilter>("all");
 
-  const [getAnimes, { isLoading, isFetching }] = useLazyGetTopAnimeQuery();
+  const [getAnimes, { isLoading, isFetching, isError }] =
+    useLazyGetTopAnimeQuery();
 
   useEffect(() => {
     setPage(1);
@@ -66,34 +68,39 @@ function PopularAnime() {
 
   const { ref } = useInView({
     onEnter: () => {
-      if (hasNextPage && !isFetching && !isLoading && !isLoadingMore) {
+      if (
+        hasNextPage &&
+        !isFetching &&
+        !isLoading &&
+        !isLoadingMore &&
+        !isError
+      ) {
         loadMore();
       }
     },
     triggerOnce: false,
   });
 
-  if (isLoading && page === 1) {
-    return (
-      <SectionGrid title="Most Popular Anime">
-        <GridContentSkeleton title="Most Popular Anime" />
-      </SectionGrid>
-    );
-  }
+  let content;
 
-  if (!allAnime.length) {
-    return (
-      <SectionGrid
-        title="Most Popular Anime"
-        setType={setType}
-        type={type}
-        filter={filter}
-        setFilter={setFilter}
-        typeData={typesDataForPopularAnimeFilter}
-        filterData={filterData}
-      >
-        <div className="opacity-60">No data found</div>
-      </SectionGrid>
+  if (isLoading && page === 1) {
+    content = <GridContentSkeleton title="Most Popular Anime" />;
+  } else if (isError || !allAnime.length) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    content = (
+      <>
+        <GridContent data={allAnime} />
+        {hasNextPage && (
+          <div
+            ref={ref}
+            className="flex h-32 flex-col items-center justify-center gap-2"
+          >
+            {isLoadingMore && !isError && <Spinner />}
+            {isError && <IsLoadingMore loadMore={loadMore} />}
+          </div>
+        )}
+      </>
     );
   }
 
@@ -107,12 +114,7 @@ function PopularAnime() {
       typeData={typesDataForPopularAnimeFilter}
       filterData={filterData}
     >
-      <GridContent data={allAnime} />
-      {hasNextPage && (
-        <div ref={ref} className="flex h-20 items-center justify-center">
-          {isFetching && <Spinner />}
-        </div>
-      )}
+      {content}
     </SectionGrid>
   );
 }

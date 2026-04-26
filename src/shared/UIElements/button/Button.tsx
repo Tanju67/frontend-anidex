@@ -33,6 +33,7 @@ function Button({
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={`cursor-pointer rounded-md transition-all duration-300 active:scale-95 ${className}`}
     >
       {children}

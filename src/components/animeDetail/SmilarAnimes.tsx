@@ -26,20 +26,17 @@ function SmilarAnimes() {
     return <div ref={ref} className="min-h-60" />;
   }
 
-  if (isLoading)
-    return (
-      <SectionTitle title="Smilar Animes" skeleton={true}>
-        <RowSliderSkeleton title="Smilar Animes" />
-      </SectionTitle>
-    );
-  if (isError || !data?.length)
-    return (
-      <SectionTitle title="Smilar Animes">
-        <div className="opacity-60">No data found</div>
-      </SectionTitle>
-    );
+  let content;
+  let filteredData;
 
-  const filteredData = data.slice(0, 10);
+  if (isLoading) {
+    content = <RowSliderSkeleton title="Smilar Animes" />;
+  } else if (isError || !data?.length) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    filteredData = data.slice(0, 10);
+    content = <SectionSlider data={filteredData} />;
+  }
 
   return (
     <div ref={ref}>
@@ -47,7 +44,7 @@ function SmilarAnimes() {
         title="Smilar Animes"
         subTitle="You can also like these animes"
       >
-        <SectionSlider data={filteredData} />
+        {content}
       </SectionTitle>
     </div>
   );

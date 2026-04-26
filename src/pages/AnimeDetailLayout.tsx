@@ -5,9 +5,8 @@ import { useSafeQuery } from "../shared/hooks/useSafeQuery";
 import { SliderItemSchema } from "../shared/schemas/animeSchema";
 import GeneralDetailContentSkeleton from "../shared/UIElements/skeleton/GeneralDetailContentSkeleton";
 
-function AnimeDetailPage() {
+function AnimeDetailLayout() {
   const { animeId } = useParams();
-
   const query = useGetAnimeByIdQuery(animeId!);
 
   const { data, isLoading, isError } = useSafeQuery({
@@ -33,4 +32,4 @@ function AnimeDetailPage() {
   );
 }
 
-export default AnimeDetailPage;
+export default AnimeDetailLayout;

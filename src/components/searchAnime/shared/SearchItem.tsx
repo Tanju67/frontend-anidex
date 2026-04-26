@@ -1,18 +1,14 @@
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import type { RowSliderItemType } from "../../../shared/schemas/animeSchema";
 
 function SearchItem({ id, title, image, year }: RowSliderItemType) {
   return (
-    <motion.li
-      whileHover={{ x: 5 }} // Hover yapınca sağa doğru hafifçe kaysın
-      className="group list-none"
-    >
+    <motion.li whileHover={{ x: 5 }} className="group list-none">
       <Link
         to={`/anime/${id}`}
         className="flex items-center gap-4 rounded-lg border border-transparent p-2 transition-all duration-300 hover:border-white/10 hover:bg-white/5"
       >
-        {/* Resim Alanı */}
         <div className="relative h-24 w-16 shrink-0 overflow-hidden rounded-md shadow-md">
           <img
             src={image}
@@ -20,11 +16,10 @@ function SearchItem({ id, title, image, year }: RowSliderItemType) {
             loading="lazy"
             className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
           />
-          {/* Resim üzerine çok hafif bir overlay */}
+
           <div className="absolute inset-0 bg-black/10 transition-colors group-hover:bg-transparent" />
         </div>
 
-        {/* Metin Alanı */}
         <div className="flex flex-col justify-center overflow-hidden">
           <h4 className="group-hover:text-main-btn line-clamp-1 text-sm font-bold text-gray-200 transition-colors md:text-base">
             {title}

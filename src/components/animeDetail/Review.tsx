@@ -26,25 +26,22 @@ function Review() {
     return <div ref={ref} className="min-h-60" />;
   }
 
-  if (isLoading)
-    return (
-      <SectionTitle title="Reviews" skeleton={true}>
-        <ReviewContentSkeleton count={3} />
-      </SectionTitle>
-    );
-  if (isError || !data?.length)
-    return (
-      <SectionTitle title="Reviews">
-        <div className="opacity-60">No data found</div>
-      </SectionTitle>
-    );
+  let content;
+  let filteredData;
 
-  const filteredData = data.slice(0, 3);
+  if (isLoading) {
+    content = <ReviewContentSkeleton count={3} />;
+  } else if (isError || !data?.length) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    filteredData = data.slice(0, 3);
+    content = <ReviewContent data={filteredData} />;
+  }
 
   return (
     <div ref={ref}>
       <SectionTitle link="reviews" title="Reviews">
-        <ReviewContent data={filteredData} />
+        {content}
       </SectionTitle>
     </div>
   );

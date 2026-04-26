@@ -1,18 +1,14 @@
-import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import { useSearchParams } from "react-router-dom";
 import MainSearch from "./MainSearch";
-import TypeSearch from "./shared/TypeSearch";
 import SearchInput from "./shared/SearchInput";
+import TypeSearch from "./shared/TypeSearch";
 
 function SearchLayout() {
   const [searchParams, setSearchParams] = useSearchParams();
   const type = searchParams.get("type") || "";
-
-  // Input için local state
   const initialSearch = searchParams.get("q") || "";
   const [inputValue, setInputValue] = useState(initialSearch);
-
   const [debouncedValue, setDebouncedValue] = useState(initialSearch);
 
   // Debounced URL update
@@ -32,7 +28,7 @@ function SearchLayout() {
     }, 600);
 
     return () => clearTimeout(timer);
-  }, [inputValue]);
+  }, [inputValue, searchParams, setSearchParams]);
 
   return (
     <section className="min-h-screen">

@@ -26,27 +26,25 @@ function News() {
     return <div ref={ref} className="min-h-60" />;
   }
 
-  if (isLoading)
-    return (
-      <SectionTitle title="Anime News">
-        <NewsContentSkeleton count={4} />
-      </SectionTitle>
-    );
-  if (isError || !data?.length)
-    return (
-      <SectionTitle title="Anime News">
-        <div className="opacity-60">No data found</div>
-      </SectionTitle>
-    );
+  let content;
+  let filteredData;
 
-  const filteredData = data.slice(0, 6);
+  if (isLoading) {
+    content = <NewsContentSkeleton count={4} />;
+  } else if (isError || !data?.length) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    filteredData = data.slice(0, 6);
+    content = <NewsContent data={filteredData} />;
+  }
+
   return (
     <div ref={ref}>
       <SectionTitle
         title="Anime News"
         subTitle="Read the latest news related to this anime"
       >
-        <NewsContent data={filteredData} />
+        {content}
       </SectionTitle>
     </div>
   );

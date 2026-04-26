@@ -10,6 +10,7 @@ import Spinner from "../../shared/UIElements/spinner/Spinner";
 import ReviewContent from "../animeDetail/ReviewContent";
 import SectionTitle from "../animeDetail/SectionTitle";
 import ReviewContentSkeleton from "../../shared/UIElements/skeleton/ReviewContentSkeleton";
+import IsLoadingMore from "../../shared/UIElements/isLoadingMore/IsLoadingMore";
 
 function Reviews() {
   const { animeId } = useParams();
@@ -18,7 +19,7 @@ function Reviews() {
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const [getReviews, { isLoading, isFetching }] =
+  const [getReviews, { isLoading, isFetching, isError }] =
     useLazyGetAnimeReviewsByIdQuery();
 
   useEffect(() => {
@@ -35,7 +36,7 @@ function Reviews() {
   }, [animeId, getReviews]);
 
   const loadMore = async () => {
-    if (!animeId || isLoadingMore) return;
+    if (!animeId || isLoadingMore || !hasNextPage) return;
     setIsLoadingMore(true);
 
     const nextPage = page + 1;
@@ -56,40 +57,47 @@ function Reviews() {
 
   const { ref } = useInView({
     onEnter: () => {
-      if (hasNextPage && !isFetching && !isLoading && !isLoadingMore) {
+      if (
+        hasNextPage &&
+        !isFetching &&
+        !isLoading &&
+        !isLoadingMore &&
+        !isError
+      ) {
         loadMore();
       }
     },
     triggerOnce: false,
   });
 
-  if (isLoading && page === 1) {
-    return (
-      <SectionTitle title="All Episodes" skeleton={true}>
-        <ReviewContentSkeleton />
-      </SectionTitle>
-    );
-  }
+  let content;
 
-  if (!allReviews.length) {
-    return (
-      <SectionTitle title="All Episodes" isBack={true}>
-        <div className="opacity-60">No reviews found</div>
-      </SectionTitle>
+  if (isLoading && page === 1) {
+    content = <ReviewContentSkeleton />;
+  } else if (isError || !allReviews.length) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    content = (
+      <>
+        <ReviewContent data={allReviews} />
+        {hasNextPage && (
+          <div
+            ref={ref}
+            className="flex h-32 flex-col items-center justify-center gap-2"
+          >
+            {isLoadingMore && !isError && <Spinner />}
+            {isError && <IsLoadingMore loadMore={loadMore} />}
+          </div>
+        )}
+      </>
     );
   }
 
   return (
     <div>
       <SectionTitle title="All Reviews" isBack={true}>
-        <ReviewContent data={allReviews} />
+        {content}
       </SectionTitle>
-
-      {hasNextPage && (
-        <div ref={ref} className="flex h-20 items-center justify-center">
-          {isFetching && <Spinner />}
-        </div>
-      )}
     </div>
   );
 }

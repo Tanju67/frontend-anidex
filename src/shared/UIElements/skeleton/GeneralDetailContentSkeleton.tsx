@@ -1,6 +1,6 @@
 const GeneralDetailContentSkeleton = () => {
   return (
-    <section className="section-padding main-text-size relative min-h-screen">
+    <section className="main-text-size relative min-h-screen">
       {/* Title placeholder */}
       <div className="mb-4 h-6 w-3/4 animate-pulse rounded bg-gray-400 md:h-8 md:w-1/2 lg:h-10 lg:w-1/3" />
 

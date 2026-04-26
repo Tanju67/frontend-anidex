@@ -21,7 +21,6 @@ function Character({
   isBack = false,
   isAllCharacters,
 }: CharacterProps) {
-  console.log(data);
   return (
     <SectionTitle link={link} title={title} isBack={isBack}>
       <CharacterContent

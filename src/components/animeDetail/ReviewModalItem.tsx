@@ -7,7 +7,6 @@ interface ReviewModalItemProps {
 }
 
 function ReviewModalItem({ reviewItem }: ReviewModalItemProps) {
-  // Veri yoksa boş dön veya yükleniyor göster (crash olmaması için)
   if (!reviewItem) return null;
 
   const { name, date, image, review, score, like, dislike } = reviewItem;

@@ -19,6 +19,7 @@ import {
   statusData,
   typesDataForPopularAnimeFilter,
 } from "../../shared/utils/data";
+import IsLoadingMore from "../../shared/UIElements/isLoadingMore/IsLoadingMore";
 
 function Categories() {
   const [page, setPage] = useState(1);
@@ -30,7 +31,8 @@ function Categories() {
   const [raiting, setRating] = useState<AnimeRating>("g");
   const [status, setStatus] = useState<AnimeStatus>("all");
 
-  const [getAnimes, { isLoading, isFetching }] = useLazyGetAnimeByGenreQuery();
+  const [getAnimes, { isLoading, isFetching, isError }] =
+    useLazyGetAnimeByGenreQuery();
 
   const genreObj = genres.find((g) => g.id === +genreId!);
 
@@ -85,37 +87,39 @@ function Categories() {
 
   const { ref } = useInView({
     onEnter: () => {
-      if (hasNextPage && !isFetching && !isLoading && !isLoadingMore) {
+      if (
+        hasNextPage &&
+        !isFetching &&
+        !isLoading &&
+        !isLoadingMore &&
+        !isError
+      ) {
         loadMore();
       }
     },
     triggerOnce: false,
   });
 
-  if (isLoading && page === 1) {
-    return (
-      <SectionGrid title="Most Popular Anime">
-        <GridContentSkeleton title="Most Popular Anime" />
-      </SectionGrid>
-    );
-  }
+  let content;
 
-  if (!allAnime.length) {
-    return (
-      <SectionGrid
-        title="Most Popular Anime"
-        type={type}
-        setType={setType}
-        typeData={typesDataForPopularAnimeFilter}
-        rating={raiting}
-        setRating={setRating}
-        ratingData={ratingData}
-        status={status}
-        setStatus={setStatus}
-        statusData={statusData}
-      >
-        <div className="opacity-60">No data found</div>
-      </SectionGrid>
+  if (isLoading && page === 1) {
+    content = <GridContentSkeleton title="Most Popular Anime" />;
+  } else if (!allAnime.length) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    content = (
+      <>
+        <GridContent data={allAnime} />
+        {hasNextPage && (
+          <div
+            ref={ref}
+            className="flex h-32 flex-col items-center justify-center gap-2"
+          >
+            {isLoadingMore && !isError && <Spinner />}
+            {isError && <IsLoadingMore loadMore={loadMore} />}
+          </div>
+        )}
+      </>
     );
   }
 
@@ -142,12 +146,7 @@ function Categories() {
         setStatus={setStatus}
         statusData={statusData}
       >
-        <GridContent data={allAnime} />
-        {hasNextPage && (
-          <div ref={ref} className="flex h-20 items-center justify-center">
-            {isFetching && <Spinner />}
-          </div>
-        )}
+        {content}
       </SectionGrid>
     </div>
   );

@@ -18,7 +18,7 @@ function AllEpisodes() {
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const [getEpisodes, { isLoading, isFetching, isError }] =
+  const [getEpisodes, { isLoading, isFetching }] =
     useLazyGetAnimeEpisodesByIdQuery();
 
   useEffect(() => {
@@ -56,13 +56,7 @@ function AllEpisodes() {
 
   const { ref } = useInView({
     onEnter: () => {
-      if (
-        hasNextPage &&
-        !isFetching &&
-        !isLoading &&
-        !isLoadingMore &&
-        !isError
-      ) {
+      if (hasNextPage && !isFetching && !isLoading && !isLoadingMore) {
         loadMore();
       }
     },
@@ -76,7 +70,11 @@ function AllEpisodes() {
   } else if (!allEpisodes.length) {
     content = <div className="opacity-60">No data found</div>;
   } else {
-    content = <EpisodesContent data={allEpisodes} />;
+    content = (
+      <>
+        <EpisodesContent data={allEpisodes} />
+      </>
+    );
   }
 
   return (

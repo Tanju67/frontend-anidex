@@ -1,20 +1,18 @@
 import { useState, type SyntheticEvent } from "react";
 import { FaEye, FaEyeSlash, FaLock, FaUser } from "react-icons/fa";
 import { IoMailSharp } from "react-icons/io5";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import img from "../../assets/register.jpg";
 import Button from "../../shared/UIElements/button/Button";
 import Spinner from "../../shared/UIElements/spinner/Spinner";
-import { useRegisterMutation } from "../../shared/api/backendApi";
+import { backendApi, useRegisterMutation } from "../../shared/api/backendApi";
 import {
   registerSchema,
   type RegisterFormData,
 } from "../../shared/schemas/backendSchema";
-import { toaster } from "../../shared/utils/toaster";
 import type { MyBackendError } from "../../shared/types/types";
-import { useDispatch } from "react-redux";
-import { backendApi } from "../../shared/api/backendApi";
+import { toaster } from "../../shared/utils/toaster";
 
 function Form() {
   const [showPassword, setShowPassword] = useState(false);
@@ -43,7 +41,6 @@ function Form() {
     try {
       const response = await register(formData).unwrap();
       localStorage.setItem("token", response.token);
-      console.log(response);
       dispatch(backendApi.util.invalidateTags(["User"]));
       toaster("success", response.message);
       setFormData({
@@ -59,7 +56,7 @@ function Form() {
     }
   };
   return (
-    <div className="main-text-size py-8">
+    <div className="main-text-size">
       <div className="grid md:min-h-screen lg:grid-cols-2">
         <div className="flex flex-col items-center justify-center p-6 sm:p-12">
           <div className="w-full max-w-md space-y-8">
@@ -178,7 +175,6 @@ function Form() {
 
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,transparent_10%,black_70%)]" />
         </div>
-        <ToastContainer />
       </div>
     </div>
   );

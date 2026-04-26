@@ -11,10 +11,9 @@ import {
 import SectionGrid from "../../shared/UIElements/gridContent/SectionGrid";
 import GridContentSkeleton from "../../shared/UIElements/skeleton/GridContentSkeleton";
 import Spinner from "../../shared/UIElements/spinner/Spinner";
+import { toaster } from "../../shared/utils/toaster";
 import WatchlistContent from "./WatchlistContent";
 import WatchListSimilarAnime from "./WatchListSimilarAnime";
-import { toaster } from "../../shared/utils/toaster";
-import { ToastContainer } from "react-toastify";
 
 function Watchlist() {
   const [page, setPage] = useState(1);
@@ -22,13 +21,13 @@ function Watchlist() {
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const [getAnimes, { isLoading, isFetching }] = useLazyGetUserAllAnimeQuery();
-  const [deleteAnime, { isLoading: isDeleting }] = useDeleteAnimeMutation();
+  const [getAnimes, { isLoading, isFetching, isError }] =
+    useLazyGetUserAllAnimeQuery();
+  const [deleteAnime] = useDeleteAnimeMutation();
 
   const handleRemove = async (id: string) => {
     try {
       await deleteAnime(String(id)).unwrap();
-
       setAllAnime((prev) => prev.filter((item) => item.animeId !== id));
       toaster("success", "Removed from watchlist");
     } catch (error) {
@@ -74,7 +73,13 @@ function Watchlist() {
 
   const { ref } = useInView({
     onEnter: () => {
-      if (hasNextPage && !isFetching && !isLoading && !isLoadingMore) {
+      if (
+        hasNextPage &&
+        !isFetching &&
+        !isLoading &&
+        !isLoadingMore &&
+        !isError
+      ) {
         loadMore();
       }
     },
@@ -97,8 +102,6 @@ function Watchlist() {
     );
   }
 
-  console.log(allAnime);
-
   return (
     <>
       <SectionGrid title="My Watchlist">
@@ -112,7 +115,6 @@ function Watchlist() {
       <SectionGrid title="Recommendation for you">
         <WatchListSimilarAnime data={allAnime.slice(0, 3)} />
       </SectionGrid>
-      <ToastContainer />
     </>
   );
 }

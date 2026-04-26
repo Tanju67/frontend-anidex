@@ -1,11 +1,7 @@
 import Form from "./Form";
 
 function Login() {
-  return (
-    <div>
-      <Form />
-    </div>
-  );
+  return <Form />;
 }
 
 export default Login;

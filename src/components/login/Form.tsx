@@ -4,7 +4,6 @@ import { FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
 import { IoMailSharp } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import img from "../../assets/login.jpg";
 import {
   backendApi,
@@ -21,22 +20,25 @@ function Form() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [login, { isLoading }] = useLoginMutation();
   const [googleLoginMutation] = useGoogleLoginMutation();
+  const [clicked, setClicked] = useState<"user" | "google" | "demo" | null>(
+    null,
+  );
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const [demoLogin, setDemoLogin] = useState({
+  const [demoLogin] = useState({
     email: "test@mail.com",
     password: "secret123",
   });
 
   const handleUserLogin = async () => {
     try {
+      setClicked("demo");
       const response = await login(demoLogin).unwrap();
       localStorage.setItem("token", response.token);
       dispatch(backendApi.util.invalidateTags(["User"]));
@@ -46,6 +48,8 @@ function Form() {
       const err = error as MyBackendError;
       const message = err.data?.message || "Something went wrong";
       toaster("error", message);
+    } finally {
+      setClicked(null);
     }
   };
 
@@ -56,7 +60,9 @@ function Form() {
       toaster("error", "No credential found");
       return;
     }
+
     try {
+      setClicked("google");
       const response = await googleLoginMutation({
         idToken: credentialResponse.credential,
       }).unwrap();
@@ -69,6 +75,8 @@ function Form() {
       const err = error as MyBackendError;
       const message = err.data?.message || "Something went wrong";
       toaster("error", message);
+    } finally {
+      setClicked(null);
     }
   };
 
@@ -85,7 +93,6 @@ function Form() {
     try {
       const response = await login(formData).unwrap();
       localStorage.setItem("token", response.token);
-      console.log(response);
       dispatch(backendApi.util.invalidateTags(["User"]));
       toaster("success", response.message);
       setFormData({
@@ -97,10 +104,12 @@ function Form() {
       const err = error as MyBackendError;
       const message = err.data?.message || "Something went wrong";
       toaster("error", message);
+    } finally {
+      setClicked(null);
     }
   };
   return (
-    <div className="main-text-size py-8">
+    <div className="main-text-size">
       <div className="grid md:min-h-screen lg:grid-cols-2">
         <div className="flex flex-col items-center justify-center p-6 sm:p-12">
           <div className="w-full max-w-md space-y-8">
@@ -165,11 +174,12 @@ function Form() {
 
               <div className="space-y-4 md:space-y-6">
                 <Button
+                  onClick={() => setClicked("user")}
                   type="submit"
                   className="bg-main-btn hover:bg-main-btn-hover content-center-x w-full p-3 md:p-2"
                   disabled={isLoading}
                 >
-                  {isLoading ? (
+                  {isLoading && clicked === "user" ? (
                     <>
                       <Spinner />
                       Loading...
@@ -194,7 +204,7 @@ function Form() {
                   onClick={handleUserLogin}
                   className="content-center-x w-full bg-blue-600 p-3 text-white hover:bg-blue-700 md:p-2"
                 >
-                  {isLoading ? (
+                  {isLoading && clicked === "demo" ? (
                     <>
                       <Spinner />
                       Loading...
@@ -226,8 +236,6 @@ function Form() {
 
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,transparent_10%,black_70%)]" />
         </div>
-
-        <ToastContainer />
       </div>
     </div>
   );

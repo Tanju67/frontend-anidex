@@ -26,25 +26,22 @@ function Episodes() {
     return <div ref={ref} className="min-h-60" />;
   }
 
-  if (isLoading)
-    return (
-      <SectionTitle title="Episodes" skeleton={true}>
-        <EpisodesContentSkeleton />
-      </SectionTitle>
-    );
-  if (isError || !data?.length)
-    return (
-      <SectionTitle title="Episodes">
-        <div className="opacity-60">No data found</div>
-      </SectionTitle>
-    );
+  let content;
+  let filteredData;
 
-  const filteredData = data.slice(0, 6);
+  if (isLoading) {
+    content = <EpisodesContentSkeleton />;
+  } else if (isError || !data?.length) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    filteredData = data.slice(0, 6);
+    content = <EpisodesContent data={filteredData} />;
+  }
 
   return (
     <div ref={ref}>
       <SectionTitle link="episodes" title="Episodes">
-        <EpisodesContent data={filteredData} />
+        {content}
       </SectionTitle>
     </div>
   );

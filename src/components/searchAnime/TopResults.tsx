@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useGetAnimeByGenreQuery } from "../../shared/api/animeApi";
 import { useSafeQuery } from "../../shared/hooks/useSafeQuery";
 import { RowSliderSchema } from "../../shared/schemas/animeSchema";
@@ -30,26 +29,14 @@ function TopResults({ search }: TopResultsProps) {
     schema: RowSliderSchema,
   });
 
-  if (isLoading && data?.length === 0) {
-    return (
-      <SectionTitle
-        title={`Top results `}
-        subTitle={`Top results for "${search}"`}
-      >
-        <GridContentSkeleton count={6} />
-      </SectionTitle>
-    );
-  }
+  let content;
 
-  if (!data?.length && search.trim().length > 2) {
-    return (
-      <SectionTitle
-        title={`Top results `}
-        subTitle={`Top results for "${search}"`}
-      >
-        <div className="opacity-60">No data found</div>
-      </SectionTitle>
-    );
+  if (isLoading && data?.length === 0) {
+    content = <GridContentSkeleton count={6} />;
+  } else if (!data?.length && search.trim().length > 2) {
+    content = <div className="opacity-60">No data found</div>;
+  } else {
+    content = <GridContent data={data || []} />;
   }
 
   return (
@@ -57,7 +44,7 @@ function TopResults({ search }: TopResultsProps) {
       title={`Top results `}
       subTitle={`Top results for "${search}"`}
     >
-      <GridContent data={data ?? []} />
+      {content}
     </SectionTitle>
   );
 }

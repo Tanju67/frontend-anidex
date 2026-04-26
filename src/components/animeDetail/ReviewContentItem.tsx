@@ -1,9 +1,8 @@
-import type { ReviewType } from "../../shared/schemas/animeSchema";
-import { SlLike } from "react-icons/sl";
-import { SlDislike } from "react-icons/sl";
-import { formatDate } from "../../shared/utils/helper";
 import { useState } from "react";
+import { SlDislike, SlLike } from "react-icons/sl";
+import type { ReviewType } from "../../shared/schemas/animeSchema";
 import Button from "../../shared/UIElements/button/Button";
+import { formatDate } from "../../shared/utils/helper";
 
 type Props = {
   reviewItem: ReviewType;
@@ -41,7 +40,6 @@ function ReviewContentItem({
         </div>
       </div>
 
-      {/* Orta Kısım: İnceleme Metni */}
       <div className="relative overflow-hidden rounded-lg">
         <p
           className={`leading-relaxed ${isSpoilerHidden ? "blur-md select-none" : "line-clamp-4"}`}
@@ -64,7 +62,6 @@ function ReviewContentItem({
         )}
       </div>
 
-      {/* Alt Kısım: Aksiyonlar */}
       <div className="mt-auto flex items-center justify-between pt-2">
         <Button
           onClick={() => {

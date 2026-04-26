@@ -21,7 +21,7 @@ function RootLayout() {
       {/* Persistent Top Navigation Bar */}
       <MainNavigation />
 
-      <main className="pt-(--nav-height)">
+      <main className="min-h-screen pt-(--nav-height)">
         {/* Suspense handles the loading state for lazy-loaded pages.
           While the JS chunk for a specific route is being fetched, 
           the GlobalLoadingScreen will be displayed.
