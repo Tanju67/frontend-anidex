@@ -172,7 +172,7 @@ function Form() {
                 </div>
               </div>
 
-              <div className="space-y-4 md:space-y-6">
+              <div className="flex flex-col space-y-4 md:space-y-6">
                 <Button
                   onClick={() => setClicked("user")}
                   type="submit"
@@ -188,15 +188,21 @@ function Form() {
                     "Sign In "
                   )}
                 </Button>
-                <GoogleLogin
-                  onSuccess={handleGoogleSuccess}
-                  onError={() => toaster("error", "Login failed")}
-                  useOneTap
-                  theme="outline"
-                  shape="rectangular"
-                  size="large"
-                  text="signin_with"
-                />
+                <div className="w-full [&>div]:w-full! [&>div>div]:w-full!">
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={() => toaster("error", "Login failed")}
+                    useOneTap={false}
+                    theme="outline"
+                    shape="rectangular"
+                    size="large"
+                    text="signin_with"
+                    type="standard"
+                    containerProps={{
+                      className: "w-full flex ",
+                    }}
+                  />
+                </div>
 
                 <Button
                   type="button"
