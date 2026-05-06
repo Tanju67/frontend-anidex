@@ -1,73 +1,71 @@
-# React + TypeScript + Vite
+# R-Anime
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[View Demo here](https://r-anime.onrender.com)
 
-Currently, two official plugins are available:
+An anime application built with React JS for the frontend and Express JS and Mongoose for the backend by using [Jikan REST API](https://docs.api.jikan.moe/).The user can search for anime movies and series and filter the search based on certain values. The user can also see details about the anime, such as anime characters, voice actors, anime reviews, anime episodes and summaries. Additionally, after logging in, the user can add any anime they want to the watchlist. I created a [REST API](https://github.com/Tanju67/react-anime-backend.git) for the backend of this application.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+⛔ Jikan API let me to send 3 request per second. Therefore please wait for at least 1 second or the page upload before refreshing the page or navigating other page.
 
-## React Compiler
+1. UserCredential:
+   - email:test@mail.com
+   - password:secret123
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+![R-Anime](./src/assets/mainPage.gif)
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Sign In & Sign Out
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+The user must log in to add the anime to the watchlist.  
+![Sign in](./src/assets/loginPage.gif)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Search Anime
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Users can search anime data by writing the name of the anime and filter by cahnging max score ,min score,type and status values.
+![Search Anime](./src/assets/search.gif)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### See Anime Detail
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Users can see the detail of animes such as anime trailer, characters, voice actors, reviews, anime news and related animes. Users can also jump to a detail page of characters and voice actors. For anime series, users can see all seasons and episodes' details.
+![See Anime Detail](./src/assets/detail.gif)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Built With
+
+- React JS
+- Redux Tool Kit
+- React Router
+- CSS Modules
+
+## Getting Started
+
+### Prerequisites
+
+Install npm.
+
+- npm
+  ```
+  npm install npm@latest -g
+  ```
+- You must clone [the backend repo](https://github.com/Tanju67/react-anime-backend.git) of this application.
+  ```
+  git clone https://github.com/Tanju67/react-anime-backend.git
+  ```
+
+### Installation
+
+1. Clone the repo.
+   ```
+   git clone https://github.com/Tanju67/react-anime-frontend.git
+   ```
+2. Install NPM packages.
+   ```
+   npm install
+   ```
+3. Create the backend url in a .env file.
+   ```
+   VITE_BACKEND_URL=your backend url
+   ```
+4. Start the frontend server (Firstly you must start backend server).
+   ```
+   npm run dev
+   ```

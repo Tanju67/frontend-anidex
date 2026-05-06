@@ -23,7 +23,7 @@ function AnimeDetailLayout() {
       className="relative min-h-screen w-full bg-cover bg-fixed bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${data.image})` }}
     >
-      <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/90 to-black/90" />
+      <div className="absolute inset-0 bg-linear-to-r from-black/95 via-black/95 to-black/95" />
       <div className="mx-auto max-w-400">
         <GeneralDetail data={data} />
         <Outlet />
