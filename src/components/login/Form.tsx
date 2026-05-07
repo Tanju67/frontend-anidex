@@ -1,4 +1,5 @@
-import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
+// import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import { useState, type SyntheticEvent } from "react";
 import { FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
 import { IoMailSharp } from "react-icons/io5";
@@ -15,6 +16,7 @@ import type { MyBackendError } from "../../shared/types/types";
 import Button from "../../shared/UIElements/button/Button";
 import Spinner from "../../shared/UIElements/spinner/Spinner";
 import { toaster } from "../../shared/utils/toaster";
+import { FcGoogle } from "react-icons/fc";
 
 function Form() {
   const [showPassword, setShowPassword] = useState(false);
@@ -53,32 +55,56 @@ function Form() {
     }
   };
 
-  const handleGoogleSuccess = async (
-    credentialResponse: CredentialResponse,
-  ) => {
-    if (!credentialResponse.credential) {
-      toaster("error", "No credential found");
-      return;
-    }
+  // const handleGoogleSuccess = async (
+  //   credentialResponse: CredentialResponse,
+  // ) => {
+  //   if (!credentialResponse.credential) {
+  //     toaster("error", "No credential found");
+  //     return;
+  //   }
 
-    try {
-      setClicked("google");
-      const response = await googleLoginMutation({
-        idToken: credentialResponse.credential,
-      }).unwrap();
+  //   try {
+  //     setClicked("google");
+  //     const response = await googleLoginMutation({
+  //       idToken: credentialResponse.credential,
+  //     }).unwrap();
 
-      localStorage.setItem("token", response.token);
-      dispatch(backendApi.util.invalidateTags(["User"]));
-      toaster("success", "Login successful");
-      navigate("/");
-    } catch (error) {
-      const err = error as MyBackendError;
-      const message = err.data?.message || "Something went wrong";
-      toaster("error", message);
-    } finally {
-      setClicked(null);
-    }
-  };
+  //     localStorage.setItem("token", response.token);
+  //     dispatch(backendApi.util.invalidateTags(["User"]));
+  //     toaster("success", "Login successful");
+  //     navigate("/");
+  //   } catch (error) {
+  //     const err = error as MyBackendError;
+  //     const message = err.data?.message || "Something went wrong";
+  //     toaster("error", message);
+  //   } finally {
+  //     setClicked(null);
+  //   }
+  // };
+
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        setClicked("google");
+
+        console.log("Google Token Response:", tokenResponse);
+
+        const response = await googleLoginMutation({
+          idToken: tokenResponse.access_token, // Şimdilik bunu gönderiyoruz
+        }).unwrap();
+
+        localStorage.setItem("token", response.token);
+        dispatch(backendApi.util.invalidateTags(["User"]));
+        toaster("success", "Login successful");
+        navigate("/");
+      } catch (error) {
+        toaster("error", (error as string) || "Google login failed");
+      } finally {
+        setClicked(null);
+      }
+    },
+    onError: () => toaster("error", "Login Failed"),
+  });
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -188,21 +214,19 @@ function Form() {
                     "Sign In "
                   )}
                 </Button>
-                <div className="w-full [&>div]:w-full! [&>div>div]:w-full!">
-                  <GoogleLogin
-                    onSuccess={handleGoogleSuccess}
-                    onError={() => toaster("error", "Login failed")}
-                    useOneTap={false}
-                    theme="outline"
-                    shape="rectangular"
-                    size="large"
-                    text="signin_with"
-                    type="standard"
-                    containerProps={{
-                      className: "w-full flex ",
-                    }}
-                  />
-                </div>
+                <Button
+                  type="button"
+                  onClick={() => loginWithGoogle()}
+                  className="flex w-full items-center justify-center gap-2 border border-[#8e918f] bg-[#131314] p-3 text-white transition-colors hover:bg-[#202124] md:p-2"
+                >
+                  {isLoading && clicked === "google" ? (
+                    <Spinner />
+                  ) : (
+                    <>
+                      <FcGoogle className="size-5" /> Sign in with Google
+                    </>
+                  )}
+                </Button>
 
                 <Button
                   type="button"
